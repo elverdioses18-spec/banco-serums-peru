@@ -21,18 +21,19 @@ export default function SimulacroMixtoPage(){
         ...preguntasInvestigacion,
         ...preguntasEtica,
       ];
-      const [cantidad, setCantidad] = useState(20);
+      const [preguntasTema, setPreguntasTema] = useState<any[]>([]);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setCantidad(Number(params.get("cantidad")) || 20);
-  }, []);
-      const [preguntasTema] = useState(
-        [...todasLasPreguntas]
-          .sort(() => Math.random() - 0.5)
-          .slice(0, cantidad)
-      );
-
+      useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const cantidadElegida = Number(params.get("cantidad")) || 20;
+      
+        setPreguntasTema(
+          [...todasLasPreguntas]
+            .sort(() => Math.random() - 0.5)
+            .slice(0, cantidadElegida)
+        );
+      }, []);
+      
   const [respuestas, setRespuestas] = useState<{ [key: number]: number }>({});
   const [finalizado, setFinalizado] = useState(false);
   const [revision, setRevision] = useState<number | null>(null);
@@ -86,7 +87,7 @@ export default function SimulacroMixtoPage(){
           </h2>
 
           <div className="flex flex-col gap-3 mb-6">
-            {pregunta.opciones.map((opcion, index) => (
+          {pregunta.opciones.map((opcion: string, index: number) => ( 
               <div
                 key={index}
                 className={`p-4 rounded-xl ${
@@ -139,7 +140,7 @@ export default function SimulacroMixtoPage(){
           </p>
 
           <div className="flex flex-col gap-3">
-            {preguntasTema.map((pregunta, index) => {
+            {preguntasTema.map((pregunta: any, index: number) => {
               const esCorrecta = respuestas[index] === pregunta.correcta;
 
               return (
@@ -187,7 +188,7 @@ export default function SimulacroMixtoPage(){
               </h2>
 
               <div className="flex flex-col gap-3">
-                {pregunta.opciones.map((opcion, opcionIndex) => (
+                {pregunta.opciones.map((opcion: string, opcionIndex: number) => (
                   <button
                     key={opcionIndex}
                     onClick={() => responder(index, opcionIndex)}
