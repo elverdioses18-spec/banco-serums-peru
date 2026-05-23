@@ -1,7 +1,9 @@
 "use client";
+
 export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+
 import Sidebar from "@/components/Sidebar";
 import { preguntas } from "@/data/preguntas";
 import { preguntasGestion } from "@/data/gestion";
@@ -10,9 +12,8 @@ import { preguntasInvestigacion } from "@/data/investigacionData";
 import { preguntasEtica } from "@/data/eticaData";
 
 export default function SimulacroMixtoPage(){
-  const searchParams = useSearchParams();
+  
 
-const cantidad = Number(searchParams.get("cantidad")) || 20;
     const todasLasPreguntas = [
         ...preguntas.saludPublica,
         ...preguntasGestion,
@@ -20,7 +21,12 @@ const cantidad = Number(searchParams.get("cantidad")) || 20;
         ...preguntasInvestigacion,
         ...preguntasEtica,
       ];
-      
+      const [cantidad, setCantidad] = useState(20);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setCantidad(Number(params.get("cantidad")) || 20);
+  }, []);
       const [preguntasTema] = useState(
         [...todasLasPreguntas]
           .sort(() => Math.random() - 0.5)
@@ -31,7 +37,7 @@ const cantidad = Number(searchParams.get("cantidad")) || 20;
   const [finalizado, setFinalizado] = useState(false);
   const [revision, setRevision] = useState<number | null>(null);
   const [segundos, setSegundos] = useState(0);
-
+  
   useEffect(() => {
     if (finalizado) return;
   
