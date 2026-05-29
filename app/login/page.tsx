@@ -10,6 +10,10 @@ export default function LoginPage() {
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
 
+  const [mostrarRegistro, setMostrarRegistro] = useState(false);
+  const [nombreRegistro, setNombreRegistro] = useState("");
+  const [correoRegistro, setCorreoRegistro] = useState("");
+  const [passwordRegistro, setPasswordRegistro] = useState("");
   const ingresar = () => {
     if (!correo || !password) {
       alert("Completa tu correo y contraseña");
@@ -28,20 +32,20 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#020817] text-white overflow-hidden relative">
+    <main className="min-h-screen bg-[#020817] text-white overflow-x-hidden relative px-4 py-6">
   
       {/* GLOW FONDO */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,#0f3fff22,transparent_35%)]"></div>
   
       {/* LOGO */}
-      <div className="absolute top-10 left-12 z-20">
+      <div className="relative -left-23 md:absolute md:top-10 md:left-12 z-20 text-center md:text-left">
         <h1 className="text-xl font-extrabold">
-        Banco <span className="text-blue-500">SERUMS</span> Perú
+        Ruta <span className="text-blue-500">SERUMS</span> 
         </h1>
       </div>
   
       {/* TEXTO IZQUIERDA */}
-      <div className="absolute top-22 left-12 z-20">
+      <div className="relative md:absolute md:top-22 md:left-12 z-20 mb-6">
   
         <h2 className="text-4xl font-extrabold leading-[1.05]">
           Prepárate.
@@ -60,12 +64,34 @@ export default function LoginPage() {
           <br />
           falladas en una sola plataforma.
         </p>
+        <div className="hidden md:flex items-center gap-3 mt-2 mr-10">
+  
+
+  <div>
+    <p className="text-4xl font-extrabold text-blue-500">
+      +2300
+    </p>
+
+    <p className="text-white-400">
+      preguntas tipo SERUMS
+    </p>
+  </div>
+</div>
+<div className="md:hidden absolute top-[50px] right-2 text-right z-20">
+  <p className="text-4xl font-extrabold text-blue-500">
+    +2300
+  </p>
+
+  <p className="text-base text-slate-300">
+    preguntas
+  </p>
+</div>
   
       </div>
   
       {/* DASHBOARD */}
       <div
-  className="absolute top-10 left-[300px]"
+  className="relative md:absolute md:top-10 md:left-[300px] mt-8 md:mt-0 z-10"
   style={{
     transform: "perspective(1000px) rotateY(12deg) rotateX(3deg)",
   }}
@@ -78,14 +104,14 @@ export default function LoginPage() {
         <img
           src="/dashboard.png"
           alt="dashboard"
-          className="w-[670px] rounded-[32px] border border-blue-500/20 shadow-[0_0_35px_#2563eb44] drop-shadow-[0_0_8px_rgba(37,99,235,0.35)]transition duration-500 hover:scale-105"
+          className="w-full md:w-[670px] rounded-[24px] md:rounded-[32px] border border-blue-500/20 shadow-[0_0_35px_#2563eb44]"
         />
   
       </div>
   
       {/* ESTADISTICAS */}
       <div
-  className="absolute top-92 left-[200px]"
+  className="hidden md:block absolute top-92 left-[200px]"
   style={{
     transform: "perspective(2000px) rotateY(30deg) rotateX(4deg)",
   }}
@@ -101,7 +127,7 @@ export default function LoginPage() {
   
       {/* REFORZAMIENTO */}
       <div
-  className="absolute top-90 left-[470px]"
+  className="hidden md:block absolute top-90 left-[470px]"
   style={{
     transform: "perspective(2000px) rotateY(-20deg) rotateX(4deg)",
   }}
@@ -116,9 +142,9 @@ export default function LoginPage() {
       </div>
   
       {/* LOGIN */}
-      <div className="absolute top-8 right-10 w-[350px] rounded-[40px] border border-blue-500/40 bg-[#081120]/95 backdrop-blur-xl p-10 shadow-[0_0_80px_#2563eb44]">
+      <div className="relative md:absolute md:top-20 md:right-12 z-30 w-full max-w-[330px] mx-auto mt-8 md:-mt-15 border border-white/50 rounded-4xl p-6 backdrop-blur-sm">
   
-        <div className="w-20 h-20 rounded-full border border-blue-500/40 flex items-center justify-center text-5xl mx-auto mb-8 text-blue-500">
+        <div className="w-20 h-20 rounded-full border border-blue-500/40 flex items-center justify-center text-5xl mx-auto mb-4 text-blue-500">
           👤
         </div>
   
@@ -150,12 +176,21 @@ export default function LoginPage() {
             className="w-full h-15 rounded-2xl bg-[#111c31] border border-slate-700 px-6 text-2x1 outline-none"
           />
   
-          <button
-            onClick={ingresar}
-            className="w-full h-13 rounded-2xl bg-blue-600 hover:bg-blue-700 text-xl font-bold transition"
-          >
-            Ingresar / Registrarme
-          </button>
+  <div className="flex gap-3">
+  <button
+    onClick={() => setMostrarRegistro(true)}
+    className="flex-1 h-13 rounded-2xl bg-blue-600 hover:bg-blue-700 text-xl font-bold transition"
+  >
+    Ingresar
+  </button>
+
+  <button
+   onClick={() => setMostrarRegistro(true)}
+    className="flex-1 h-13 rounded-2xl bg-slate-700 hover:bg-slate-600 text-xl font-bold transition"
+  >
+    Registrarme
+  </button>
+</div>
   
         </div>
   
@@ -165,10 +200,10 @@ export default function LoginPage() {
 </div>
   
       {/* CARDS ABAJO */}
-<div className="absolute bottom-3 p-2 h-24 left-10 flex gap-4">
+      <div className="relative md:absolute md:bottom-3 md:left-10 mt-8 grid grid-cols-2 md:flex gap-4 pb-8">
 
 {/* CARD 1 */}
-<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-2 py-4 w-[290px] flex items-center gap-4">
+<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-3 py-4 w-full md:w-[290px] flex flex-col md:flex-row items-center text-center md:text-left gap-3 md:gap-4">
 
   <div className="text-2xl">
     🎓
@@ -189,7 +224,7 @@ export default function LoginPage() {
 </div>
 
 {/* CARD 2 */}
-<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-2 py-2 w-[290px] flex items-center gap-4">
+<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-3 py-4 w-full md:w-[290px] flex flex-col md:flex-row items-center text-center md:text-left gap-3 md:gap-4">
 
   <div className="text-2xl">
     📊
@@ -210,7 +245,7 @@ export default function LoginPage() {
 </div>
 
 {/* CARD 3 */}
-<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-2 py-4 w-[290px] flex items-center gap-4">
+<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-3 py-4 w-full md:w-[290px] flex flex-col md:flex-row items-center text-center md:text-left gap-3 md:gap-4">
 
   <div className="text-2xl">
     🧠
@@ -231,7 +266,7 @@ export default function LoginPage() {
 </div>
 
 {/* CARD 4 */}
-<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-2 py-4 w-[290px] flex items-center gap-4">
+<div className="bg-[#081120]/90 border border-slate-800 rounded-3xl px-3 py-4 w-full md:w-[290px] flex flex-col md:flex-row items-center text-center md:text-left gap-3 md:gap-4">
 
   <div className="text-2xl">
     ❌
@@ -252,7 +287,66 @@ export default function LoginPage() {
 </div>
 
 </div>
-  
+{mostrarRegistro && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div className="bg-[#081120] border border-blue-500/30 rounded-3xl p-8 w-full max-w-md text-white shadow-2xl">
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        Crear cuenta
+      </h2>
+
+      <div className="space-y-4">
+        <input
+          type="text"
+          placeholder="Nombre completo"
+          value={nombreRegistro}
+          onChange={(e) => setNombreRegistro(e.target.value)}
+          className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+        />
+
+        <input
+          type="email"
+          placeholder="Correo"
+          value={correoRegistro}
+          onChange={(e) => setCorreoRegistro(e.target.value)}
+          className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+        />
+
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={passwordRegistro}
+          onChange={(e) => setPasswordRegistro(e.target.value)}
+          className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+        />
+
+        <button
+          onClick={() => {
+            localStorage.setItem(
+              "usuarioActual",
+              JSON.stringify({
+                nombre: nombreRegistro,
+                correo: correoRegistro,
+                password: passwordRegistro,
+              })
+            );
+
+            setMostrarRegistro(false);
+          }}
+          className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold"
+        >
+          Crear cuenta
+        </button>
+
+        <button
+          onClick={() => setMostrarRegistro(false)}
+          className="w-full bg-slate-700 hover:bg-slate-600 py-3 rounded-xl font-bold"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </main>
   );
 }
