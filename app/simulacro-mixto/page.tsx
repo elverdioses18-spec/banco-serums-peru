@@ -3,13 +3,16 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
-
+import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import { preguntas } from "@/data/preguntas";
 import { preguntasGestion } from "@/data/gestion";
 import { preguntasCuidadoIntegral } from "@/data/cuidadoIntegralData";
 import { preguntasInvestigacion } from "@/data/investigacionData";
 import { preguntasEtica } from "@/data/eticaData";
+
+import { guardarFalladas } from "../../lib/falladas";
+import { guardarHistorialExamen } from "@/lib/historial";
 
 export default function SimulacroMixtoPage(){
   
@@ -33,12 +36,75 @@ export default function SimulacroMixtoPage(){
             .slice(0, cantidadElegida)
         );
       }, []);
+      useEffect(() => {
+
+        const temporizadorGuardado =
+          localStorage.getItem("mostrarTemporizador");
+      
+        if (temporizadorGuardado !== null) {
+      
+          setMostrarTemporizador(
+            JSON.parse(temporizadorGuardado)
+          );
+      
+        }
+      
+      }, []);
       
   const [respuestas, setRespuestas] = useState<{ [key: number]: number }>({});
   const [finalizado, setFinalizado] = useState(false);
   const [revision, setRevision] = useState<number | null>(null);
   const [segundos, setSegundos] = useState(0);
+  const [mostrarTemporizador, setMostrarTemporizador] = useState(true);
+  const [bloqueoAcceso, setBloqueoAcceso] = useState("");
+  useEffect(() => {
+    const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
+    const preguntasRespondidas = Number(
+      localStorage.getItem("preguntasUsadasGratis") || "0"
+    );
+  
+    const premiumGuardado =
+      localStorage.getItem("premium") === "true";
+  
+    if (!usuarioRegistrado) {
+      setBloqueoAcceso(
+        "Debes registrarte para acceder a tus 20 preguntas gratis."
+      );
+      return;
+    }
+  
+    if (!premiumGuardado && preguntasRespondidas >= 20) {
+      setBloqueoAcceso(
+        "Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando."
+      );
+      return;
+    }
+  }, []);
+  useEffect(() => {
+    const usuarioRegistrado = localStorage.getItem("usuarioActual");
+  
+    const preguntasRespondidas = Number(
+      localStorage.getItem("preguntasUsadasGratis") || "0"
+    );
+  
+    const premiumGuardado =
+      localStorage.getItem("premium") === "true";
+  
+    if (!usuarioRegistrado) {
+      setBloqueoAcceso(
+        "Debes registrarte para acceder a tus 20 preguntas gratis."
+      );
+      return;
+    }
+  
+    if (!premiumGuardado && preguntasRespondidas >= 10) {
+      setBloqueoAcceso(
+        "Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando."
+      );
+      return;
+    }
+  }, []);
   useEffect(() => {
     if (finalizado) return;
   
@@ -55,14 +121,19 @@ export default function SimulacroMixtoPage(){
   const tiempoFormateado = `${minutos.toString().padStart(2, "0")}:${segundosRestantes
     .toString()
     .padStart(2, "0")}`;
-  const responder = (numeroPregunta: number, alternativa: number) => {
-    if (finalizado) return;
-
-    setRespuestas({
-      ...respuestas,
-      [numeroPregunta]: alternativa,
-    });
-  };
+    const responder = (numeroPregunta: number, alternativa: number) => {
+      if (finalizado) return;
+    
+      if (respuestas[numeroPregunta] === undefined) {
+        const usadas = Number(localStorage.getItem("preguntasUsadasGratis") || "0");
+        localStorage.setItem("preguntasUsadasGratis", String(usadas + 1));
+      }
+    
+      setRespuestas({
+        ...respuestas,
+        [numeroPregunta]: alternativa,
+      });
+    };
 
   const totalRespondidas = Object.keys(respuestas).length;
 
@@ -124,12 +195,13 @@ export default function SimulacroMixtoPage(){
       </main>
     );
   }
-
+  const correctas = Object.keys(respuestas).filter(
+    (key) =>
+      respuestas[Number(key)] ===
+      preguntasTema[Number(key)].correcta
+  ).length;
   if (finalizado) {
-    const correctas = preguntasTema.filter(
-      (pregunta, index) => respuestas[index] === pregunta.correcta
-    ).length;
-
+  
     return (
       <main className="min-h-screen bg-slate-900 text-white p-6 flex items-center justify-center">
         <div className="bg-slate-800 p-8 rounded-2xl max-w-3xl w-full">
@@ -138,7 +210,27 @@ export default function SimulacroMixtoPage(){
           <p className="text-xl mb-6">
             Puntaje: {correctas} / {preguntasTema.length}
           </p>
+          <div className="flex gap-4 mt-6 mb-6">
+  <Link href="/gestion/configurar" className="bg-slate-600 hover:bg-slate-500 text-white px-5 py-3 rounded-xl font-bold">
+    ⬅️ Volver
+  </Link>
 
+  <button
+    onClick={() => {
+      setRespuestas({});
+      setFinalizado(false);
+      setRevision(null);
+      setSegundos(0);
+    }}
+    className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl font-bold"
+  >
+    🔄 Repetir examen
+  </button>
+
+  <Link href="/simulacro-mixto/configurar" className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-3 rounded-xl font-bold">
+    🎲 Nuevo examen
+  </Link>
+</div>
           <div className="flex flex-col gap-3">
             {preguntasTema.map((pregunta: any, index: number) => {
               const esCorrecta = respuestas[index] === pregunta.correcta;
@@ -163,7 +255,50 @@ export default function SimulacroMixtoPage(){
       </main>
     );
   }
-
+  if (bloqueoAcceso) {
+    return (
+      <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
+        <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center">
+          <h1 className="text-3xl font-bold mb-4">
+            Acceso bloqueado
+          </h1>
+  
+          <p className="text-lg mb-6">
+            {bloqueoAcceso}
+          </p>
+  
+          <a
+            href="/"
+            className="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </main>
+    );
+  }
+  if (bloqueoAcceso) {
+    return (
+      <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
+        <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center">
+          <h1 className="text-3xl font-bold mb-4">
+            Acceso bloqueado
+          </h1>
+  
+          <p className="text-lg mb-6">
+            {bloqueoAcceso}
+          </p>
+  
+          <a
+            href="/"
+            className="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </main>
+    );
+  }
   return (
     <main className="min-h-screen bg-[#edf3f8] flex">
   <Sidebar />
@@ -173,9 +308,11 @@ export default function SimulacroMixtoPage(){
         <h1 className="text-4xl font-bold mb-2">
           Mini simulacro: Mixto
         </h1>
-        <div className="sticky top-6 ml-auto mr-0 w-fit bg-blue-600 text-white px-5 py-3 rounded-2xl text-2xl font-bold mb-6 z-50 shadow-lg">
-  ⏱️ {tiempoFormateado}
-</div>
+        {mostrarTemporizador && (
+  <div className="sticky top-6 ml-auto mr-0 w-fit bg-blue-600 text-white px-5 py-3 rounded-2xl text-2xl font-bold mb-6">
+    ⏱ {tiempoFormateado}
+  </div>
+)}
         <p className="text-slate-300 mb-8">
           Respondidas: {totalRespondidas} / {preguntasTema.length}
         </p>
@@ -208,14 +345,19 @@ export default function SimulacroMixtoPage(){
 
         <button
           onClick={() => {
+            
+            guardarFalladas(preguntasTema, respuestas);
+
+            guardarHistorialExamen({
+              tema: "Simulacro Mixto",
+              totalPreguntas: preguntasTema.length,
+              correctas,
+            });
+            
+        
             setFinalizado(true);
           
-            const correctas = Object.keys(respuestas).filter(
-              (key) =>
-                respuestas[Number(key)] ===
-                preguntasTema[Number(key)].correcta
-            ).length;
-          
+                     
             const precision = Math.round(
               (correctas / preguntasTema.length) * 100
             );
@@ -243,6 +385,11 @@ export default function SimulacroMixtoPage(){
               porcentajeAvance,
               ultimaPractica: new Date().toLocaleString(),
               tiempo: tiempoFormateado,
+              mejorResultado: Math.max(
+                progresoAnterior.mejorResultado || 0,
+                correctas
+              ),
+              mejorTotal: preguntasTema.length,
             };
           
             localStorage.setItem(

@@ -3,22 +3,87 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import { preguntasCuidadoIntegral } from "@/data/cuidadoIntegralData";
+import { guardarFalladas } from "@/lib/falladas";
+import { guardarHistorialExamen } from "@/lib/historial";
 
 export default function CuidadoIntegralPage() {
   const searchParams = useSearchParams();
 
 const cantidad = Number(searchParams.get("cantidad")) || 20;
-const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
+const [preguntasTema, setPreguntasTema] = useState<any[]>([]);
+
+useEffect(() => {
+  setPreguntasTema(
+    [...preguntasCuidadoIntegral]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, cantidad)
+  );
+}, [cantidad]);
 
   const [respuestas, setRespuestas] = useState<{ [key: number]: number }>({});
   const [finalizado, setFinalizado] = useState(false);
   const [revision, setRevision] = useState<number | null>(null);
   const [segundos, setSegundos] = useState(0);
-
+  const [mostrarTemporizador, setMostrarTemporizador] = useState(true);
+  const [bloqueoAcceso, setBloqueoAcceso] = useState("");
   useEffect(() => {
+    const usuarioRegistrado = localStorage.getItem("usuarioActual");
+  
+    const preguntasRespondidas = Number(
+      localStorage.getItem("preguntasUsadasGratis") || "0"
+    );
+  
+    const premiumGuardado =
+      localStorage.getItem("premium") === "true";
+  
+    if (!usuarioRegistrado) {
+      setBloqueoAcceso(
+        "Debes registrarte para acceder a tus 20 preguntas gratis."
+      );
+      return;
+    }
+  
+    if (!premiumGuardado && preguntasRespondidas >= 20) {
+      setBloqueoAcceso(
+        "Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando."
+      );
+      return;
+    }
+  }, []);
+  useEffect(() => {
+    const usuarioRegistrado = localStorage.getItem("usuarioActual");
+  
+    const preguntasRespondidas = Number(
+      localStorage.getItem("preguntasUsadasGratis") || "0"
+    );
+  
+    const premiumGuardado =
+      localStorage.getItem("premium") === "true";
+  
+    if (!usuarioRegistrado) {
+      setBloqueoAcceso(
+        "Debes registrarte para acceder a tus 20 preguntas gratis."
+      );
+      return;
+    }
+  
+    if (!premiumGuardado && preguntasRespondidas >= 10) {
+      setBloqueoAcceso(
+        "Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando."
+      );
+      return;
+    }
+  }, []);
+  useEffect(() => {
+    const correctas = Object.keys(respuestas).filter(
+      (key) =>
+        respuestas[Number(key)] ===
+        preguntasTema[Number(key)].correcta
+    ).length;
     if (finalizado) return;
   
     const intervalo = setInterval(() => {
@@ -27,21 +92,68 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
   
     return () => clearInterval(intervalo);
   }, [finalizado]);
+  useEffect(() => {
+
+    const temporizadorGuardado =
+      localStorage.getItem("mostrarTemporizador");
   
+    if (temporizadorGuardado !== null) {
+  
+      setMostrarTemporizador(
+        JSON.parse(temporizadorGuardado)
+      );
+  
+    }
+  
+  }, []);
   const minutos = Math.floor(segundos / 60);
   const segundosRestantes = segundos % 60;
   
   const tiempoFormateado = `${minutos.toString().padStart(2, "0")}:${segundosRestantes
     .toString()
     .padStart(2, "0")}`;
-  const responder = (numeroPregunta: number, alternativa: number) => {
-    if (finalizado) return;
+    const responder = (numeroPregunta: number, alternativa: number) => {
+      if (finalizado) return;
+    
+      if (respuestas[numeroPregunta] === undefined) {
+        const usadas = Number(localStorage.getItem("preguntasUsadasGratis") || "0");
+        localStorage.setItem("preguntasUsadasGratis", String(usadas + 1));
+      }
+    
+      const preguntaActual = preguntasTema[numeroPregunta];
+const temaPregunta = preguntaActual.tema || "Sin tema";
+const esCorrecta = alternativa === preguntaActual.correcta;
 
-    setRespuestas({
-      ...respuestas,
-      [numeroPregunta]: alternativa,
-    });
+const estadisticasTema =
+  typeof window !== "undefined"
+    ? JSON.parse(
+        localStorage.getItem("estadisticasPorTema") || "{}"
+      )
+    : {};
+
+if (!estadisticasTema[temaPregunta]) {
+  estadisticasTema[temaPregunta] = {
+    correctas: 0,
+    incorrectas: 0,
   };
+}
+
+if (esCorrecta) {
+  estadisticasTema[temaPregunta].correctas += 1;
+} else {
+  estadisticasTema[temaPregunta].incorrectas += 1;
+}
+
+localStorage.setItem(
+  "estadisticasPorTema",
+  JSON.stringify(estadisticasTema)
+);
+
+setRespuestas({
+  ...respuestas,
+  [numeroPregunta]: alternativa,
+});
+    };
 
   const totalRespondidas = Object.keys(respuestas).length;
 
@@ -66,7 +178,7 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
           </h2>
 
           <div className="flex flex-col gap-3 mb-6">
-            {pregunta.opciones.map((opcion, index) => (
+            {pregunta.opciones.map((opcion: string, index: number) => (
               <div
                 key={index}
                 className={`p-4 rounded-xl ${
@@ -103,7 +215,10 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
       </main>
     );
   }
-
+  const correctas = Object.keys(respuestas).filter(
+    (key) =>
+      respuestas[Number(key)] === preguntasTema[Number(key)].correcta
+  ).length;
   if (finalizado) {
     const correctas = Object.keys(respuestas).filter(
       (key) =>
@@ -119,7 +234,27 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
           <p className="text-xl mb-6">
             Puntaje: {correctas} / {preguntasTema.length}
           </p>
+          <div className="flex gap-4 mt-6 mb-6">
+  <Link href="/cuidado-integral/configurar" className="bg-slate-600 hover:bg-slate-500 text-white px-5 py-3 rounded-xl font-bold">
+    ⬅️ Volver
+  </Link>
 
+  <button
+    onClick={() => {
+      setRespuestas({});
+      setFinalizado(false);
+      setRevision(null);
+      setSegundos(0);
+    }}
+    className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl font-bold"
+  >
+    🔄 Repetir examen
+  </button>
+
+  <Link href="/gestion/configurar" className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-3 rounded-xl font-bold">
+    🎲 Nuevo examen
+  </Link>
+</div>
           <div className="flex flex-col gap-3">
             {preguntasTema.map((pregunta, index) => {
               const esCorrecta = respuestas[index] === pregunta.correcta;
@@ -144,7 +279,50 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
       </main>
     );
   }
-
+  if (bloqueoAcceso) {
+    return (
+      <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
+        <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center">
+          <h1 className="text-3xl font-bold mb-4">
+            Acceso bloqueado
+          </h1>
+  
+          <p className="text-lg mb-6">
+            {bloqueoAcceso}
+          </p>
+  
+          <a
+            href="/"
+            className="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </main>
+    );
+  }
+  if (bloqueoAcceso) {
+    return (
+      <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
+        <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center">
+          <h1 className="text-3xl font-bold mb-4">
+            Acceso bloqueado
+          </h1>
+  
+          <p className="text-lg mb-6">
+            {bloqueoAcceso}
+          </p>
+  
+          <a
+            href="/"
+            className="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </main>
+    );
+  }
   return (
     <main className="min-h-screen bg-[#edf3f8] flex">
   <Sidebar />
@@ -154,9 +332,11 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
         <h1 className="text-4xl font-bold mb-2">
           Mini simulacro: Cuidado Integral 
         </h1>
-        <div className="sticky top-6 ml-auto mr-0 w-fit bg-blue-600 text-white px-5 py-3 rounded-2xl text-2xl font-bold mb-6 z-50 shadow-lg">
-  ⏱️ {tiempoFormateado}
-</div>
+        {mostrarTemporizador && (
+  <div className="sticky top-6 ml-auto mr-0 w-fit bg-blue-600 text-white px-5 py-3 rounded-2xl text-2xl font-bold">
+    ⏱ {tiempoFormateado}
+  </div>
+)}
         <p className="text-slate-300 mb-8">
           Respondidas: {totalRespondidas} / {preguntasTema.length}
         </p>
@@ -169,7 +349,7 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
               </h2>
 
               <div className="flex flex-col gap-3">
-                {pregunta.opciones.map((opcion, opcionIndex) => (
+                {pregunta.opciones.map((opcion: string, opcionIndex: number) => (
                   <button
                     key={opcionIndex}
                     onClick={() => responder(index, opcionIndex)}
@@ -189,13 +369,15 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
 
         <button
   onClick={() => {
+    guardarFalladas(preguntasTema, respuestas);
+    guardarHistorialExamen({
+      tema: "Cuidado Integral",
+      totalPreguntas: preguntasTema.length,
+      correctas,
+    });
     setFinalizado(true);
 
-    const correctas = Object.keys(respuestas).filter(
-      (key) =>
-        respuestas[Number(key)] === preguntasTema[Number(key)].correcta
-    ).length;
-
+   
     const precision = Math.round((correctas / preguntasTema.length) * 100);
 
     const progresoAnterior = JSON.parse(
@@ -221,6 +403,11 @@ const preguntasTema = preguntasCuidadoIntegral.slice(0, cantidad);
       porcentajeAvance,
       ultimaPractica: new Date().toLocaleString(),
       tiempo: tiempoFormateado,
+      mejorResultado: Math.max(
+        progresoAnterior.mejorResultado || 0,
+        correctas
+      ),
+      mejorTotal: preguntasTema.length,
     };
 
     localStorage.setItem("progresoCuidado", JSON.stringify(progreso));
