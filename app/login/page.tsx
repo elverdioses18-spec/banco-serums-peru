@@ -111,7 +111,7 @@ export default function LoginPage() {
   
       {/* ESTADISTICAS */}
       <div
-  className="hidden md:block absolute top-92 left-[200px]"
+  className="hidden md:block absolute top-92 left-[310px]"
   style={{
     transform: "perspective(2000px) rotateY(30deg) rotateX(4deg)",
   }}
@@ -127,7 +127,7 @@ export default function LoginPage() {
   
       {/* REFORZAMIENTO */}
       <div
-  className="hidden md:block absolute top-90 left-[470px]"
+  className="hidden md:block absolute top-90 left-[580px]"
   style={{
     transform: "perspective(2000px) rotateY(-20deg) rotateX(4deg)",
   }}

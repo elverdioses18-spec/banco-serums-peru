@@ -21,14 +21,15 @@ import {
 const temas = [
   { nombre: "Salud Pública", desc: "Salud pública y epidemiología.", preguntas: `${preguntasSaludPublica.saludPublica.length} preguntas`, color: "bg-blue-600", icono: Users, ruta: "/salud-publica/configurar" },
   { nombre: "Gestión", desc: "Administración en salud y normativas del sector.", preguntas: `${preguntasGestion.length} preguntas`, color: "bg-green-600", icono: Building2, ruta: "/gestion/configurar" },
-  { nombre: "Cuidado Integral", desc: "Atención integral, cursos de vida y casos clínicos.", preguntas: `${preguntasCuidadoIntegral.length} preguntas`, color: "bg-yellow-500", icono: Heart, ruta: "/cuidado-integral/configurar" },
-  { nombre: "Investigación", desc: "Metodología de investigación y bioestadística.", preguntas: `${preguntasInvestigacion.length} preguntas`, color: "bg-purple-600", icono: FlaskConical, ruta: "/investigacion/configurar" },
   { nombre: "Ética", desc: "Bioética, ética médica y normativa legal.", preguntas: `${preguntasEtica.length} preguntas`, color: "bg-red-500", icono: Scale, ruta: "/etica/configurar" },
+  { nombre: "Investigación", desc: "Metodología de investigación y bioestadística.", preguntas: `${preguntasInvestigacion.length} preguntas`, color: "bg-purple-600", icono: FlaskConical, ruta: "/investigacion/configurar" },
+  { nombre: "Cuidado Integral", desc: "Atención integral, cursos de vida y casos clínicos.", preguntas: `${preguntasCuidadoIntegral.length} preguntas`, color: "bg-yellow-500", icono: Heart, ruta: "/cuidado-integral/configurar" },
   { nombre: "Simulacro Mixto", desc: "Simulacro completo con preguntas de todos los temas.", preguntas: `${preguntasSaludPublica.saludPublica.length + preguntasGestion.length + preguntasCuidadoIntegral.length + preguntasInvestigacion.length + preguntasEtica.length} preguntas`, color: "bg-orange-500", icono: Flame, ruta: "/simulacro-mixto/configurar" },
 ];
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [metaDiaria, setMetaDiaria] = useState<number>(50);
 const [preguntasHoy, setPreguntasHoy] = useState(0);
 const router = useRouter();
@@ -207,6 +208,218 @@ const rachaEstudio =
     : null;
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-[#06194a] overflow-x-hidden">
+
+<div className="block md:hidden fixed top-0 left-0 right-0 bottom-0 z-[9999] overflow-y-auto bg-gradient-to-br from-slate-50 to-blue-50">
+  <div className="min-h-screen text-[#06194a] p-4">
+  <input id="menu-mobile" type="checkbox" className="peer hidden" />
+
+    <div className="bg-[#07337a] text-white rounded-2xl p-4 mb-4 flex items-center gap-4">
+    <label
+  htmlFor="menu-mobile"
+  className="relative z-[10050] text-2xl bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer select-none"
+>
+  ☰
+</label>
+
+      <div>
+        <h1 className="text-2xl font-bold">Ruta SERUMS</h1>
+        <p className="text-sm text-blue-100">Prepárate, práctica y aprueba</p>
+      </div>
+      
+    </div>
+    <div className="fixed inset-0 z-[10000] bg-black/50 opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300">
+    <div className="w-[280px] h-full bg-[#07337a] text-white p-5 pt-24 shadow-2xl translate-x-0 transition-transform duration-300 ease-out">
+    <div className="flex items-center justify-between mb-6">
+      <div>
+        <h2 className="text-2xl font-bold">Ruta SERUMS</h2>
+        <p className="text-sm text-blue-100">Menú principal</p>
+      </div>
+
+      <label
+        htmlFor="menu-mobile"
+        className="text-4xl font-bold cursor-pointer"
+      >
+        ×
+      </label>
+    </div>
+
+    <div className="space-y-4 text-lg font-bold">
+      <button className="block">🏠 Inicio</button>
+      <button onClick={() => router.push("/salud-publica/configurar")} className="block">👥 Salud Pública</button>
+      <button onClick={() => router.push("/gestion/configurar")} className="block">🏢 Gestión</button>
+      <button onClick={() => router.push("/cuidado-integral/configurar")} className="block">💛 Cuidado Integral</button>
+      <button onClick={() => router.push("/investigacion/configurar")} className="block">🧪 Investigación</button>
+      <button onClick={() => router.push("/etica/configurar")} className="block">⚖️ Ética</button>
+      <button onClick={() => router.push("/simulacro-mixto/configurar")} className="block">🔥 Simulacro Mixto</button>
+    </div>
+
+    <div className="border-t border-white/20 my-5"></div>
+
+    <div className="space-y-4 text-lg font-bold">
+      <button onClick={() => router.push("/estadisticas")} className="block">📊 Estadísticas</button>
+      <button onClick={() => router.push("/falladas")} className="block">❌ Preguntas falladas</button>
+      <button onClick={() => router.push("/reforzamiento")} className="block">🧠 Reforzamiento</button>
+      <button onClick={() => router.push("/historial")} className="block">🕘 Historial</button>
+      <button onClick={() => router.push("/ajustes")} className="block">⚙️ Ajustes</button>
+    </div>
+  </div>
+</div>
+    <div className="bg-white rounded-3xl shadow-md -p-1 mb-6">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-extrabold text-[#06194a] leading-tight">
+            ¡Bienvenido a Ruta SERUMS!
+          </h2>
+
+          <p className="text-sm text-slate-600 mt-1 leading-relaxed">
+            Plataforma de simulacros y banco de preguntas para el examen SERUMS.
+          </p>
+        </div>
+
+        <img
+          src="/logo.png.png"
+          alt="Ruta SERUMS"
+          className="w-38 rounded-xl"
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-3 mt-5">
+        <div className="border border-slate-300 rounded-2xl p-1 text-center">
+        <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-xl mx-auto">
+  ❔
+</div>
+          <p className="text-xs font-bold mt-1">Total</p>
+          <p className="text-xl font-extrabold">0</p>
+        </div>
+
+        <div className="border border-slate-300 rounded-2xl p-1 text-center">
+        <div className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center text-2xl mx-auto">
+  🎯
+</div>
+          <p className="text-xs font-bold mt-1">Precisión</p>
+          <p className="text-xl font-extrabold">0%</p>
+        </div>
+
+        <div className="border border-slate-300 rounded-2xl p-1 text-center">
+        <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-2xl mx-auto">
+  📅
+</div>
+          <p className="text-xs font-bold mt-1">Racha</p>
+          <p className="text-xl font-extrabold">0 días</p>
+          
+        </div>
+      </div>
+    </div>
+    <h2 className="text-xl font-extrabold mb-3">
+  Elige un tema
+</h2>
+
+<div className="grid grid-cols-2 gap-3 mb-6">
+  
+  {temas.map((tema, index) => (
+    <div
+    key={index}
+    className="bg-white rounded-2xl p-3 shadow-md"
+  >
+    <div className="flex items-center gap-3 mb-3">
+      <div
+        className={`w-9 h-9 rounded-full ${tema.color} flex items-center justify-center text-white flex-shrink-0`}
+      >
+        <tema.icono size={20} />
+      </div>
+  
+      <div className="min-w-0">
+        <h3 className="font-bold text-[13px] leading-tight">
+          {tema.nombre}
+        </h3>
+  
+        <p className="text-[11px] text-slate-500 mt-1">
+          {tema.preguntas}
+        </p>
+      </div>
+    </div>
+  
+    <button
+      onClick={() => router.push(tema.ruta)}
+      className={`${tema.color} text-white w-full py-2 rounded-xl font-bold text-[12px]`}
+    >
+      Comenzar
+    </button>
+    
+  </div>
+  
+  ))}
+</div>
+  </div>
+  <div className="bg-white rounded-2xl shadow-md p-3 mb-6 border border-blue-500">
+  <div className="grid grid-cols-3 gap-3 items-center">
+
+    <div>
+      <h2 className="text-sm font-extrabold text-blue-600 mb-2">
+        Salud Pública
+      </h2>
+
+      <div className="flex items-center gap-1">
+        <div className="text-4xl">🏆</div>
+
+        <p className="text-[10px] text-slate-700 leading-tight">
+          Pon a prueba tus conocimientos en salud y normativas
+        </p>
+      </div>
+
+      <div className="bg-blue-100 rounded-xl text-center text-blue-600 text-xs mt-3 py-1">
+        980 preguntas totales
+      </div>
+    </div>
+
+    <div className="text-center border-x border-slate-300 px-1">
+      <h2 className="text-sm font-extrabold mb-2">
+        Avance general
+      </h2>
+
+      <div className="w-24 h-24 rounded-full border-[12px] border-blue-100 flex items-center justify-center mx-auto">
+        <span className="text-xl font-extrabold">
+          {progresoPopup?.porcentajeAvance || 0}%
+        </span>
+      </div>
+    </div>
+
+    <div className="text-center space-y-8">
+      <div>
+        <p className="text-sm font-bold">❔ Preguntas correctas</p>
+        <p className="text-x1 font-extrabold">
+          {progresoPopup?.mejorResultado || 0}/{progresoPopup?.mejorTotal || 20}
+        </p>
+      </div>
+
+      <div>
+        <p className="text-sm font-bold">🎯 Precisión</p>
+        <p className="text-x1 font-extrabold">
+          {progresoPopup?.precision || 0}%
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div className="grid grid-cols-2 gap-3 mt-3">
+    <div className="bg-blue-50 rounded-2xl p-3">
+      <p className="text-sm font-bold">Tiempo promedio</p>
+      <p className="text-sm font-extrabold">
+        {progresoPopup?.tiempo || "--:--"}
+      </p>
+    </div>
+
+    <div className="bg-blue-50 rounded-2xl p-3">
+      <p className="text-sm font-bold">Última práctica</p>
+      <p className="text-sm font-extrabold">
+        {progresoPopup?.ultimaPractica || "Sin prácticas"}
+      </p>
+    </div>
+  </div>
+</div>
+</div>
+  <div className="hidden md:block">
       <div className="flex min-h-screen">
 
         {/* SIDEBAR */}
@@ -916,9 +1129,11 @@ if (!usuarioRegistrado) {
         Comprar por WhatsApp
       </a>
 
-    </div>
-  </div>
+      </div>
+</div>
 )}
+</div>
+
 </main>
 );
 }
