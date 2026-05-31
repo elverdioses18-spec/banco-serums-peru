@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
@@ -10,7 +10,7 @@ import { preguntasEtica } from "@/data/eticaData";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 
-export default function EticaPage() {
+function EticaContent() {
   const searchParams = useSearchParams();
 
 const cantidad = Number(searchParams.get("cantidad")) || 20;
@@ -426,5 +426,12 @@ useEffect(() => {
       </div>
       </div>
     </main>
+  );
+}
+export default function EticaPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <EticaContent />
+    </Suspense>
   );
 }
