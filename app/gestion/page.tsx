@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
@@ -10,7 +10,7 @@ import { preguntasGestion } from "@/data/gestion";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 
-export default function GestionPage() {
+function GestionContent() {
   const searchParams = useSearchParams();
 
 const cantidad = Number(searchParams.get("cantidad")) || 20;
@@ -399,5 +399,12 @@ useEffect(() => {
       </div>
       </div>
     </main>
+  );
+}
+export default function GestionPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <GestionContent />
+    </Suspense>
   );
 }
