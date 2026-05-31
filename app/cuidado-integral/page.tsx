@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
@@ -10,7 +10,7 @@ import { preguntasCuidadoIntegral } from "@/data/cuidadoIntegralData";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 
-export default function CuidadoIntegralPage() {
+function CuidadoIntegralContent() {
   const searchParams = useSearchParams();
 
 const cantidad = Number(searchParams.get("cantidad")) || 20;
@@ -424,5 +424,12 @@ setRespuestas({
       </div>
       </div>
     </main>
+  );
+}
+export default function CuidadoIntegralPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <CuidadoIntegralContent />
+    </Suspense>
   );
 }
