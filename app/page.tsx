@@ -37,6 +37,8 @@ const [mostrarPremium, setMostrarPremium] = useState(false);
 const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
 const [popupTema, setPopupTema] = useState<any>(null);
 const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
+const [temaMovilActivo, setTemaMovilActivo] = useState<any>(null);
+
 
 
 useEffect(() => {
@@ -227,8 +229,8 @@ const rachaEstudio =
       </div>
       
     </div>
-    <div className="fixed inset-0 z-[10000] bg-black/50 opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300">
-    <div className="w-[280px] h-full bg-[#07337a] text-white p-5 pt-24 shadow-2xl translate-x-0 transition-transform duration-300 ease-out">
+    <div className="fixed inset-0 z-[1000] bg-black/50 opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300">
+    <div className="w-[280px] h-full bg-[#07337a] text-white p-5 pt-24 shadow-2xl overflow-y-auto">
     <div className="flex items-center justify-between mb-6">
       <div>
         <h2 className="text-2xl font-bold">Ruta SERUMS</h2>
@@ -244,23 +246,190 @@ const rachaEstudio =
     </div>
 
     <div className="space-y-4 text-lg font-bold">
-      <button className="block">🏠 Inicio</button>
-      <button onClick={() => router.push("/salud-publica/configurar")} className="block">👥 Salud Pública</button>
-      <button onClick={() => router.push("/gestion/configurar")} className="block">🏢 Gestión</button>
-      <button onClick={() => router.push("/cuidado-integral/configurar")} className="block">💛 Cuidado Integral</button>
-      <button onClick={() => router.push("/investigacion/configurar")} className="block">🧪 Investigación</button>
-      <button onClick={() => router.push("/etica/configurar")} className="block">⚖️ Ética</button>
-      <button onClick={() => router.push("/simulacro-mixto/configurar")} className="block">🔥 Simulacro Mixto</button>
+    <Link href="/" className="block">🏠 Inicio</Link>
+    <details className="block">
+  <summary className="cursor-pointer list-none py-2">
+    👥 Salud Pública
+  </summary>
+
+  <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
+    <div className="space-y-2">
+
+      <p>📊 Precisión: 45%</p>
+
+      <div>
+        <div className="flex justify-between">
+          <span>Progreso</span>
+          <span>45%</span>
+        </div>
+
+        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+          <div className="bg-green-400 h-2 rounded-full w-[45%]"></div>
+        </div>
+      </div>
+
+      <p>🔥 Racha: 1 día</p>
+      <p>📝 Resueltas: 20</p>
+      <p>🏆 Mejor resultado: 9/20</p>
+
+    </div>
+  </div>
+</details>
+
+<details className="block">
+  <summary className="cursor-pointer list-none py-2">
+    🏢 Gestión
+  </summary>
+
+  <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
+    <div className="space-y-2">
+
+      <p>📊 Precisión: 45%</p>
+
+      <div>
+        <div className="flex justify-between">
+          <span>Progreso</span>
+          <span>45%</span>
+        </div>
+
+        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+          <div className="bg-green-400 h-2 rounded-full w-[45%]"></div>
+        </div>
+      </div>
+
+      <p>🔥 Racha: 1 día</p>
+      <p>📝 Resueltas: 20</p>
+      <p>🏆 Mejor resultado: 9/20</p>
+
+    </div>
+  </div>
+</details>
+
+<details className="block">
+  <summary className="cursor-pointer list-none py-2">
+    ⚖️ Ética
+  </summary>
+
+  <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
+    <div className="space-y-2">
+
+      <p>📊 Precisión: 45%</p>
+
+      <div>
+        <div className="flex justify-between">
+          <span>Progreso</span>
+          <span>45%</span>
+        </div>
+
+        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+          <div className="bg-purple-400 h-2 rounded-full w-[45%]"></div>
+        </div>
+      </div>
+
+      <p>🔥 Racha: 1 día</p>
+      <p>📝 Resueltas: 20</p>
+      <p>🏆 Mejor resultado: 9/20</p>
+
+    </div>
+  </div>
+</details>
+
+<details className="block">
+  <summary className="cursor-pointer list-none py-2">
+    🧪 Investigación
+  </summary>
+
+  <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
+    <div className="space-y-2">
+
+      <p>📊 Precisión: 45%</p>
+
+      <div>
+        <div className="flex justify-between">
+          <span>Progreso</span>
+          <span>45%</span>
+        </div>
+
+        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+          <div className="bg-orange-400 h-2 rounded-full w-[45%]"></div>
+        </div>
+      </div>
+
+      <p>🔥 Racha: 1 día</p>
+      <p>📝 Resueltas: 20</p>
+      <p>🏆 Mejor resultado: 9/20</p>
+
+    </div>
+  </div>
+</details>
+
+<details className="block">
+  <summary className="cursor-pointer list-none py-2">
+    💛 Cuidado Integral
+  </summary>
+
+  <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
+    <div className="space-y-2">
+
+      <p>📊 Precisión: 45%</p>
+
+      <div>
+        <div className="flex justify-between">
+          <span>Progreso</span>
+          <span>45%</span>
+        </div>
+
+        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+          <div className="bg-red-400 h-2 rounded-full w-[45%]"></div>
+        </div>
+      </div>
+
+      <p>🔥 Racha: 1 día</p>
+      <p>📝 Resueltas: 20</p>
+      <p>🏆 Mejor resultado: 9/20</p>
+
+    </div>
+  </div>
+</details>
+
+<details className="block">
+  <summary className="cursor-pointer list-none py-2">
+    🔥 Simulacro Mixto
+  </summary>
+
+  <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
+    <div className="space-y-2">
+
+      <p>📊 Precisión: 45%</p>
+
+      <div>
+        <div className="flex justify-between">
+          <span>Progreso</span>
+          <span>45%</span>
+        </div>
+
+        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+          <div className="bg-blue-400 h-2 rounded-full w-[45%]"></div>
+        </div>
+      </div>
+
+      <p>🔥 Racha: 1 día</p>
+      <p>📝 Resueltas: 20</p>
+      <p>🏆 Mejor resultado: 9/20</p>
+
+    </div>
+  </div>
+</details>
     </div>
 
     <div className="border-t border-white/20 my-5"></div>
 
     <div className="space-y-4 text-lg font-bold">
-      <button onClick={() => router.push("/estadisticas")} className="block">📊 Estadísticas</button>
-      <button onClick={() => router.push("/falladas")} className="block">❌ Preguntas falladas</button>
-      <button onClick={() => router.push("/reforzamiento")} className="block">🧠 Reforzamiento</button>
-      <button onClick={() => router.push("/historial")} className="block">🕘 Historial</button>
-      <button onClick={() => router.push("/ajustes")} className="block">⚙️ Ajustes</button>
+    <Link href="/estadisticas" className="block">📊 Estadísticas</Link>
+<Link href="/falladas" className="block">❌ Preguntas falladas</Link>
+<Link href="/reforzamiento" className="block">🧠 Reforzamiento</Link>
+<Link href="/historial" className="block">🕘 Historial</Link>
+<Link href="/ajustes" className="block">⚙️ Ajustes</Link>
     </div>
   </div>
 </div>
@@ -317,11 +486,15 @@ const rachaEstudio =
 <div className="grid grid-cols-2 gap-3 mb-6">
   
   {temas.map((tema, index) => (
-    <div
-    key={index}
-    className="bg-white rounded-2xl p-3 shadow-md"
-  >
-    <div className="flex items-center gap-3 mb-3">
+   <div
+   key={index}
+   onClick={() => setTemaMovilActivo(tema)}
+   className="bg-white rounded-2xl p-3 shadow-md cursor-pointer"
+ >
+   <div
+  onClick={() => setTemaMovilActivo(tema)}
+  className="flex items-center gap-3 mb-3 cursor-pointer"
+>
       <div
         className={`w-9 h-9 rounded-full ${tema.color} flex items-center justify-center text-white flex-shrink-0`}
       >
@@ -337,38 +510,64 @@ const rachaEstudio =
           {tema.preguntas}
         </p>
       </div>
-    </div>
+      </div>
   
-    <button
-      onClick={() => router.push(tema.ruta)}
-      className={`${tema.color} text-white w-full py-2 rounded-xl font-bold text-[12px]`}
-    >
-      Comenzar
-    </button>
+    <Link
+  href={tema.ruta}
+  onClick={(e) => e.stopPropagation()}
+  className={`${tema.color} block text-center text-white w-full py-2 rounded-xl font-bold text-[12px]`}
+>
+  Comenzar
+</Link>
     
   </div>
   
   ))}
 </div>
   </div>
+  {popupTema && (
+  <div className="fixed inset-0 z-[] bg-black/50 flex items-center justify-center p-4">
+    <div className="bg-white text-slate-900 rounded-2xl shadow-xl border p-5 w-full max-w-sm">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="font-bold text-lg">
+          {popupTema.nombre}
+        </h3>
+
+        <button
+          onClick={() => setPopupTema(null)}
+          className="text-slate-500 text-2xl"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="space-y-3 text-sm">
+        <p>📊 Precisión: {progresoPopup?.precision || 0}%</p>
+        <p>🔥 Racha: {rachaEstudio} días</p>
+        <p>📝 Resueltas: {progresoPopup?.avance || 0}</p>
+        <p>🏆 Mejor resultado: {progresoPopup?.mejorResultado || 0}/{progresoPopup?.mejorTotal || 20}</p>
+      </div>
+    </div>
+  </div>
+)}
   <div className="bg-white rounded-2xl shadow-md p-3 mb-6 border border-blue-500">
   <div className="grid grid-cols-3 gap-3 items-center">
 
     <div>
       <h2 className="text-sm font-extrabold text-blue-600 mb-2">
-        Salud Pública
+      {(temaMovilActivo ?? temas[0]).nombre}
       </h2>
 
       <div className="flex items-center gap-1">
         <div className="text-4xl">🏆</div>
 
         <p className="text-[10px] text-slate-700 leading-tight">
-          Pon a prueba tus conocimientos en salud y normativas
+        {(temaMovilActivo ?? temas[0]).desc}
         </p>
       </div>
 
       <div className="bg-blue-100 rounded-xl text-center text-blue-600 text-xs mt-3 py-1">
-        980 preguntas totales
+      {(temaMovilActivo ?? temas[0]).preguntas}
       </div>
     </div>
 

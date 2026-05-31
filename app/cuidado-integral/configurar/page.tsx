@@ -17,6 +17,7 @@ export default function ConfigurarSimulacro() {
   }, []);
   return (
     <main className="min-h-screen bg-[#edf3f8] flex items-center justify-center p-6">
+      <input id="premium-modal" type="checkbox" className="peer hidden" />
       <div className="bg-white rounded-3xl shadow-sm p-10 max-w-2xl w-full text-center">
         <h1 className="text-5xl font-bold text-blue-950 mb-4">
         Cuidado Integral
@@ -27,23 +28,23 @@ export default function ConfigurarSimulacro() {
         </p>
 
         <div className="grid grid-cols-3 gap-5 mb-10">
-          <Link href="/cuidado-integral?cantidad=20" className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl py-8 text-3xl font-bold transition hover:scale-105">
+          <Link href="/cuidado-integral?cantidad=20" className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold transition hover:scale-105">
             20
           </Link>
 
-          <button
-  onClick={() => setMostrarPremium(true)}
-  className="bg-slate-400 text-white rounded-2xl py-8 text-3xl font-bold cursor-not-allowed"
+          <label
+  htmlFor="premium-modal"
+  className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
 >
   🔒 35
-</button>
+</label>
 
-<button
-  onClick={() => setMostrarPremium(true)}
-  className="bg-slate-400 text-white rounded-2xl py-8 text-3xl font-bold cursor-not-allowed"
+<label
+  htmlFor="premium-modal"
+  className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
 >
   🔒 50
-</button>
+</label>
 </div>
 <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
   <button
@@ -62,8 +63,7 @@ export default function ConfigurarSimulacro() {
 </div>
 
 </div>
-{mostrarPremium && (
-  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+<div className="hidden peer-checked:flex fixed inset-0 bg-black/60 items-center justify-center z-[99999]">
     <div className="bg-white p-8 rounded-3xl max-w-md text-center">
       <h2 className="text-3xl font-bold mb-4 text-blue-900">
         ⭐ Beneficios Premium
@@ -91,15 +91,15 @@ export default function ConfigurarSimulacro() {
         </div>
       </div>
 
-      <button
-        onClick={() => setMostrarPremium(false)}
-        className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold"
-      >
-        Entendido
-      </button>
+      <label
+  htmlFor="premium-modal"
+  className="inline-block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold cursor-pointer"
+>
+  Entendido
+</label>
     </div>
   </div>
-)}
+
 </main>
   );
 }
