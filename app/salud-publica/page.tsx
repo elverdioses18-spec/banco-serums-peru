@@ -3,14 +3,14 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import { preguntas } from "@/data/preguntas";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 
-export default function SaludPublicaPage() {
+function SaludPublicaContent() {
   const router = useRouter();
 const LIMITE_GRATIS = 10;
   const searchParams = useSearchParams();
@@ -392,5 +392,12 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
       </div>
       </div>
     </main>
+  );
+}
+export default function SaludPublicaPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <SaludPublicaContent />
+    </Suspense>
   );
 }
