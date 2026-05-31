@@ -1204,7 +1204,7 @@ if (!usuarioRegistrado) {
 
       <p className="text-slate-300 text-center leading-relaxed mb-6">
         Crea una cuenta gratuita para acceder a tus
-        10 preguntas de prueba, estadísticas y reforzamiento.
+        20 preguntas de prueba, estadísticas y reforzamiento.
       </p>
 
       <Link

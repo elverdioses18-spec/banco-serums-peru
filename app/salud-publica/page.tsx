@@ -16,15 +16,13 @@ const LIMITE_GRATIS = 10;
   const searchParams = useSearchParams();
 
 const cantidad = Number(searchParams.get("cantidad")) || 20;
-const [preguntasTema, setPreguntasTema] = useState<any[]>([]);
-
-useEffect(() => {
-  setPreguntasTema(
-    [...preguntas.saludPublica]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, cantidad)
-  );
-}, [cantidad]);
+console.log("Cantidad:", cantidad);
+console.log("Total preguntas:", preguntas.saludPublica.length);
+const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
+  [...preguntas.saludPublica]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, cantidad)
+);
 
   const [respuestas, setRespuestas] = useState<{ [key: number]: number }>({});
   const [finalizado, setFinalizado] = useState(false);
@@ -279,13 +277,13 @@ useEffect(() => {
     );
   }
   return (
-    <main className="min-h-screen bg-[#edf3f8] flex">
+    <main className="min-h-screen bg-[#edf3f8] flex flex-col md:flex-row">
   <Sidebar />
 
-  <div className="flex-1 bg-slate-900 text-white p-6">
-      <div className="max-w-4xl mx-auto">
+  <div className="flex-1 bg-slate-900 text-white p-4 md:p-6">
+  <div className="max-w-4xl mx-auto w-full">
         <h1 className="text-4xl font-bold mb-2">
-          Mini simulacro: Salud Pública
+          Mini simulacro: Salud Pública 
         </h1>
         {mostrarTemporizador && (
   <div className="sticky top-6 ml-auto mr-0 w-fit bg-blue-600 text-white px-5 py-3 rounded-2xl text-2xl font-bold">
@@ -295,7 +293,7 @@ useEffect(() => {
         <p className="text-slate-300 mb-8">
           Respondidas: {totalRespondidas} / {preguntasTema.length}
         </p>
-
+     
         <div className="flex flex-col gap-8">
           {preguntasTema.map((pregunta, index) => (
             <div key={index} className="bg-slate-800 p-6 rounded-2xl">
