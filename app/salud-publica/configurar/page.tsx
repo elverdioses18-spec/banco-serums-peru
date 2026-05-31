@@ -13,7 +13,7 @@ export default function ConfigurarSimulacro() {
   return (
     <main className="min-h-screen bg-[#edf3f8] flex items-center justify-center p-6">
       <input id="premium-modal" type="checkbox" className="peer hidden" />
-      <input id="premium-modal" type="checkbox" className="peer hidden" />
+      <input id="registro-modal" type="checkbox" className="peer/registro hidden" />
       <div className="bg-white rounded-3xl shadow-sm p-10 max-w-2xl w-full text-center">
         <h1 className="text-5xl font-bold text-blue-950 mb-4">
           Salud Pública
@@ -126,7 +126,31 @@ export default function ConfigurarSimulacro() {
 </label>
     </div>
   </div>
+  <div className="hidden peer-checked/registro:flex fixed inset-0 bg-black/60 items-center justify-center z-[99999] p-4">
+  <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+    <h2 className="text-3xl font-bold text-blue-950 mb-4">
+      Regístrate gratis
+    </h2>
 
+    <p className="text-slate-600 text-lg mb-6">
+      Debes registrarte para acceder a tus 20 preguntas gratuitas.
+    </p>
+
+    <Link
+      href="/login"
+      className="block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold mb-3"
+    >
+      Ir a registrarme
+    </Link>
+
+    <label
+      htmlFor="registro-modal"
+      className="inline-block text-slate-500 font-bold cursor-pointer"
+    >
+      Cerrar
+    </label>
+  </div>
+</div>
 </main>
   );
 }
