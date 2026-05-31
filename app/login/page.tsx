@@ -24,9 +24,13 @@ export default function LoginPage() {
       "usuarioActual",
       JSON.stringify({
         correo,
-        premium: false,
+        premium: true,
       })
     );
+    
+    localStorage.setItem("premium", "true");
+    
+    router.push("/");
 
     router.push("/");
   };
@@ -327,9 +331,12 @@ export default function LoginPage() {
                 nombre: nombreRegistro,
                 correo: correoRegistro,
                 password: passwordRegistro,
+                premium: true,
               })
             );
-
+            
+            localStorage.setItem("premium", "true");
+            
             setMostrarRegistro(false);
             window.location.href = "/";
           }}
