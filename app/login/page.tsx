@@ -178,7 +178,7 @@ export default function LoginPage() {
   
   <div className="flex gap-3">
   <button
-    onClick={() => setMostrarRegistro(true)}
+    onClick={ingresar}
     className="flex-1 h-13 rounded-2xl bg-blue-600 hover:bg-blue-700 text-xl font-bold transition"
   >
     Ingresar
@@ -331,6 +331,7 @@ export default function LoginPage() {
             );
 
             setMostrarRegistro(false);
+            window.location.href = "/";
           }}
           className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold"
         >
