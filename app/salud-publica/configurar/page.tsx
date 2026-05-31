@@ -7,6 +7,9 @@ export default function ConfigurarSimulacro() {
   const esPremium =
   typeof window !== "undefined" &&
   localStorage.getItem("premium") === "true";
+  const usuarioRegistrado =
+  typeof window !== "undefined" &&
+  localStorage.getItem("usuarioActual");
   return (
     <main className="min-h-screen bg-[#edf3f8] flex items-center justify-center p-6">
       <input id="premium-modal" type="checkbox" className="peer hidden" />
@@ -21,12 +24,21 @@ export default function ConfigurarSimulacro() {
         </p>
 
         <div className="grid grid-cols-3 gap-5 mb-10">
+        {usuarioRegistrado ? (
   <Link
     href="/salud-publica?cantidad=20"
     className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold transition hover:scale-105"
   >
     20
   </Link>
+) : (
+  <label
+    htmlFor="registro-modal"
+    className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
+  >
+    20
+  </label>
+)}
 
   {esPremium ? (
     <Link
