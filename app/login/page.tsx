@@ -122,7 +122,7 @@ export default function LoginPage() {
 >
   
                 <img
-          src="/estadisticas.png"
+          src="/estadisticas2.png"
           alt="estadisticas"
           className="w-[300px] rounded-[42px] border border-blue-500/20 shadow-[0_0_35px_#2563eb44] drop-shadow-[0_0_8px_rgba(37,99,235,0.35)]transition duration-500 hover:scale-105"
         />
@@ -138,7 +138,7 @@ export default function LoginPage() {
 >
     
         <img
-          src="/reforzamiento.png"
+          src="/reforzamiento2.png"
           alt="reforzamiento"
           className="w-[350px] rounded-[32px] border border-blue-500/40 shadow-[0_0_35px_#2563eb44] drop-shadow-[0_0_8px_rgba(37,99,235,0.35)] transition duration-500 hover:scale-105"
         />
