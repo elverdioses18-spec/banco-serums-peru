@@ -1570,6 +1570,11 @@ if (!usuarioRegistrado) {
             localStorage.setItem("usuarioActual", JSON.stringify(usuarioActualizado));
             setUsuarioActual(usuarioActualizado);
             setMensajePerfil("Perfil actualizado correctamente.");
+
+            setTimeout(() => {
+              setModalPerfilOpen(false);
+              setMensajePerfil("");
+            }, 800);
           }}
           className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold"
         >
