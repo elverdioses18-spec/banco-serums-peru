@@ -636,11 +636,29 @@ const rachaEstudio =
       </div>
 
       <div className="space-y-3 text-sm">
-        <p>📊 Precisión: {progresoPopup?.precision || 0}%</p>
-        <p>🔥 Racha: {rachaEstudio} días</p>
-        <p>📝 Resueltas: {progresoPopup?.avance || 0}</p>
-        <p>🏆 Mejor resultado: {progresoPopup?.mejorResultado || 0}/{progresoPopup?.mejorTotal || 20}</p>
-      </div>
+  <p>📊 Precisión: {progresoPopup?.precision || 0}%</p>
+
+  <div>
+    <div className="flex justify-between text-xs mb-1">
+      <span>Progreso</span>
+      <span>{progresoPopup?.porcentajeAvance || 0}%</span>
+    </div>
+
+    <div className="w-full bg-slate-200 rounded-full h-2">
+      <div
+        className="bg-blue-600 h-2 rounded-full"
+        style={{ width: `${progresoPopup?.porcentajeAvance || 0}%` }}
+      ></div>
+    </div>
+  </div>
+
+  <p>🔥 Racha: {rachaEstudio} días</p>
+  <p>📝 Resueltas: {progresoPopup?.avance || 0}</p>
+  <p>
+    🏆 Mejor resultado: {progresoPopup?.mejorResultado || 0}/
+    {progresoPopup?.mejorTotal || 20}
+  </p>
+</div>
     </div>
   </div>
 )}
