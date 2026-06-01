@@ -225,7 +225,7 @@ const rachaEstudio =
   <div className="min-h-screen text-[#06194a] p-4">
   <input id="menu-mobile" type="checkbox" className="peer hidden" />
 
-    <div className="bg-[#07337a] text-white rounded-2xl p-4 mb-4 flex items-center gap-4">
+  <div className="relative bg-[#07337a] text-white rounded-2xl p-4 mb-4 flex items-center gap-4">
     <label
   htmlFor="menu-mobile"
   className="relative z-[10050] text-2xl bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer select-none"
@@ -233,10 +233,11 @@ const rachaEstudio =
   ☰
 </label>
 
-      <div>
-        <h1 className="text-2xl font-bold">Ruta SERUMS</h1>
+<div className="flex-1">
+<h1 className="text-2xl font-bold">Ruta SERUMS</h1>
         <p className="text-sm text-blue-100">Prepárate, práctica y aprueba</p>
-        <div className="relative ml-auto">
+        
+        <div className="absolute right-4 top-4">
   <button
     onClick={() => setMenuUsuarioOpen(!menuUsuarioOpen)}
     className="w-11 h-11 rounded-full bg-white text-blue-900 flex items-center justify-center text-2xl shadow-md"
