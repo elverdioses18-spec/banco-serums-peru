@@ -45,6 +45,12 @@ const [passwordActual, setPasswordActual] = useState("");
 const [passwordNueva, setPasswordNueva] = useState("");
 const [passwordNueva2, setPasswordNueva2] = useState("");
 const [mensajePassword, setMensajePassword] = useState("");
+const [modalPerfilOpen, setModalPerfilOpen] = useState(false);
+const [perfilNombre, setPerfilNombre] = useState("");
+const [perfilCorreo, setPerfilCorreo] = useState("");
+const [perfilCelular, setPerfilCelular] = useState("");
+const [perfilCiudad, setPerfilCiudad] = useState("");
+const [mensajePerfil, setMensajePerfil] = useState("");
 
 
 
@@ -253,9 +259,23 @@ const rachaEstudio =
             {usuarioActual.nombre || usuarioActual.correo}
           </p>
 
-          <button className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl">
-            Mi perfil
-          </button>
+          <button
+  onClick={() => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+
+    setPerfilNombre(usuario.nombre || "");
+    setPerfilCorreo(usuario.correo || "");
+    setPerfilCelular(usuario.celular || "");
+    setPerfilCiudad(usuario.ciudad || "");
+    setMensajePerfil("");
+
+    setModalPerfilOpen(true);
+    setMenuUsuarioOpen(false);
+  }}
+  className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+>
+  Mi perfil
+</button>
 
           <button
             onClick={() => {
@@ -916,11 +936,23 @@ const rachaEstudio =
 
     {menuUsuarioOpen && (
       <div className="absolute right-0 mt-2 w-56 bg-white text-slate-800 rounded-2xl shadow-xl p-3 z-[9999]">
-        <button
-          className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
-        >
-          Mi perfil
-        </button>
+     <button
+  onClick={() => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+
+    setPerfilNombre(usuario.nombre || "");
+    setPerfilCorreo(usuario.correo || "");
+    setPerfilCelular(usuario.celular || "");
+    setPerfilCiudad(usuario.ciudad || "");
+    setMensajePerfil("");
+
+    setModalPerfilOpen(true);
+    setMenuUsuarioOpen(false);
+  }}
+  className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+>
+  Mi perfil
+</button>
 
         <button
   onClick={() => {
@@ -1566,6 +1598,23 @@ if (!usuarioRegistrado) {
     </div>
   </div>
 )}
+<button
+  onClick={() => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+
+    setPerfilNombre(usuario.nombre || "");
+    setPerfilCorreo(usuario.correo || "");
+    setPerfilCelular(usuario.celular || "");
+    setPerfilCiudad(usuario.ciudad || "");
+    setMensajePerfil("");
+
+    setModalPerfilOpen(true);
+    setMenuUsuarioOpen(false);
+  }}
+  className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+>
+  Mi perfil
+</button>
 </main>
 );
 }
