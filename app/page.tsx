@@ -259,7 +259,7 @@ const rachaEstudio =
           onClick={() => {
             localStorage.removeItem("usuarioActual");
             localStorage.removeItem("premium");
-            window.location.href = "/";
+            window.location.href = "/login";
           }}
           className="block w-full text-left px-3 py-2 hover:bg-red-50 text-red-600 rounded-xl"
         >
@@ -899,7 +899,7 @@ const rachaEstudio =
           onClick={() => {
             localStorage.removeItem("usuarioActual");
             localStorage.removeItem("premium");
-            window.location.href = "/";
+            window.location.href = "/login";
           }}
           className="block w-full text-left px-3 py-2 hover:bg-red-50 text-red-600 rounded-xl"
         >
