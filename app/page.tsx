@@ -40,6 +40,11 @@ const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
 const [temaMovilActivo, setTemaMovilActivo] = useState<any>(null);
 const [usuarioActual, setUsuarioActual] = useState<any>(null);
 const [menuUsuarioOpen, setMenuUsuarioOpen] = useState(false);
+const [modalPasswordOpen, setModalPasswordOpen] = useState(false);
+const [passwordActual, setPasswordActual] = useState("");
+const [passwordNueva, setPasswordNueva] = useState("");
+const [passwordNueva2, setPasswordNueva2] = useState("");
+const [mensajePassword, setMensajePassword] = useState("");
 
 
 
@@ -251,9 +256,16 @@ const rachaEstudio =
           Mi perfil
         </button>
 
-        <button className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl">
-          Cambiar contraseña
-        </button>
+        <button
+  onClick={() => {
+    setModalPasswordOpen(true);
+    setMenuUsuarioOpen(false);
+    setMensajePassword("");
+  }}
+  className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+>
+  Cambiar contraseña
+</button>
 
         <button
           onClick={() => {
@@ -890,11 +902,15 @@ const rachaEstudio =
         </button>
 
         <button
-          className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
-        >
-          Cambiar contraseña
-        </button>
-
+  onClick={() => {
+    setModalPasswordOpen(true);
+    setMenuUsuarioOpen(false);
+    setMensajePassword("");
+  }}
+  className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+>
+  Cambiar contraseña
+</button>
         <button
           onClick={() => {
             localStorage.removeItem("usuarioActual");
@@ -1415,7 +1431,120 @@ if (!usuarioRegistrado) {
 </div>
 )}
 </div>
+{modalPasswordOpen && (
+  <div className="fixed inset-0 bg-black/60 z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white text-slate-900 rounded-3xl p-6 w-full max-w-md shadow-2xl">
+      <h2 className="text-2xl font-bold text-blue-950 mb-4">
+        Cambiar contraseña
+      </h2>
 
+      <input
+        type="password"
+        placeholder="Contraseña actual"
+        value={passwordActual}
+        onChange={(e) => setPasswordActual(e.target.value)}
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      <input
+        type="password"
+        placeholder="Nueva contraseña"
+        value={passwordNueva}
+        onChange={(e) => setPasswordNueva(e.target.value)}
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      <input
+        type="password"
+        placeholder="Repetir nueva contraseña"
+        value={passwordNueva2}
+        onChange={(e) => setPasswordNueva2(e.target.value)}
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      {mensajePassword && (
+        <p className="text-sm text-red-600 mb-3 font-semibold">
+          {mensajePassword}
+        </p>
+      )}
+
+      <div className="flex gap-3">
+        <button
+          onClick={() => {
+            setModalPasswordOpen(false);
+            setPasswordActual("");
+            setPasswordNueva("");
+            setPasswordNueva2("");
+            setMensajePassword("");
+          }}
+          className="flex-1 bg-slate-200 text-slate-700 py-3 rounded-xl font-bold"
+        >
+          Cancelar
+        </button>
+
+        <button
+          onClick={() => {
+            const usuario = JSON.parse(
+              localStorage.getItem("usuarioActual") || "{}"
+            );
+
+            if (!passwordActual.trim()) {
+              setMensajePassword("Debes ingresar tu contraseña actual.");
+              return;
+            }
+
+            if (passwordActual !== usuario.password) {
+              setMensajePassword("La contraseña actual no es correcta.");
+              return;
+            }
+
+            if (!passwordNueva.trim()) {
+              setMensajePassword("Debes ingresar una nueva contraseña.");
+              return;
+            }
+
+            if (passwordNueva.length < 6) {
+              setMensajePassword("La nueva contraseña debe tener mínimo 6 caracteres.");
+              return;
+            }
+
+            if (passwordNueva === usuario.password) {
+              setMensajePassword("La nueva contraseña debe ser diferente a la actual.");
+              return;
+            }
+
+            if (passwordNueva !== passwordNueva2) {
+              setMensajePassword("Las nuevas contraseñas no coinciden.");
+              return;
+            }
+
+            const usuarioActualizado = {
+              ...usuario,
+              password: passwordNueva,
+            };
+
+            localStorage.setItem(
+              "usuarioActual",
+              JSON.stringify(usuarioActualizado)
+            );
+
+            setUsuarioActual(usuarioActualizado);
+            setPasswordActual("");
+            setPasswordNueva("");
+            setPasswordNueva2("");
+            setMensajePassword("");
+            setModalPasswordOpen(false);
+
+            alert("Contraseña actualizada correctamente.");
+          }}
+          className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 </main>
 );
 }
