@@ -906,7 +906,7 @@ const rachaEstudio =
       onClick={() => setMenuUsuarioOpen(!menuUsuarioOpen)}
       className="font-semibold hover:underline"
     >
-      👤 {usuarioActual.nombre || usuarioActual.correo}
+      {usuarioActual.nombre || usuarioActual.correo}
     </button>
 
     <p className="text-sm text-blue-100">
