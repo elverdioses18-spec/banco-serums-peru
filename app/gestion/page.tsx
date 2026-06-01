@@ -10,6 +10,7 @@ import { preguntasGestion } from "@/data/gestion";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 
+
 function GestionContent() {
   const searchParams = useSearchParams();
 
