@@ -211,20 +211,7 @@ const rachaEstudio =
     ? 1
     : 0;
     
-  popupTema?.nombre === "Salud Pública"
-    ? progresoSalud
-    : popupTema?.nombre === "Gestión"
-    ? progresoGestion
-    : popupTema?.nombre === "Cuidado Integral"
-    ? progresoCuidado
-    : popupTema?.nombre === "Investigación"
-    ? progresoInvestigacion
-    : popupTema?.nombre === "Ética"
-    ? progresoEtica
-    : popupTema?.nombre === "Simulacro Mixto"
-    ? progresoMixto
-    : null;
-  return (
+   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-[#06194a] overflow-x-hidden">
 
 <div className="block md:hidden fixed top-0 left-0 right-0 bottom-0 z-[9999] overflow-y-auto bg-gradient-to-br from-slate-50 to-blue-50">
