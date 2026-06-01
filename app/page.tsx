@@ -575,8 +575,7 @@ const rachaEstudio =
     );
   
     setProgresoPopup(progreso);
-    alert(JSON.stringify(progreso));
-    setTemaMovilActivo(tema);
+       setTemaMovilActivo(tema);
   }}
    className="bg-white rounded-2xl p-3 shadow-md cursor-pointer"
  >
