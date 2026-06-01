@@ -106,7 +106,7 @@ export default function LoginPage() {
         </div>
   
         <img
-          src="/dashboard.png"
+          src="/dashboard2.png"
           alt="dashboard"
           className="w-full md:w-[670px] rounded-[24px] md:rounded-[32px] border border-blue-500/20 shadow-[0_0_35px_#2563eb44]"
         />
