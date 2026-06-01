@@ -569,11 +569,26 @@ const rachaEstudio =
   {temas.map((tema, index) => (
    <div
    key={index}
-   onClick={() => setTemaMovilActivo(tema)}
+   onClick={() => {
+    const progreso = JSON.parse(
+      localStorage.getItem(tema.progresoKey) || "{}"
+    );
+  
+    setProgresoPopup(progreso);
+    alert(JSON.stringify(progreso));
+    setTemaMovilActivo(tema);
+  }}
    className="bg-white rounded-2xl p-3 shadow-md cursor-pointer"
  >
    <div
-  onClick={() => setTemaMovilActivo(tema)}
+  onClick={() => {
+    const progreso = JSON.parse(
+      localStorage.getItem(tema.progresoKey) || "{}"
+    );
+  
+    setProgresoPopup(progreso);
+    setTemaMovilActivo(tema);
+  }}
   className="flex items-center gap-3 mb-3 cursor-pointer"
 >
       <div
@@ -765,9 +780,7 @@ const rachaEstudio =
                   const progreso = JSON.parse(
                     localStorage.getItem(tema.progresoKey) || "{}"
                   );
-                  
-                  alert(`${tema.nombre} - ${tema.progresoKey}: ${JSON.stringify(progreso)}`);
-                  
+                
                   setProgresoPopup(progreso);
                   setPopupTema(tema);
                 
