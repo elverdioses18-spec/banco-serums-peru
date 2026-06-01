@@ -256,19 +256,26 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
   }
   if (bloqueoAcceso) {
     return (
-      <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
-        <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center">
-          <h1 className="text-3xl font-bold mb-4">
-            Acceso bloqueado
+      <main className="min-h-screen bg-black/70 text-white flex items-center justify-center p-6">
+        <div className="bg-white text-slate-900 p-8 rounded-3xl max-w-md w-full text-center shadow-2xl">
+          <h1 className="text-3xl font-bold mb-4 text-blue-950">
+            Regístrate gratis
           </h1>
   
-          <p className="text-lg mb-6">
-            {bloqueoAcceso}
+          <p className="text-lg mb-6 text-slate-600">
+            Debes registrarte para acceder a tus 20 preguntas gratuitas.
           </p>
   
           <a
+            href="/login"
+            className="block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold mb-3"
+          >
+            Ir a registrarme
+          </a>
+  
+          <a
             href="/"
-            className="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+            className="inline-block text-slate-500 font-bold"
           >
             Volver al inicio
           </a>
