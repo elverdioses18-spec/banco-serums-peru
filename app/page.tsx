@@ -19,12 +19,12 @@ import {
   Flame,
 } from "lucide-react";
 const temas = [
-  { nombre: "Salud Pública", desc: "Salud pública y epidemiología.", preguntas: `${preguntasSaludPublica.saludPublica.length} preguntas`, color: "bg-blue-600", icono: Users, ruta: "/salud-publica/configurar" },
-  { nombre: "Gestión", desc: "Administración en salud y normativas del sector.", preguntas: `${preguntasGestion.length} preguntas`, color: "bg-green-600", icono: Building2, ruta: "/gestion/configurar" },
-  { nombre: "Ética", desc: "Bioética, ética médica y normativa legal.", preguntas: `${preguntasEtica.length} preguntas`, color: "bg-red-500", icono: Scale, ruta: "/etica/configurar" },
-  { nombre: "Investigación", desc: "Metodología de investigación y bioestadística.", preguntas: `${preguntasInvestigacion.length} preguntas`, color: "bg-purple-600", icono: FlaskConical, ruta: "/investigacion/configurar" },
-  { nombre: "Cuidado Integral", desc: "Atención integral, cursos de vida y casos clínicos.", preguntas: `${preguntasCuidadoIntegral.length} preguntas`, color: "bg-yellow-500", icono: Heart, ruta: "/cuidado-integral/configurar" },
-  { nombre: "Simulacro Mixto", desc: "Simulacro completo con preguntas de todos los temas.", preguntas: `${preguntasSaludPublica.saludPublica.length + preguntasGestion.length + preguntasCuidadoIntegral.length + preguntasInvestigacion.length + preguntasEtica.length} preguntas`, color: "bg-orange-500", icono: Flame, ruta: "/simulacro-mixto/configurar" },
+  { nombre: "Salud Pública", desc: "Salud pública y epidemiología.", preguntas: `${preguntasSaludPublica.saludPublica.length} preguntas`, color: "bg-blue-600", icono: Users, ruta: "/salud-publica/configurar" , progresoKey: "progresoSaludPublica"},
+  { nombre: "Gestión", desc: "Administración en salud y normativas del sector.", preguntas: `${preguntasGestion.length} preguntas`, color: "bg-green-600", icono: Building2, ruta: "/gestion/configurar",  progresoKey: "progresoGestion" },
+  { nombre: "Ética", desc: "Bioética, ética médica y normativa legal.", preguntas: `${preguntasEtica.length} preguntas`, color: "bg-red-500", icono: Scale, ruta: "/etica/configurar", progresoKey: "progresoEtica" },
+  { nombre: "Investigación", desc: "Metodología de investigación y bioestadística.", preguntas: `${preguntasInvestigacion.length} preguntas`, color: "bg-purple-600", icono: FlaskConical, ruta: "/investigacion/configurar", progresoKey: "progresoInvestigacion" },
+  { nombre: "Cuidado Integral", desc: "Atención integral, cursos de vida y casos clínicos.", preguntas: `${preguntasCuidadoIntegral.length} preguntas`, color: "bg-yellow-500", icono: Heart, ruta: "/cuidado-integral/configurar", progresoKey: "progresoCuidado" },
+  { nombre: "Simulacro Mixto", desc: "Simulacro completo con preguntas de todos los temas.", preguntas: `${preguntasSaludPublica.saludPublica.length + preguntasGestion.length + preguntasCuidadoIntegral.length + preguntasInvestigacion.length + preguntasEtica.length} preguntas`, color: "bg-orange-500", icono: Flame, ruta: "/simulacro-mixto/configurar", progresoKey: "progresoMixto" },
 ];
 
 export default function Home() {
@@ -51,7 +51,7 @@ const [perfilCorreo, setPerfilCorreo] = useState("");
 const [perfilCelular, setPerfilCelular] = useState("");
 const [perfilCiudad, setPerfilCiudad] = useState("");
 const [mensajePerfil, setMensajePerfil] = useState("");
-
+const [progresoPopup, setProgresoPopup] = useState<any>(null);
 
 
 useEffect(() => {
@@ -210,7 +210,7 @@ const rachaEstudio =
   )
     ? 1
     : 0;
-    const progresoPopup =
+    
   popupTema?.nombre === "Salud Pública"
     ? progresoSalud
     : popupTema?.nombre === "Gestión"
@@ -775,6 +775,11 @@ const rachaEstudio =
                 key={tema.nombre}
               
                 onClick={(e) => {
+                  const progreso = JSON.parse(
+                    localStorage.getItem(tema.progresoKey) || "{}"
+                  );
+                
+                  setProgresoPopup(progreso);
                   setPopupTema(tema);
                 
                   setPopupPos({
