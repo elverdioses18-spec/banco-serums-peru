@@ -1484,6 +1484,101 @@ if (!usuarioRegistrado) {
 </div>
 )}
 </div>
+{modalPerfilOpen && (
+  <div className="fixed inset-0 bg-black/60 z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white text-slate-900 rounded-3xl p-6 w-full max-w-md shadow-2xl">
+      <h2 className="text-2xl font-bold text-blue-950 mb-4">
+        Mi perfil
+      </h2>
+
+      <label className="block text-sm font-bold text-slate-600 mb-1">
+        Nombre
+      </label>
+      <input
+        type="text"
+        value={perfilNombre}
+        onChange={(e) => setPerfilNombre(e.target.value)}
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      <label className="block text-sm font-bold text-slate-600 mb-1">
+        Correo
+      </label>
+      <input
+        type="email"
+        value={perfilCorreo}
+        disabled
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3 bg-slate-100 text-slate-500"
+      />
+
+      <label className="block text-sm font-bold text-slate-600 mb-1">
+        Celular
+      </label>
+      <input
+        type="tel"
+        value={perfilCelular}
+        onChange={(e) => setPerfilCelular(e.target.value)}
+        placeholder="Ej. 987654321"
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      <label className="block text-sm font-bold text-slate-600 mb-1">
+        Ciudad
+      </label>
+      <input
+        type="text"
+        value={perfilCiudad}
+        onChange={(e) => setPerfilCiudad(e.target.value)}
+        placeholder="Ej. Tumbes"
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      <div className="bg-blue-50 text-blue-800 rounded-xl p-3 mb-3 text-sm font-bold">
+        Tipo de cuenta:{" "}
+        {localStorage.getItem("premium") === "true" ? "Premium" : "Gratis"}
+      </div>
+
+      {mensajePerfil && (
+        <p className="text-sm text-green-600 mb-3 font-semibold">
+          {mensajePerfil}
+        </p>
+      )}
+
+      <div className="flex gap-3">
+        <button
+          onClick={() => {
+            setModalPerfilOpen(false);
+            setMensajePerfil("");
+          }}
+          className="flex-1 bg-slate-200 text-slate-700 py-3 rounded-xl font-bold"
+        >
+          Cancelar
+        </button>
+
+        <button
+          onClick={() => {
+            const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+
+            const usuarioActualizado = {
+              ...usuario,
+              nombre: perfilNombre,
+              correo: perfilCorreo || usuario.correo,
+              celular: perfilCelular,
+              ciudad: perfilCiudad,
+            };
+
+            localStorage.setItem("usuarioActual", JSON.stringify(usuarioActualizado));
+            setUsuarioActual(usuarioActualizado);
+            setMensajePerfil("Perfil actualizado correctamente.");
+          }}
+          className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 {modalPasswordOpen && (
   <div className="fixed inset-0 bg-black/60 z-[99999] flex items-center justify-center p-4">
     <div className="bg-white text-slate-900 rounded-3xl p-6 w-full max-w-md shadow-2xl">
@@ -1598,23 +1693,6 @@ if (!usuarioRegistrado) {
     </div>
   </div>
 )}
-<button
-  onClick={() => {
-    const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
-
-    setPerfilNombre(usuario.nombre || "");
-    setPerfilCorreo(usuario.correo || "");
-    setPerfilCelular(usuario.celular || "");
-    setPerfilCiudad(usuario.ciudad || "");
-    setMensajePerfil("");
-
-    setModalPerfilOpen(true);
-    setMenuUsuarioOpen(false);
-  }}
-  className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
->
-  Mi perfil
-</button>
 </main>
 );
 }
