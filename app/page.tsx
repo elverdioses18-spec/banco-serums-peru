@@ -38,11 +38,16 @@ const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
 const [popupTema, setPopupTema] = useState<any>(null);
 const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
 const [temaMovilActivo, setTemaMovilActivo] = useState<any>(null);
+const [usuarioActual, setUsuarioActual] = useState<any>(null);
+const [menuUsuarioOpen, setMenuUsuarioOpen] = useState(false);
 
 
 
 useEffect(() => {
   const usuario = localStorage.getItem("usuarioActual");
+  if (usuario) {
+    setUsuarioActual(JSON.parse(usuario));
+  }
 
 
   const metaGuardada = Number(localStorage.getItem("metaDiaria") ?? "50");
@@ -827,18 +832,60 @@ const rachaEstudio =
               👤
             </div>
 
-            <div>
-  <Link
-    href="/login"
-    className="font-semibold hover:underline"
-  >
-    Iniciar sesión / Registrarse
-  </Link>
+            {usuarioActual ? (
+  <div className="relative">
+    <button
+      onClick={() => setMenuUsuarioOpen(!menuUsuarioOpen)}
+      className="font-semibold hover:underline"
+    >
+      👤 {usuarioActual.nombre || usuarioActual.correo}
+    </button>
 
-  <p className="text-sm text-blue-100">
-    Guarda tu progreso y estadísticas
-  </p>
-</div>
+    <p className="text-sm text-blue-100">
+      Mi cuenta
+    </p>
+
+    {menuUsuarioOpen && (
+      <div className="absolute right-0 mt-2 w-56 bg-white text-slate-800 rounded-2xl shadow-xl p-3 z-[9999]">
+        <button
+          className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+        >
+          Mi perfil
+        </button>
+
+        <button
+          className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+        >
+          Cambiar contraseña
+        </button>
+
+        <button
+          onClick={() => {
+            localStorage.removeItem("usuarioActual");
+            localStorage.removeItem("premium");
+            window.location.href = "/";
+          }}
+          className="block w-full text-left px-3 py-2 hover:bg-red-50 text-red-600 rounded-xl"
+        >
+          Cerrar sesión
+        </button>
+      </div>
+    )}
+  </div>
+) : (
+  <div>
+    <Link
+      href="/login"
+      className="font-semibold hover:underline"
+    >
+      Iniciar sesión / Registrarse
+    </Link>
+
+    <p className="text-sm text-blue-100">
+      Guarda tu progreso y estadísticas
+    </p>
+  </div>
+)}
             
           </header>
 
