@@ -3,9 +3,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import BloqueoRegistro from "../../../components/BloqueoRegistro";
 
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  const usuarioRegistrado =
+  typeof window !== "undefined" &&
+  localStorage.getItem("usuarioActual");
+
+if (!usuarioRegistrado) {
+  return <BloqueoRegistro />;
+}
   const router = useRouter();
   useEffect(() => {
     const usuarioRegistrado =

@@ -1,9 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-
+import BloqueoRegistro from "../../../components/BloqueoRegistro";
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  const usuarioRegistrado =
+  typeof window !== "undefined" &&
+  localStorage.getItem("usuarioActual");
+
+if (!usuarioRegistrado) {
+  return <BloqueoRegistro />;
+}
   return (
     <main className="min-h-screen bg-[#edf3f8] flex items-center justify-center p-6">
       <input id="premium-modal" type="checkbox" className="peer hidden" />
