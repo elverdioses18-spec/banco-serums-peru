@@ -236,9 +236,68 @@ const rachaEstudio =
       <div>
         <h1 className="text-2xl font-bold">Ruta SERUMS</h1>
         <p className="text-sm text-blue-100">Prepárate, práctica y aprueba</p>
-      </div>
-      {usuarioActual && (
-  <div className="relative ml-auto">
+        <div className="relative ml-auto">
+  <button
+    onClick={() => setMenuUsuarioOpen(!menuUsuarioOpen)}
+    className="w-11 h-11 rounded-full bg-white text-blue-900 flex items-center justify-center text-2xl shadow-md"
+  >
+    👤
+  </button>
+
+  {menuUsuarioOpen && (
+    <div className="absolute right-0 top-14 w-56 bg-white text-slate-800 rounded-2xl shadow-xl p-3 z-[99999]">
+      {usuarioActual ? (
+        <>
+          <p className="px-3 py-2 font-bold text-blue-900">
+            {usuarioActual.nombre || usuarioActual.correo}
+          </p>
+
+          <button className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl">
+            Mi perfil
+          </button>
+
+          <button
+            onClick={() => {
+              setModalPasswordOpen(true);
+              setMenuUsuarioOpen(false);
+              setMensajePassword("");
+            }}
+            className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+          >
+            Cambiar contraseña
+          </button>
+
+          <button
+            onClick={() => {
+              localStorage.removeItem("usuarioActual");
+              localStorage.removeItem("premium");
+              window.location.href = "/login";
+            }}
+            className="block w-full text-left px-3 py-2 hover:bg-red-50 text-red-600 rounded-xl"
+          >
+            Cerrar sesión
+          </button>
+        </>
+      ) : (
+        <>
+          <Link
+            href="/login"
+            className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl font-bold"
+          >
+            Iniciar sesión
+          </Link>
+
+          <Link
+            href="/login"
+            className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl font-bold"
+          >
+            Registrarme
+          </Link>
+        </>
+      )}
+    </div>
+  )}
+</div>
     <button
       onClick={() => setMenuUsuarioOpen(!menuUsuarioOpen)}
       className="w-11 h-11 rounded-full bg-white text-blue-900 flex items-center justify-center text-2xl shadow-md"
@@ -280,7 +339,7 @@ const rachaEstudio =
       </div>
     )}
   </div>
-)}
+
     </div>
     <div className="fixed inset-0 z-[1000] bg-black/50 opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300">
     <div className="w-[280px] h-full bg-[#07337a] text-white p-5 pt-24 shadow-2xl overflow-y-auto">
