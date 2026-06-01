@@ -765,7 +765,9 @@ const rachaEstudio =
                   const progreso = JSON.parse(
                     localStorage.getItem(tema.progresoKey) || "{}"
                   );
-                
+                  
+                  alert(`${tema.nombre} - ${tema.progresoKey}: ${JSON.stringify(progreso)}`);
+                  
                   setProgresoPopup(progreso);
                   setPopupTema(tema);
                 
