@@ -318,7 +318,13 @@ const rachaEstudio =
   </div>
 
     </div>
-    <div className="fixed inset-0 z-[1000] bg-black/50 opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300">
+    <div
+  onClick={() => {
+    const menu = document.getElementById("menu-mobile") as HTMLInputElement;
+    if (menu) menu.checked = false;
+  }}
+  className="fixed inset-0 z-[1000] bg-black/50 opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300"
+>
     <div className="w-[280px] h-full bg-[#07337a] text-white p-5 pt-24 shadow-2xl overflow-y-auto">
     <div className="flex items-center justify-between mb-6">
       <div>
