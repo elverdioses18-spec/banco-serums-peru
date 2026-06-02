@@ -53,7 +53,6 @@ const [perfilCiudad, setPerfilCiudad] = useState("");
 const [mensajePerfil, setMensajePerfil] = useState("");
 const [progresoPopup, setProgresoPopup] = useState<any>(null);
 
-
 useEffect(() => {
   const usuario = localStorage.getItem("usuarioActual");
   if (usuario) {
@@ -156,6 +155,7 @@ useEffect(() => {
   return () => {
     window.removeEventListener("scroll", guardarScroll);
   };
+  setEsPremium(localStorage.getItem("premium") === "true");
 }, []);
 const progresoActual =
   temaActivo === "salud"
@@ -581,6 +581,8 @@ const rachaEstudio =
           className="w-38 rounded-xl"
         />
       </div>
+      {!esPremium && (
+  <>
       {/* FRANJA PREMIUM MÓVIL */}
 <div className="md:hidden bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-1 mb-5 shadow-sm flex items-center justify-between gap-3">
   <div className="flex items-center gap-3">
@@ -599,12 +601,14 @@ const rachaEstudio =
   </div>
 
   <button
-    onClick={() => setMostrarPremium(true)}
-    className="bg-yellow-500 hover:bg-yellow-400 text-white font-extrabold px-4 py-3 rounded-xl text-sm shadow-md whitespace-nowrap"
-  >
-    ⭐ PREMIUM ›
-  </button>
+  onClick={() => setMostrarPremium(true)}
+  className="bg-yellow-500 hover:bg-yellow-400 text-white font-extrabold px-4 py-3 rounded-xl text-sm shadow-md whitespace-nowrap"
+>
+  ⭐ PREMIUM ›
+</button>
 </div>
+</>
+)}
 
       <div className="grid grid-cols-3 gap-3 mt-5">
         <div className="border border-slate-300 rounded-2xl p-1 text-center">
@@ -1007,12 +1011,18 @@ const rachaEstudio =
 
           {/* HEADER */}
           <header className="h-[96px] bg-[#062b73] text-white px-8 flex items-center justify-end gap-6">
-          <button
-  onClick={() => setMostrarPremium(true)}
-  className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded-xl shadow-md"
->
-  Ser Premium
-</button>
+          {esPremium ? (
+  <div className="bg-green-500 text-white px-4 py-2 rounded-xl font-bold">
+    👑 Premium Activo
+  </div>
+) : (
+  <button
+    onClick={() => setMostrarPremium(true)}
+    className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-4 py-2 rounded-xl font-bold"
+  >
+    Ser Premium
+  </button>
+)}
          
 
             <div className="relative w-12 h-12 rounded-full bg-blue-900/60 flex items-center justify-center text-xl">
@@ -1544,50 +1554,7 @@ if (!usuarioRegistrado) {
   </div>
 
 </div>
-{mostrarPremium && (
-  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[999] px-4">
-    <div className="bg-white text-slate-900 rounded-3xl p-8 w-full max-w-lg relative shadow-2xl">
 
-      <button
-        onClick={() => setMostrarPremium(false)}
-        className="absolute top-4 right-5 text-3xl font-bold text-slate-400 hover:text-slate-700"
-      >
-        ×
-      </button>
-
-      <h2 className="text-3xl font-extrabold mb-3 text-center">
-        🌟 Acceso Premium
-      </h2>
-
-      <p className="text-center text-slate-600 mb-6">
-        Desbloquea todo el banco SERUMS y prepárate.
-      </p>
-
-      <div className="space-y-3 mb-6 text-lg">
-      <p>✅ Más de 2300 preguntas  </p>
-        <p>✅ simulacros ilimitados </p>
-        <p>✅ Todas las áreas desbloqueadas</p>
-        <p>✅ Historial completo</p>
-        <p>✅ Estadísticas y progreso completo</p>
-        <p>✅ Reforzamiento inteligente</p>
-        <p>✅ Acceso hasta en 2 dispositivos</p>
-      </div>
-
-      <div className="text-center bg-yellow-100 border border-yellow-300 rounded-2xl p-4 mb-6 text-sm rounded-2xl text-lg">
-       S/.20
-      </div>
-
-      <a
-        href="https://wa.me/TUNUMERO?text=Hola,%20quiero%20adquirir%20el%20acceso%20Premium%20SERUMS.%20Mi%20correo%20registrado%20es:"
-        target="_blank"
-        className="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
-      >
-        Comprar 
-      </a>
-
-      </div>
-</div>
-)}
 </div>
 {modalPerfilOpen && (
   <div className="fixed inset-0 bg-black/60 z-[99999] flex items-center justify-center p-4">
@@ -1802,6 +1769,50 @@ if (!usuarioRegistrado) {
       </div>
     </div>
   </div>
+)}
+{mostrarPremium && (
+  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[99999] px-4">
+    <div className="bg-white text-slate-900 rounded-3xl p-8 w-full max-w-lg relative shadow-2xl">
+
+      <button
+        onClick={() => setMostrarPremium(false)}
+        className="absolute top-4 right-5 text-3xl font-bold text-slate-400 hover:text-slate-700"
+      >
+        ×
+      </button>
+
+      <h2 className="text-3xl font-extrabold mb-3 text-center">
+        🌟 Acceso Premium
+      </h2>
+
+      <p className="text-center text-slate-600 mb-6">
+        Desbloquea todo el banco SERUMS y prepárate.
+      </p>
+
+      <div className="space-y-3 mb-6 text-lg">
+      <p>✅ Más de 2300 preguntas  </p>
+        <p>✅ simulacros ilimitados </p>
+        <p>✅ Todas las áreas desbloqueadas</p>
+        <p>✅ Historial completo</p>
+        <p>✅ Estadísticas y progreso completo</p>
+        <p>✅ Reforzamiento inteligente</p>
+        <p>✅ Acceso hasta en 2 dispositivos</p>
+      </div>
+
+      <div className="text-center bg-yellow-100 border border-yellow-300 rounded-2xl p-4 mb-6 text-sm rounded-2xl text-lg">
+       S/.20
+      </div>
+
+      <a
+        href="https://wa.me/TUNUMERO?text=Hola,%20quiero%20adquirir%20el%20acceso%20Premium%20SERUMS.%20Mi%20correo%20registrado%20es:"
+        target="_blank"
+        className="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
+      >
+        Pagar
+      </a>
+
+      </div>
+</div>
 )}
 </main>
 );
