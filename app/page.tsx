@@ -582,18 +582,18 @@ const rachaEstudio =
         />
       </div>
       {/* FRANJA PREMIUM MÓVIL */}
-<div className="md:hidden bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-4 mb-5 shadow-sm flex items-center justify-between gap-3">
+<div className="md:hidden bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-1 mb-5 shadow-sm flex items-center justify-between gap-3">
   <div className="flex items-center gap-3">
     <div className="w-14 h-14 rounded-full bg-yellow-500 text-white flex items-center justify-center text-3xl shadow-md">
       👑
     </div>
 
     <div>
-      <h3 className="text-blue-950 font-extrabold text-base">
+      <h3 className="text-blue-950 font-bold text-base text-xs">
         ¡Desbloquea todo el potencial!
       </h3>
-      <p className="text-slate-700 text-sm leading-tight">
-        Accede a todos los simulacros, áreas y estadísticas.
+      <p className="text-blue-950 font-bold text-base text-xs">
+      Hazte Premium
       </p>
     </div>
   </div>
