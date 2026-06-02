@@ -344,22 +344,28 @@ const rachaEstudio =
   <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
     <div className="space-y-2">
 
-      <p>📊 Precisión: 45%</p>
+    <p>📊 Precisión: {progresoSalud?.precision || 0}%</p>
 
-      <div>
-        <div className="flex justify-between">
-          <span>Progreso</span>
-          <span>45%</span>
-        </div>
+<div>
+  <div className="flex justify-between">
+    <span>Progreso</span>
+    <span>{progresoSalud?.porcentajeAvance || 0}%</span>
+  </div>
 
-        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
-          <div className="bg-green-400 h-2 rounded-full w-[45%]"></div>
-        </div>
-      </div>
+  <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+    <div
+      className="bg-green-400 h-2 rounded-full"
+      style={{ width: `${progresoSalud?.porcentajeAvance || 0}%` }}
+    ></div>
+  </div>
+</div>
 
-      <p>🔥 Racha: 1 día</p>
-      <p>📝 Resueltas: 20</p>
-      <p>🏆 Mejor resultado: 9/20</p>
+<p>🔥 Racha: {rachaEstudio} días</p>
+<p>📝 Resueltas: {progresoSalud?.avance || 0}</p>
+<p>
+  🏆 Mejor resultado: {progresoSalud?.mejorResultado || 0}/
+  {progresoSalud?.mejorTotal || 20}
+</p>
 
     </div>
   </div>
@@ -373,23 +379,28 @@ const rachaEstudio =
   <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
     <div className="space-y-2">
 
-      <p>📊 Precisión: 45%</p>
+    <p>📊 Precisión: {progresoGestion?.precision || 0}%</p>
 
-      <div>
-        <div className="flex justify-between">
-          <span>Progreso</span>
-          <span>45%</span>
-        </div>
+<div>
+  <div className="flex justify-between">
+    <span>Progreso</span>
+    <span>{progresoGestion?.porcentajeAvance || 0}%</span>
+  </div>
 
-        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
-          <div className="bg-green-400 h-2 rounded-full w-[45%]"></div>
-        </div>
-      </div>
+  <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+    <div
+      className="bg-green-400 h-2 rounded-full"
+      style={{ width: `${progresoGestion?.porcentajeAvance || 0}%` }}
+    ></div>
+  </div>
+</div>
 
-      <p>🔥 Racha: 1 día</p>
-      <p>📝 Resueltas: 20</p>
-      <p>🏆 Mejor resultado: 9/20</p>
-
+<p>🔥 Racha: {rachaEstudio} días</p>
+<p>📝 Resueltas: {progresoGestion?.avance || 0}</p>
+<p>
+  🏆 Mejor resultado: {progresoGestion?.mejorResultado || 0}/
+  {progresoGestion?.mejorTotal || 20}
+</p>
     </div>
   </div>
 </details>
@@ -402,22 +413,28 @@ const rachaEstudio =
   <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
     <div className="space-y-2">
 
-      <p>📊 Precisión: 45%</p>
+    <p>📊 Precisión: {progresoEtica?.precision || 0}%</p>
 
-      <div>
-        <div className="flex justify-between">
-          <span>Progreso</span>
-          <span>45%</span>
-        </div>
+<div>
+  <div className="flex justify-between">
+    <span>Progreso</span>
+    <span>{progresoEtica?.porcentajeAvance || 0}%</span>
+  </div>
 
-        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
-          <div className="bg-purple-400 h-2 rounded-full w-[45%]"></div>
-        </div>
-      </div>
+  <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+    <div
+      className="bg-green-400 h-2 rounded-full"
+      style={{ width: `${progresoEtica?.porcentajeAvance || 0}%` }}
+    ></div>
+  </div>
+</div>
 
-      <p>🔥 Racha: 1 día</p>
-      <p>📝 Resueltas: 20</p>
-      <p>🏆 Mejor resultado: 9/20</p>
+<p>🔥 Racha: {rachaEstudio} días</p>
+<p>📝 Resueltas: {progresoEtica?.avance || 0}</p>
+<p>
+  🏆 Mejor resultado: {progresoEtica?.mejorResultado || 0}/
+  {progresoEtica?.mejorTotal || 20}
+</p>
 
     </div>
   </div>
@@ -431,22 +448,28 @@ const rachaEstudio =
   <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
     <div className="space-y-2">
 
-      <p>📊 Precisión: 45%</p>
+    <p>📊 Precisión: {progresoInvestigacion?.precision || 0}%</p>
 
-      <div>
-        <div className="flex justify-between">
-          <span>Progreso</span>
-          <span>45%</span>
-        </div>
+<div>
+  <div className="flex justify-between">
+    <span>Progreso</span>
+    <span>{progresoInvestigacion?.porcentajeAvance || 0}%</span>
+  </div>
 
-        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
-          <div className="bg-orange-400 h-2 rounded-full w-[45%]"></div>
-        </div>
-      </div>
+  <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+    <div
+      className="bg-green-400 h-2 rounded-full"
+      style={{ width: `${progresoInvestigacion?.porcentajeAvance || 0}%` }}
+    ></div>
+  </div>
+</div>
 
-      <p>🔥 Racha: 1 día</p>
-      <p>📝 Resueltas: 20</p>
-      <p>🏆 Mejor resultado: 9/20</p>
+<p>🔥 Racha: {rachaEstudio} días</p>
+<p>📝 Resueltas: {progresoInvestigacion?.avance || 0}</p>
+<p>
+  🏆 Mejor resultado: {progresoInvestigacion?.mejorResultado || 0}/
+  {progresoInvestigacion?.mejorTotal || 20}
+</p>
 
     </div>
   </div>
@@ -460,22 +483,28 @@ const rachaEstudio =
   <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
     <div className="space-y-2">
 
-      <p>📊 Precisión: 45%</p>
+    <p>📊 Precisión: {progresoCuidado?.precision || 0}%</p>
 
-      <div>
-        <div className="flex justify-between">
-          <span>Progreso</span>
-          <span>45%</span>
-        </div>
+<div>
+  <div className="flex justify-between">
+    <span>Progreso</span>
+    <span>{progresoCuidado?.porcentajeAvance || 0}%</span>
+  </div>
 
-        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
-          <div className="bg-red-400 h-2 rounded-full w-[45%]"></div>
-        </div>
-      </div>
+  <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+    <div
+      className="bg-green-400 h-2 rounded-full"
+      style={{ width: `${progresoCuidado?.porcentajeAvance || 0}%` }}
+    ></div>
+  </div>
+</div>
 
-      <p>🔥 Racha: 1 día</p>
-      <p>📝 Resueltas: 20</p>
-      <p>🏆 Mejor resultado: 9/20</p>
+<p>🔥 Racha: {rachaEstudio} días</p>
+<p>📝 Resueltas: {progresoCuidado?.avance || 0}</p>
+<p>
+  🏆 Mejor resultado: {progresoCuidado?.mejorResultado || 0}/
+  {progresoCuidado?.mejorTotal || 20}
+</p>
 
     </div>
   </div>
@@ -489,22 +518,28 @@ const rachaEstudio =
   <div className="mt-2 ml-4 bg-white/10 rounded-xl p-3 text-sm">
     <div className="space-y-2">
 
-      <p>📊 Precisión: 45%</p>
+    <p>📊 Precisión: {progresoMixto?.precision || 0}%</p>
 
-      <div>
-        <div className="flex justify-between">
-          <span>Progreso</span>
-          <span>45%</span>
-        </div>
+<div>
+  <div className="flex justify-between">
+    <span>Progreso</span>
+    <span>{progresoMixto?.porcentajeAvance || 0}%</span>
+  </div>
 
-        <div className="w-full bg-white/20 rounded-full h-2 mt-1">
-          <div className="bg-blue-400 h-2 rounded-full w-[45%]"></div>
-        </div>
-      </div>
+  <div className="w-full bg-white/20 rounded-full h-2 mt-1">
+    <div
+      className="bg-green-400 h-2 rounded-full"
+      style={{ width: `${progresoMixto?.porcentajeAvance || 0}%` }}
+    ></div>
+  </div>
+</div>
 
-      <p>🔥 Racha: 1 día</p>
-      <p>📝 Resueltas: 20</p>
-      <p>🏆 Mejor resultado: 9/20</p>
+<p>🔥 Racha: {rachaEstudio} días</p>
+<p>📝 Resueltas: {progresoMixto?.avance || 0}</p>
+<p>
+  🏆 Mejor resultado: {progresoMixto?.mejorResultado || 0}/
+  {progresoMixto?.mejorTotal || 20}
+</p>
 
     </div>
   </div>
