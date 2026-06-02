@@ -581,6 +581,30 @@ const rachaEstudio =
           className="w-38 rounded-xl"
         />
       </div>
+      {/* FRANJA PREMIUM MÓVIL */}
+<div className="md:hidden bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-4 mb-5 shadow-sm flex items-center justify-between gap-3">
+  <div className="flex items-center gap-3">
+    <div className="w-14 h-14 rounded-full bg-yellow-500 text-white flex items-center justify-center text-3xl shadow-md">
+      👑
+    </div>
+
+    <div>
+      <h3 className="text-blue-950 font-extrabold text-base">
+        ¡Desbloquea todo el potencial!
+      </h3>
+      <p className="text-slate-700 text-sm leading-tight">
+        Accede a todos los simulacros, áreas y estadísticas.
+      </p>
+    </div>
+  </div>
+
+  <button
+    onClick={() => setMostrarPremium(true)}
+    className="bg-yellow-500 hover:bg-yellow-400 text-white font-extrabold px-4 py-3 rounded-xl text-sm shadow-md whitespace-nowrap"
+  >
+    ⭐ PREMIUM ›
+  </button>
+</div>
 
       <div className="grid grid-cols-3 gap-3 mt-5">
         <div className="border border-slate-300 rounded-2xl p-1 text-center">
