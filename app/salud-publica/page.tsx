@@ -202,10 +202,10 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
           <p className="text-xl mb-6">
             Puntaje: {correctas} / {preguntasTema.length}
           </p>
-          <div className="flex gap-4 mt-6 mb-6">
+          <div className="flex gap-2 mt-6 mb-6 justify-center">
   <Link
     href="/salud-publica/configurar"
-    className="bg-slate-600 hover:bg-slate-500 text-white px-5 py-3 rounded-xl font-bold"
+    className="bg-slate-600 hover:bg-slate-500 text-white px-3 py-3 rounded-xl font-bold text-sm"
   >
     ⬅️ Volver
   </Link>
@@ -217,14 +217,14 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
       setRevision(null);
       setSegundos(0);
     }}
-    className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl font-bold"
+    className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-3 rounded-xl font-bold text-sm"
   >
     🔄 Repetir examen
   </button>
 
   <Link
     href="/salud-publica/configurar"
-    className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-3 rounded-xl font-bold"
+   className="bg-purple-600 hover:bg-purple-500 text-white px-3 py-3 rounded-xl font-bold text-sm"
   >
     🎲 Nuevo examen
   </Link>
@@ -289,8 +289,14 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
 
   <div className="flex-1 bg-slate-900 text-white p-4 md:p-6">
   <div className="max-w-4xl mx-auto w-full">
+  <button
+  onClick={() => window.location.href = "/salud-publica/configurar"}
+  className="mb-4 text-slate-300 hover:text-white text-lg font-bold"
+>
+  ← Volver
+</button>
         <h1 className="text-4xl font-bold mb-2">
-          Mini simulacro: Salud Pública 
+          Simulacro: Salud Pública 
         </h1>
         {mostrarTemporizador && (
   <div className="sticky top-6 ml-auto mr-0 w-fit bg-blue-600 text-white px-5 py-3 rounded-2xl text-2xl font-bold">

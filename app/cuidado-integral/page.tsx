@@ -329,8 +329,14 @@ setRespuestas({
 
   <div className="flex-1 bg-slate-900 text-white p-6">
       <div className="max-w-4xl mx-auto">
+      <button
+  onClick={() => window.location.href = "/cuidado-integral/configurar"}
+  className="mb-4 text-slate-300 hover:text-white text-lg font-bold"
+>
+  ← Volver
+</button>
         <h1 className="text-4xl font-bold mb-2">
-          Mini simulacro: Cuidado Integral 
+          Simulacro: Cuidado Integral 
         </h1>
         {mostrarTemporizador && (
   <div className="sticky top-6 ml-auto mr-0 w-fit bg-blue-600 text-white px-5 py-3 rounded-2xl text-2xl font-bold">
