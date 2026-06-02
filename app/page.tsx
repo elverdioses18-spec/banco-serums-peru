@@ -1540,15 +1540,17 @@ if (!usuarioRegistrado) {
       </p>
 
       <div className="space-y-3 mb-6 text-lg">
-        <p>✅ Acceso a los simulacros </p>
+      <p>✅ Más de 2300 preguntas  </p>
+        <p>✅ simulacros ilimitados </p>
         <p>✅ Todas las áreas desbloqueadas</p>
+        <p>✅ Historial completo</p>
         <p>✅ Estadísticas y progreso completo</p>
         <p>✅ Reforzamiento inteligente</p>
         <p>✅ Acceso hasta en 2 dispositivos</p>
       </div>
 
       <div className="bg-yellow-100 border border-yellow-300 rounded-2xl p-4 mb-6 text-sm">
-        Para activar tu acceso, escríbenos por WhatsApp con el correo que usaste al registrarte.
+       S/.20
       </div>
 
       <a
