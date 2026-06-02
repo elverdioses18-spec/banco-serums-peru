@@ -547,7 +547,9 @@ const rachaEstudio =
   ❔
 </div>
           <p className="text-xs font-bold mt-1">Total</p>
-          <p className="text-xl font-extrabold">0</p>
+          <p className="text-xl font-extrabold">
+  {totalPreguntasResueltas}
+</p>
         </div>
 
         <div className="border border-slate-300 rounded-2xl p-1 text-center">
@@ -555,7 +557,9 @@ const rachaEstudio =
   🎯
 </div>
           <p className="text-xs font-bold mt-1">Precisión</p>
-          <p className="text-xl font-extrabold">0%</p>
+          <p className="text-xl font-extrabold">
+  {precisionPromedio}%
+</p>
         </div>
 
         <div className="border border-slate-300 rounded-2xl p-1 text-center">
@@ -563,7 +567,9 @@ const rachaEstudio =
   📅
 </div>
           <p className="text-xs font-bold mt-1">Racha</p>
-          <p className="text-xl font-extrabold">0 días</p>
+          <p className="text-xl font-extrabold">
+  {rachaEstudio} días
+</p>
           
         </div>
       </div>
