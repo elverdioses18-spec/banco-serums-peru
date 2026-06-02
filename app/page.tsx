@@ -1549,7 +1549,7 @@ if (!usuarioRegistrado) {
         <p>✅ Acceso hasta en 2 dispositivos</p>
       </div>
 
-      <div className="text-center bg-yellow-600 border border-yellow-300 rounded-2xl p-4 mb-6 text-sm">
+      <div className="text-center bg-yellow-100 border border-yellow-300 rounded-2xl p-4 mb-6 text-sm rounded-2xl text-lg">
        S/.20
       </div>
 
