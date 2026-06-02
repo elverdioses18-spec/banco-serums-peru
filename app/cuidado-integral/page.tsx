@@ -234,8 +234,8 @@ setRespuestas({
           <p className="text-xl mb-6">
             Puntaje: {correctas} / {preguntasTema.length}
           </p>
-          <div className="flex gap-4 mt-6 mb-6">
-  <Link href="/cuidado-integral/configurar" className="bg-slate-600 hover:bg-slate-500 text-white px-5 py-3 rounded-xl font-bold">
+          <div className="flex gap-2 mt-6 mb-6 justify-center">
+  <Link href="/cuidado-integral/configurar" className="bg-slate-600 hover:bg-slate-500 text-white px-3 py-3 rounded-xl font-bold text-sm">
     ⬅️ Volver
   </Link>
 
@@ -246,12 +246,12 @@ setRespuestas({
       setRevision(null);
       setSegundos(0);
     }}
-    className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl font-bold"
+    className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-3 rounded-xl font-bold text-sm"
   >
     🔄 Repetir examen
   </button>
 
-  <Link href="/gestion/configurar" className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-3 rounded-xl font-bold">
+  <Link href="/gestion/configurar" className="bg-purple-600 hover:bg-purple-500 text-white px-3 py-3 rounded-xl font-bold text-sm">
     🎲 Nuevo examen
   </Link>
 </div>
