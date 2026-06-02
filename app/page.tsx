@@ -189,17 +189,25 @@ const progresoActual =
   (progresoGestion?.avance || 0) +
   (progresoCuidado?.avance || 0) +
   (progresoInvestigacion?.avance || 0) +
-  (progresoEtica?.avance || 0);
+  (progresoEtica?.avance || 0) +
+  (progresoMixto?.avance || 0);
 
-const precisionPromedio = Math.round(
-  (
-    (progresoSalud?.precision || 0) +
-    (progresoGestion?.precision || 0) +
-    (progresoCuidado?.precision || 0) +
-    (progresoInvestigacion?.precision || 0) +
-    (progresoEtica?.precision || 0)
-  ) / 5
-);
+  const precisiones = [
+    progresoSalud?.precision,
+    progresoGestion?.precision,
+    progresoCuidado?.precision,
+    progresoInvestigacion?.precision,
+    progresoEtica?.precision,
+    progresoMixto?.precision,
+  ].filter((valor) => typeof valor === "number");
+  
+  const precisionPromedio =
+    precisiones.length > 0
+      ? Math.round(
+          precisiones.reduce((total, valor) => total + valor, 0) /
+            precisiones.length
+        )
+      : 0;
 const rachaEstudio =
   (
     progresoSalud?.ultimaPractica ||
