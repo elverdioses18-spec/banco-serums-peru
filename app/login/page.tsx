@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,24 +15,36 @@ export default function LoginPage() {
   const [nombreRegistro, setNombreRegistro] = useState("");
   const [correoRegistro, setCorreoRegistro] = useState("");
   const [passwordRegistro, setPasswordRegistro] = useState("");
-  const ingresar = () => {
+  const ingresar = async () => {
     if (!correo || !password) {
       alert("Completa tu correo y contraseña");
       return;
     }
-
+  
+    const { data, error } = await supabase
+      .from("usuarios")
+      .select("*")
+      .eq("correo", correo)
+      .single();
+  
+    if (error || !data) {
+      alert("Usuario no encontrado");
+      return;
+    }
+  
     localStorage.setItem(
       "usuarioActual",
       JSON.stringify({
         correo,
-        premium: true,
+        premium: data.premium,
       })
     );
-    
-    localStorage.setItem("premium", "true");
-    
-    router.push("/");
-
+  
+    localStorage.setItem(
+      "premium",
+      data.premium ? "true" : "false"
+    );
+  
     router.push("/");
   };
 
@@ -324,19 +337,27 @@ export default function LoginPage() {
         />
 
         <button
-          onClick={() => {
+        onClick={async () => {
             localStorage.setItem(
               "usuarioActual",
               JSON.stringify({
                 nombre: nombreRegistro,
                 correo: correoRegistro,
                 password: passwordRegistro,
-                premium: true,
+                premium: false,
               })
             );
             
-            localStorage.setItem("premium", "true");
-            
+            localStorage.setItem("premium", "false");
+            await supabase
+  .from("usuarios")
+  .insert([
+    {
+      nombre: nombreRegistro,
+      correo: correoRegistro,
+      premium: false,
+    },
+  ]);
             setMostrarRegistro(false);
             window.location.href = "/";
           }}

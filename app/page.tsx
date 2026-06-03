@@ -8,6 +8,7 @@ import { preguntasGestion } from "@/data/gestion";
 import { preguntasCuidadoIntegral } from "@/data/cuidadoIntegralData";
 import { preguntasInvestigacion } from "@/data/investigacionData";
 import { preguntasEtica } from "@/data/eticaData";
+import { supabase } from "@/lib/supabase";
 console.log(preguntasSaludPublica)
 
 import {
@@ -28,6 +29,7 @@ const temas = [
 ];
 
 export default function Home() {
+ 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [metaDiaria, setMetaDiaria] = useState<number>(50);
@@ -52,6 +54,11 @@ const [perfilCelular, setPerfilCelular] = useState("");
 const [perfilCiudad, setPerfilCiudad] = useState("");
 const [mensajePerfil, setMensajePerfil] = useState("");
 const [progresoPopup, setProgresoPopup] = useState<any>(null);
+const [mostrarPagoPremium, setMostrarPagoPremium] = useState(false);
+const [nombrePago, setNombrePago] = useState("");
+const [correoPago, setCorreoPago] = useState("");
+const [codigoPago, setCodigoPago] = useState("");
+const [voucherPago, setVoucherPago] = useState<File | null>(null);
 
 useEffect(() => {
   const usuario = localStorage.getItem("usuarioActual");
@@ -1803,16 +1810,153 @@ if (!usuarioRegistrado) {
        S/.20
       </div>
 
-      <a
-        href="https://wa.me/TUNUMERO?text=Hola,%20quiero%20adquirir%20el%20acceso%20Premium%20SERUMS.%20Mi%20correo%20registrado%20es:"
-        target="_blank"
-        className="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
-      >
-        Pagar
-      </a>
+      <button
+  onClick={() => setMostrarPagoPremium(true)}
+  className="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
+>
+  Pagar
+</button>
 
       </div>
 </div>
+)}
+{mostrarPagoPremium && (
+  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[99999] px-4">
+    <div className="bg-white text-slate-900 rounded-3xl p-6 w-full max-w-md relative shadow-2xl">
+      <button
+        onClick={() => setMostrarPagoPremium(false)}
+        className="absolute top-4 right-5 text-2xl font-bold text-slate-400 hover:text-slate-700"
+      >
+        ×
+      </button>
+
+      <h2 className="text-2xl font-extrabold mb-4 text-blue-950">
+        Pago Premium
+      </h2>
+
+      <p className="text-center font-bold text-slate-700 mb-2">
+        Escanea el QR con Yape
+      </p>
+
+      <img
+        src="/qr-yape.png"
+        alt="QR Yape"
+        className="w-40 mx-auto mb-4"
+      />
+
+      <input
+        type="text"
+        placeholder="Nombre de usuario"
+        value={nombrePago}
+        onChange={(e) => setNombrePago(e.target.value)}
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      <input
+        type="email"
+        placeholder="Correo electrónico"
+        value={correoPago}
+        onChange={(e) => setCorreoPago(e.target.value)}
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+      <input
+        type="text"
+        placeholder="Código de comprobante"
+        value={codigoPago}
+        onChange={(e) => setCodigoPago(e.target.value)}
+        className="w-full border border-slate-300 rounded-xl p-3 mb-3"
+      />
+
+<input
+  key={voucherPago ? voucherPago.name : "sin-voucher"}
+  type="file"
+  accept="image/*,.pdf"
+  id="voucher"
+  className="hidden"
+  onChange={(e) => setVoucherPago(e.target.files?.[0] || null)}
+/>
+
+<div className="mb-4">
+  {!voucherPago ? (
+    <label
+      htmlFor="voucher"
+      className="cursor-pointer block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl transition"
+    >
+      📎 Seleccionar archivo
+    </label>
+  ) : (
+    <div className="flex items-center justify-between bg-green-100 border border-green-300 rounded-xl px-4 py-3">
+      <span className="text-green-800 font-semibold truncate">
+        ✅ {voucherPago.name}
+      </span>
+
+      <button
+        type="button"
+        onClick={() => {
+          setVoucherPago(null);
+        }}
+        className="ml-3 text-red-500 hover:text-red-700 text-xl"
+      >
+        🗑️
+      </button>
+    </div>
+  )}
+</div>
+
+<button
+  onClick={async () => {
+    if (!voucherPago) {
+      alert("Debes adjuntar el voucher.");
+      return;
+    }
+    
+    const nombreArchivo = `${Date.now()}-${voucherPago.name}`;
+    
+    const { error: uploadError } = await supabase.storage
+      .from("vouchers-premium")
+      .upload(nombreArchivo, voucherPago);
+    
+    if (uploadError) {
+      alert("Error al subir voucher: " + uploadError.message);
+      return;
+    }
+    
+    const { data: urlData } = supabase.storage
+      .from("vouchers-premium")
+      .getPublicUrl(nombreArchivo);
+    
+    const { error } = await supabase
+      .from("solicitudes_premium")
+      .insert([
+        {
+          nombre: nombrePago,
+          correo: correoPago,
+          codigo_pago: codigoPago,
+          voucher_url: urlData.publicUrl,
+          estado: "pendiente",
+        },
+      ]);
+    
+    if (error) {
+      alert("Error al enviar solicitud: " + error.message);
+      return;
+    }
+    
+    alert("Solicitud enviada correctamente.");
+    
+    setNombrePago("");
+    setCorreoPago("");
+    setCodigoPago("");
+    setVoucherPago(null);
+    setMostrarPagoPremium(false);
+  }}
+  className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
+>
+  Enviar solicitud
+</button>
+    </div>
+  </div>
 )}
 </main>
 );
