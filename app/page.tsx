@@ -869,7 +869,7 @@ const rachaEstudio =
               
                 onClick={(e) => {
                   const progreso = JSON.parse(
-                    localStorage.getItem(tema.progresoKey) || "{}"
+                    localStorage.getItem(userKey(tema.progresoKey)) || "{}"
                   );
                 
                   setProgresoPopup(progreso);
