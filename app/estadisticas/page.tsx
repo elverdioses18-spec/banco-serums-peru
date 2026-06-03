@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { userKey } from "@/lib/storageUsuario";
 
 export default function EstadisticasPage() {
   const [historial, setHistorial] = useState<any[]>([]);
 
   useEffect(() => {
-    const datos = JSON.parse(localStorage.getItem("historialExamenes") || "[]");
+    const datos = JSON.parse(localStorage.getItem(userKey("historialExamenes")) || "[]");
     setHistorial(datos);
   }, []);
 

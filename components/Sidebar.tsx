@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { userKey } from "@/lib/storageUsuario";
 import { useRouter } from "next/navigation";
 import {
   Users,
@@ -61,7 +62,7 @@ const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
 
     const actualizarFalladas = () => {
       const falladas = JSON.parse(
-        localStorage.getItem("preguntasFalladas") || "[]"
+        localStorage.getItem(userKey("preguntasFalladas")) || "[]"
       );
   
       setCantidadFalladas(falladas.length);

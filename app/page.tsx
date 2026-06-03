@@ -72,7 +72,7 @@ useEffect(() => {
   const metaGuardada = Number(localStorage.getItem("metaDiaria") ?? "50");
 
   const historial = JSON.parse(
-    localStorage.getItem("historialExamenes") || "[]"
+    localStorage.getItem(userKey("historialExamenes")) || "[]"
   );
 
   const hoy = new Date().toLocaleDateString("es-PE");
@@ -136,7 +136,7 @@ if (dataInvestigacion) {
   setProgresoInvestigacion(JSON.parse(dataInvestigacion));
 }
 
-const dataEtica = localStorage.getItem("progresoEtica");
+const dataEtica = localStorage.getItem(userKey("progresoEtica"));
 if (dataEtica) {
   setProgresoEtica(JSON.parse(dataEtica));
 }

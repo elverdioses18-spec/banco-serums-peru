@@ -128,7 +128,7 @@ const esCorrecta = alternativa === preguntaActual.correcta;
 const estadisticasTema =
   typeof window !== "undefined"
     ? JSON.parse(
-        localStorage.getItem("estadisticasPorTema") || "{}"
+        localStorage.getItem(userKey("estadisticasPorTema")) || "{}"
       )
     : {};
 
@@ -146,7 +146,7 @@ if (esCorrecta) {
 }
 
 localStorage.setItem(
-  "estadisticasPorTema",
+  userKey("estadisticasPorTema"),
   JSON.stringify(estadisticasTema)
 );
 

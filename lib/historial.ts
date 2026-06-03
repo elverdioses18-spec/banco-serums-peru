@@ -30,7 +30,7 @@ export function guardarHistorialExamen({
     const historialActualizado = [nuevoRegistro, ...historialActual].slice(0, 100);
   
     localStorage.setItem(
-      userKey("historialExamenes"),
+      userKey(userKey("historialExamenes")),
       JSON.stringify(historialActualizado)
     );
   }

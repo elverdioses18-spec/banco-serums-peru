@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { userKey } from "@/lib/storageUsuario";
 
 type Flashcard = {
   id: number;
@@ -18,7 +19,7 @@ export default function FlashcardsPage() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
 
   useEffect(() => {
-    const guardadas = JSON.parse(localStorage.getItem("flashcards") || "[]");
+    const guardadas = JSON.parse(localStorage.getItem(userKey("flashcards")) || "[]");
     setFlashcards(guardadas);
   }, []);
 
@@ -44,7 +45,7 @@ return;
     const actualizadas = [nueva, ...flashcards];
 
     setFlashcards(actualizadas);
-    localStorage.setItem("flashcards", JSON.stringify(actualizadas));
+    localStorage.setItem(userKey("flashcards"), JSON.stringify(actualizadas));
 
     setFrente("");
     setReverso("");
@@ -53,7 +54,7 @@ return;
   const eliminarFlashcard = (id: number) => {
     const actualizadas = flashcards.filter((card) => card.id !== id);
     setFlashcards(actualizadas);
-    localStorage.setItem("flashcards", JSON.stringify(actualizadas));
+    localStorage.setItem(userKey("flashcards"), JSON.stringify(actualizadas));
   };
 
   const filtradas = flashcards.filter((card) => card.tema === tema);

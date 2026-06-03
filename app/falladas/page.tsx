@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { userKey } from "@/lib/storageUsuario";
 
 export default function FalladasPage() {
   const [falladas, setFalladas] = useState<any[]>([]);
 
   useEffect(() => {
-    const guardadas = localStorage.getItem("preguntasFalladas");
+    const guardadas = localStorage.getItem(userKey("preguntasFalladas"));
 
     if (guardadas) {
       setFalladas(JSON.parse(guardadas));
@@ -66,7 +67,7 @@ export default function FalladasPage() {
       if (i === pregunta.correcta) {
         const nuevasFalladas = falladas.filter((_, pos) => pos !== index);
         setFalladas(nuevasFalladas);
-        localStorage.setItem("preguntasFalladas", JSON.stringify(nuevasFalladas));
+        localStorage.setItem(userKey("preguntasFalladas"), JSON.stringify(nuevasFalladas));
       } else {
         alert("Respuesta incorrecta. Inténtalo otra vez.");
       }

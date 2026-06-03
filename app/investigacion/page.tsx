@@ -120,7 +120,7 @@ useEffect(() => {
       const esCorrecta = alternativa === preguntaActual.correcta;
       
       const estadisticasTema = JSON.parse(
-        localStorage.getItem("estadisticasPorTema") || "{}"
+        localStorage.getItem(userKey("estadisticasPorTema")) || "{}"
       );
       
       if (!estadisticasTema[temaPregunta]) {
@@ -137,7 +137,7 @@ useEffect(() => {
       }
       
       localStorage.setItem(
-        "estadisticasPorTema",
+        userKey("estadisticasPorTema"),
         JSON.stringify(estadisticasTema)
       );
       setRespuestas({

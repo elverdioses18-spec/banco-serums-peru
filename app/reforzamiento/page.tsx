@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { userKey } from "@/lib/storageUsuario";
 
 
+
 export default function ReforzamientoPage() {
   const [areas, setAreas] = useState<any[]>([]);
   const [falladas, setFalladas] = useState(0);
@@ -29,7 +30,7 @@ export default function ReforzamientoPage() {
       },
       {
         nombre: "Ética",
-        progreso: JSON.parse(localStorage.getItem("progresoEtica") || "null"),
+        progreso: JSON.parse(localStorage.getItem(userKey("progresoEtica")) || "null"),
       },
     ];
 
@@ -46,7 +47,7 @@ export default function ReforzamientoPage() {
     setAreas(areasProcesadas);
 
     const preguntasFalladas = JSON.parse(
-      localStorage.getItem("preguntasFalladas") || "[]"
+      localStorage.getItem(userKey("preguntasFalladas")) || "[]"
     );
 
     setFalladas(preguntasFalladas.length);
@@ -65,7 +66,7 @@ export default function ReforzamientoPage() {
   const areaRecomendada = areasConMasErrores[0]
   const estadisticasTema =
   typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("estadisticasPorTema") || "{}")
+    ? JSON.parse(localStorage.getItem(userKey("estadisticasPorTema")) || "{}")
     : {};
   
   const temasDebiles = Object.entries(estadisticasTema)

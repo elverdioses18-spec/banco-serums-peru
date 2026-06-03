@@ -96,7 +96,7 @@ export default function AjustesPage() {
 
         <button
           onClick={() => {
-            localStorage.removeItem("preguntasFalladas");
+            localStorage.removeItem(userKey("preguntasFalladas"));
             alert("Preguntas falladas eliminadas");
           }}
           className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-xl font-bold"
@@ -118,12 +118,12 @@ export default function AjustesPage() {
 
             localStorage.removeItem(userKey("progresoGestion"));
             localStorage.removeItem(userKey("progresoCuidado"));
-            localStorage.removeItem("progresoEtica");
+            localStorage.removeItem(userKey("progresoEtica"));
             localStorage.removeItem(userKey("progresoInvestigacion"));
             localStorage.removeItem(userKey("progresoSaludPublica"));
             localStorage.removeItem(userKey("progresoMixto"));
 
-            localStorage.removeItem("historialExamenes");
+            localStorage.removeItem(userKey("historialExamenes"));
 
             alert("Progreso reiniciado");
 

@@ -128,7 +128,7 @@ useEffect(() => {
     const esCorrecta = alternativa === preguntaActual.correcta;
     
     const estadisticasTema = JSON.parse(
-      localStorage.getItem("estadisticasPorTema") || "{}"
+      localStorage.getItem(userKey("estadisticasPorTema")) || "{}"
     );
     
     if (!estadisticasTema[temaPregunta]) {
@@ -145,7 +145,7 @@ useEffect(() => {
     }
     
     localStorage.setItem(
-      "estadisticasPorTema",
+      userKey("estadisticasPorTema"),
       JSON.stringify(estadisticasTema)
     );
     setRespuestas({
@@ -387,7 +387,7 @@ useEffect(() => {
             );
           
             const progresoAnterior = JSON.parse(
-              localStorage.getItem("progresoEtica") || "{}"
+              localStorage.getItem(userKey("progresoEtica")) || "{}"
             );
           
             const avanceAnterior = progresoAnterior.avance || 0;
@@ -417,7 +417,7 @@ useEffect(() => {
             };
           
             localStorage.setItem(
-              "progresoEtica",
+              userKey("progresoEtica"),
               JSON.stringify(progreso)
             );
           }}

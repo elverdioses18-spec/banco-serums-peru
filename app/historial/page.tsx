@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { userKey } from "@/lib/storageUsuario";
 
 export default function HistorialPage() {
   const [historial, setHistorial] = useState<any[]>([]);
@@ -9,7 +10,7 @@ export default function HistorialPage() {
 const [ordenNota, setOrdenNota] = useState("reciente");
 
   useEffect(() => {
-    const guardado = localStorage.getItem("historialExamenes");
+    const guardado = localStorage.getItem(userKey("historialExamenes"));
 
     if (guardado) {
       setHistorial(JSON.parse(guardado));

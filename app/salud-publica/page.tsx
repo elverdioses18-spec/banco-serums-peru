@@ -99,7 +99,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
       const esCorrecta = alternativa === preguntaActual.correcta;
       
       const estadisticasTema = JSON.parse(
-        localStorage.getItem("estadisticasPorTema") || "{}"
+        localStorage.getItem(userKey("estadisticasPorTema")) || "{}"
       );
       
       if (!estadisticasTema[temaPregunta]) {
@@ -116,7 +116,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
       }
       
       localStorage.setItem(
-        "estadisticasPorTema",
+        userKey("estadisticasPorTema"),
         JSON.stringify(estadisticasTema)
       );
       setRespuestas({
