@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
+
 export default function AdminPage() {
   const [solicitudes, setSolicitudes] = useState<any[]>([]);
   const [cargando, setCargando] = useState(true);
+  
 
   const cargarSolicitudes = async () => {
     setCargando(true);
