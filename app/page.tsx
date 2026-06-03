@@ -341,17 +341,23 @@ const rachaEstudio =
         <p className="text-sm text-blue-100">Menú principal</p>
       </div>
 
-      <label
-        htmlFor="menu-mobile"
-        className="text-4xl font-bold cursor-pointer"
-      >
+      <button
+  onClick={() => {
+    const menu = document.getElementById(
+      "menu-mobile"
+    ) as HTMLInputElement;
+
+    if (menu) menu.checked = false;
+  }}
+  className="text-4xl font-bold"
+>
         ×
-      </label>
+        </button>
     </div>
 
     <div className="space-y-4 text-lg font-bold">
     <Link href="/" className="block">🏠 Inicio</Link>
-    <details className="block">
+    <details className="block" onClick={(e) => e.stopPropagation()}>
   <summary className="cursor-pointer list-none py-2">
     👥 Salud Pública
   </summary>
@@ -386,7 +392,7 @@ const rachaEstudio =
   </div>
 </details>
 
-<details className="block">
+<details className="block" onClick={(e) => e.stopPropagation()}>
   <summary className="cursor-pointer list-none py-2">
     🏢 Gestión
   </summary>
@@ -420,7 +426,7 @@ const rachaEstudio =
   </div>
 </details>
 
-<details className="block">
+<details className="block" onClick={(e) => e.stopPropagation()}>
   <summary className="cursor-pointer list-none py-2">
     ⚖️ Ética
   </summary>
@@ -455,7 +461,7 @@ const rachaEstudio =
   </div>
 </details>
 
-<details className="block">
+<details className="block" onClick={(e) => e.stopPropagation()}>
   <summary className="cursor-pointer list-none py-2">
     🧪 Investigación
   </summary>
@@ -490,7 +496,7 @@ const rachaEstudio =
   </div>
 </details>
 
-<details className="block">
+<details className="block" onClick={(e) => e.stopPropagation()}>
   <summary className="cursor-pointer list-none py-2">
     💛 Cuidado Integral
   </summary>
@@ -525,7 +531,7 @@ const rachaEstudio =
   </div>
 </details>
 
-<details className="block">
+<details className="block" onClick={(e) => e.stopPropagation()}>
   <summary className="cursor-pointer list-none py-2">
     🔥 Simulacro Mixto
   </summary>
