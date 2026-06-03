@@ -7,7 +7,9 @@ import { supabase } from "@/lib/supabase";
 export default function AdminPage() {
   const [solicitudes, setSolicitudes] = useState<any[]>([]);
   const [cargando, setCargando] = useState(true);
-  
+  const [autorizado, setAutorizado] = useState(false);
+const [passwordAdmin, setPasswordAdmin] = useState("");
+const [errorAdmin, setErrorAdmin] = useState("");
 
   const cargarSolicitudes = async () => {
     setCargando(true);
@@ -55,7 +57,44 @@ export default function AdminPage() {
     alert("Premium aprobado correctamente.");
     cargarSolicitudes();
   };
-
+  if (!autorizado) {
+    return (
+      <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
+        <div className="bg-slate-800 p-8 rounded-3xl max-w-md w-full shadow-2xl">
+          <h1 className="text-3xl font-extrabold mb-4 text-center">
+            Acceso Admin
+          </h1>
+  
+          <input
+            type="password"
+            placeholder="Contraseña de administrador"
+            value={passwordAdmin}
+            onChange={(e) => setPasswordAdmin(e.target.value)}
+            className="w-full p-4 rounded-xl text-slate-900 mb-3"
+          />
+  
+          {errorAdmin && (
+            <p className="text-red-400 text-sm font-bold mb-3">
+              {errorAdmin}
+            </p>
+          )}
+  
+          <button
+            onClick={() => {
+              if (passwordAdmin === "BSP-Admin-2026-Peru!") {
+                setAutorizado(true);
+              } else {
+                setErrorAdmin("Contraseña incorrecta.");
+              }
+            }}
+            className="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-xl font-bold"
+          >
+            Ingresar
+          </button>
+        </div>
+      </main>
+    );
+  }
   return (
     <main className="min-h-screen bg-slate-950 text-white p-6">
       <div className="max-w-5xl mx-auto">
