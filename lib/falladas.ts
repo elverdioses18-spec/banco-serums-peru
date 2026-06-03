@@ -1,6 +1,7 @@
+import { userKey } from "./storageUsuario";
 export function guardarFalladas(preguntas: any[], respuestas: any) {
   const falladasGuardadas = JSON.parse(
-    localStorage.getItem("preguntasFalladas") || "[]"
+    localStorage.getItem(userKey("preguntasFalladas")) || "[]"
   );
 
   const nuevasFalladas = preguntas.filter(
@@ -29,7 +30,7 @@ export function guardarFalladas(preguntas: any[], respuestas: any) {
   });
 
   localStorage.setItem(
-    "preguntasFalladas",
+    userKey("preguntasFalladas"),
     JSON.stringify(actualizadas)
   );
 }

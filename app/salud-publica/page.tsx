@@ -9,6 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import { preguntas } from "@/data/preguntas";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
+import { userKey } from "@/lib/storageUsuario";
 
 function SaludPublicaContent() {
   const router = useRouter();
@@ -34,7 +35,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -90,8 +91,8 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
       if (finalizado) return;
     
       if (respuestas[numeroPregunta] === undefined) {
-        const usadas = Number(localStorage.getItem("preguntasUsadasGratis") || "0");
-        localStorage.setItem("preguntasUsadasGratis", String(usadas + 1));
+        const usadas = Number(localStorage.getItem(userKey("preguntasUsadasGratis")) || "0");
+        localStorage.setItem(userKey("preguntasUsadasGratis"), String(usadas + 1));
       }
       const preguntaActual = preguntasTema[numeroPregunta];
       const temaPregunta = preguntaActual.tema || "Sin tema";
@@ -357,7 +358,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
             );
           
             const progresoAnterior = JSON.parse(
-              localStorage.getItem("progresoSaludPublica") || "{}"
+              localStorage.getItem(userKey("progresoSaludPublica")) || "{}"
             );
             
             const avanceAnterior = progresoAnterior.avance || 0;
@@ -389,7 +390,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
             };
           
             localStorage.setItem(
-              "progresoSaludPublica",
+              userKey("progresoSaludPublica"),
               JSON.stringify(progreso)
             );
           }}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { userKey } from "@/lib/storageUsuario";
 
 export default function AjustesPage() {
 
@@ -115,12 +116,12 @@ export default function AjustesPage() {
         <button
           onClick={() => {
 
-            localStorage.removeItem("progresoGestion");
-            localStorage.removeItem("progresoCuidado");
+            localStorage.removeItem(userKey("progresoGestion"));
+            localStorage.removeItem(userKey("progresoCuidado"));
             localStorage.removeItem("progresoEtica");
-            localStorage.removeItem("progresoInvestigacion");
-            localStorage.removeItem("progresoSaludPublica");
-            localStorage.removeItem("progresoMixto");
+            localStorage.removeItem(userKey("progresoInvestigacion"));
+            localStorage.removeItem(userKey("progresoSaludPublica"));
+            localStorage.removeItem(userKey("progresoMixto"));
 
             localStorage.removeItem("historialExamenes");
 

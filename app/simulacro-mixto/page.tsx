@@ -13,6 +13,7 @@ import { preguntasEtica } from "@/data/eticaData";
 
 import { guardarFalladas } from "../../lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
+import { userKey } from "@/lib/storageUsuario";
 
 export default function SimulacroMixtoPage(){
   
@@ -61,7 +62,7 @@ export default function SimulacroMixtoPage(){
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -85,7 +86,7 @@ export default function SimulacroMixtoPage(){
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -125,8 +126,8 @@ export default function SimulacroMixtoPage(){
       if (finalizado) return;
     
       if (respuestas[numeroPregunta] === undefined) {
-        const usadas = Number(localStorage.getItem("preguntasUsadasGratis") || "0");
-        localStorage.setItem("preguntasUsadasGratis", String(usadas + 1));
+        const usadas = Number(localStorage.getItem(userKey("preguntasUsadasGratis")) || "0");
+        localStorage.setItem(userKey("preguntasUsadasGratis"), String(usadas + 1));
       }
     
       setRespuestas({
@@ -369,7 +370,7 @@ export default function SimulacroMixtoPage(){
             );
           
             const progresoAnterior = JSON.parse(
-              localStorage.getItem("progresoMixto") || "{}"
+              localStorage.getItem(userKey("progresoMixto")) || "{}"
             );
           
             const avanceAnterior = progresoAnterior.avance || 0;
@@ -399,7 +400,7 @@ export default function SimulacroMixtoPage(){
             };
           
             localStorage.setItem(
-              "progresoMixto",
+              userKey("progresoMixto"),
               JSON.stringify(progreso)
             );
           }}

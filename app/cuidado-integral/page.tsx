@@ -9,6 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import { preguntasCuidadoIntegral } from "@/data/cuidadoIntegralData";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
+import { userKey } from "@/lib/storageUsuario";
 
 function CuidadoIntegralContent() {
   const searchParams = useSearchParams();
@@ -34,7 +35,7 @@ useEffect(() => {
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -58,7 +59,7 @@ useEffect(() => {
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -116,8 +117,8 @@ useEffect(() => {
       if (finalizado) return;
     
       if (respuestas[numeroPregunta] === undefined) {
-        const usadas = Number(localStorage.getItem("preguntasUsadasGratis") || "0");
-        localStorage.setItem("preguntasUsadasGratis", String(usadas + 1));
+        const usadas = Number(localStorage.getItem(userKey("preguntasUsadasGratis")) || "0");
+        localStorage.setItem(userKey("preguntasUsadasGratis"), String(usadas + 1));
       }
     
       const preguntaActual = preguntasTema[numeroPregunta];
@@ -387,7 +388,7 @@ setRespuestas({
     const precision = Math.round((correctas / preguntasTema.length) * 100);
 
     const progresoAnterior = JSON.parse(
-      localStorage.getItem("progresoCuidado") || "{}"
+      localStorage.getItem(userKey("progresoCuidado")) || "{}"
     );
 
     const avanceAnterior = progresoAnterior.avance || 0;
@@ -416,7 +417,7 @@ setRespuestas({
       mejorTotal: preguntasTema.length,
     };
 
-    localStorage.setItem("progresoCuidado", JSON.stringify(progreso));
+    localStorage.setItem(userKey("progresoCuidado"), JSON.stringify(progreso));
   }}
           disabled={totalRespondidas < preguntasTema.length}
           className={`mt-8 w-full p-4 rounded-2xl text-xl font-bold ${

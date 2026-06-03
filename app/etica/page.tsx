@@ -9,6 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import { preguntasEtica } from "@/data/eticaData";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
+import { userKey } from "@/lib/storageUsuario";
 
 function EticaContent() {
   const searchParams = useSearchParams();
@@ -34,7 +35,7 @@ useEffect(() => {
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -58,7 +59,7 @@ useEffect(() => {
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -114,11 +115,11 @@ useEffect(() => {
   
     if (respuestas[numeroPregunta] === undefined) {
       const usadas = Number(
-        localStorage.getItem("preguntasUsadasGratis") || "0"
+        localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
       );
   
       localStorage.setItem(
-        "preguntasUsadasGratis",
+        userKey("preguntasUsadasGratis"),
         String(usadas + 1)
       );
     }

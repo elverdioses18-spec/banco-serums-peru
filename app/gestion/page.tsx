@@ -9,6 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import { preguntasGestion } from "@/data/gestion";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
+import { userKey } from "@/lib/storageUsuario";
 
 
 function GestionContent() {
@@ -35,7 +36,7 @@ useEffect(() => {
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -59,7 +60,7 @@ useEffect(() => {
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
@@ -115,11 +116,11 @@ useEffect(() => {
     
       if (respuestas[numeroPregunta] === undefined) {
         const usadas = Number(
-          localStorage.getItem("preguntasUsadasGratis") || "0"
+          localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
         );
     
         localStorage.setItem(
-          "preguntasUsadasGratis",
+          userKey("preguntasUsadasGratis"),
           String(usadas + 1)
         );
       }
@@ -360,7 +361,7 @@ useEffect(() => {
             );
           
             const progresoAnterior = JSON.parse(
-              localStorage.getItem("progresoGestion") || "{}"
+              localStorage.getItem(userKey("progresoGestion")) || "{}"
             );
           
             const avanceAnterior = progresoAnterior.avance || 0;
@@ -390,7 +391,7 @@ useEffect(() => {
             };
           
             localStorage.setItem(
-              "progresoGestion",
+              userKey("progresoGestion"),
               JSON.stringify(progreso)
             );
           }}

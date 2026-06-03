@@ -1,3 +1,4 @@
+import { userKey } from "./storageUsuario";
 export function guardarHistorialExamen({
     tema,
     totalPreguntas,
@@ -8,7 +9,7 @@ export function guardarHistorialExamen({
     correctas: number;
   }) {
     const historialActual = JSON.parse(
-      localStorage.getItem("historialExamenes") || "[]"
+      localStorage.getItem(userKey("historialExamenes")) || "[]"
     );
   
     const nota = Number(((correctas / totalPreguntas) * 20).toFixed(2));
@@ -29,7 +30,7 @@ export function guardarHistorialExamen({
     const historialActualizado = [nuevoRegistro, ...historialActual].slice(0, 100);
   
     localStorage.setItem(
-      "historialExamenes",
+      userKey("historialExamenes"),
       JSON.stringify(historialActualizado)
     );
   }

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { userKey } from "@/lib/storageUsuario";
+
 
 export default function ReforzamientoPage() {
   const [areas, setAreas] = useState<any[]>([]);
@@ -11,19 +13,19 @@ export default function ReforzamientoPage() {
     const datos = [
       {
         nombre: "Gestión",
-        progreso: JSON.parse(localStorage.getItem("progresoGestion") || "null"),
+        progreso: JSON.parse(localStorage.getItem(userKey("progresoGestion")) || "null"),
       },
       {
         nombre: "Investigación",
-        progreso: JSON.parse(localStorage.getItem("progresoInvestigacion") || "null"),
+        progreso: JSON.parse(localStorage.getItem(userKey("progresoInvestigacion")) || "null"),
       },
       {
         nombre: "Salud Pública",
-        progreso: JSON.parse(localStorage.getItem("progresoSaludPublica") || "null"),
+        progreso: JSON.parse(localStorage.getItem(userKey("progresoSaludPublica")) || "null"),
       },
       {
         nombre: "Cuidado Integral",
-        progreso: JSON.parse(localStorage.getItem("progresoCuidado") || "null"),
+        progreso: JSON.parse(localStorage.getItem(userKey("progresoCuidado")) || "null"),
       },
       {
         nombre: "Ética",

@@ -16,7 +16,9 @@ export default function LoginPage() {
   const [correoRegistro, setCorreoRegistro] = useState("");
   const [passwordRegistro, setPasswordRegistro] = useState("");
   const ingresar = async () => {
-    if (!correo || !password) {
+    const correoLimpio = correo.trim().toLowerCase();
+  
+    if (!correoLimpio || !password) {
       alert("Completa tu correo y contraseña");
       return;
     }
@@ -24,7 +26,7 @@ export default function LoginPage() {
     const { data, error } = await supabase
       .from("usuarios")
       .select("*")
-      .eq("correo", correo)
+      .eq("correo", correoLimpio)
       .single();
   
     if (error || !data) {
@@ -32,10 +34,16 @@ export default function LoginPage() {
       return;
     }
   
+    if (data.password !== password) {
+      alert("Contraseña incorrecta");
+      return;
+    }
+  
     localStorage.setItem(
       "usuarioActual",
       JSON.stringify({
-        correo,
+        nombre: data.nombre,
+        correo: data.correo,
         premium: data.premium,
       })
     );

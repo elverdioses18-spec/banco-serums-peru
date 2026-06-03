@@ -9,6 +9,8 @@ import { preguntasCuidadoIntegral } from "@/data/cuidadoIntegralData";
 import { preguntasInvestigacion } from "@/data/investigacionData";
 import { preguntasEtica } from "@/data/eticaData";
 import { supabase } from "@/lib/supabase";
+import { userKey } from "@/lib/storageUsuario";
+
 console.log(preguntasSaludPublica)
 
 import {
@@ -114,22 +116,22 @@ const [mostrarBloqueoPremium, setMostrarBloqueoPremium] = useState(false);
 
 const LIMITE_GRATIS = 20;
 useEffect(() => {
-  const data = localStorage.getItem("progresoSaludPublica");
+  const data = localStorage.getItem(userKey("progresoSaludPublica"));
 
   if (data) {
     setProgresoSalud(JSON.parse(data));
   }
-  const dataCuidado = localStorage.getItem("progresoCuidado");
+  const dataCuidado = localStorage.getItem(userKey("progresoCuidado"));
 
 if (dataCuidado) {
   setProgresoCuidado(JSON.parse(dataCuidado));
 }
-const dataGestion = localStorage.getItem("progresoGestion");
+const dataGestion = localStorage.getItem(userKey("progresoGestion"));
 if (dataGestion) {
   setProgresoGestion(JSON.parse(dataGestion));
 }
 
-const dataInvestigacion = localStorage.getItem("progresoInvestigacion");
+const dataInvestigacion = localStorage.getItem(userKey("progresoInvestigacion"));
 if (dataInvestigacion) {
   setProgresoInvestigacion(JSON.parse(dataInvestigacion));
 }
@@ -139,7 +141,7 @@ if (dataEtica) {
   setProgresoEtica(JSON.parse(dataEtica));
 }
 
-const dataMixto = localStorage.getItem("progresoMixto");
+const dataMixto = localStorage.getItem(userKey("progresoMixto"));
 if (dataMixto) {
   setProgresoMixto(JSON.parse(dataMixto));
 }
@@ -1270,7 +1272,7 @@ const rachaEstudio =
                   <button
   onClick={() => {
     const preguntasRespondidas = Number(
-      localStorage.getItem("preguntasUsadasGratis") || "0"
+      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
     const usuarioRegistrado = localStorage.getItem("usuarioActual");
 
