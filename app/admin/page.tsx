@@ -10,7 +10,8 @@ export default function AdminPage() {
   const [autorizado, setAutorizado] = useState(false);
 const [passwordAdmin, setPasswordAdmin] = useState("");
 const [errorAdmin, setErrorAdmin] = useState("");
-
+const [filtroEstado, setFiltroEstado] = useState("todos");
+const [busquedaCorreo, setBusquedaCorreo] = useState("");
   const cargarSolicitudes = async () => {
     setCargando(true);
 
@@ -81,7 +82,7 @@ const [errorAdmin, setErrorAdmin] = useState("");
   
           <button
             onClick={() => {
-              if (passwordAdmin === "BSP-Admin-2026-Peru!") {
+              if (passwordAdmin === "tuopiytuopiyD18elverdioses") {
                 setAutorizado(true);
               } else {
                 setErrorAdmin("Contraseña incorrecta.");
@@ -95,20 +96,49 @@ const [errorAdmin, setErrorAdmin] = useState("");
       </main>
     );
   }
+  const solicitudesFiltradas = solicitudes.filter((item) => {
+    const coincideEstado =
+      filtroEstado === "todos" ? true : item.estado === filtroEstado;
+  
+    const coincideCorreo = item.correo
+      ?.toLowerCase()
+      .includes(busquedaCorreo.toLowerCase());
+  
+    return coincideEstado && coincideCorreo;
+  });
   return (
     <main className="min-h-screen bg-slate-950 text-white p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-extrabold mb-6">
           Panel Admin - Solicitudes Premium
         </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+  <select
+    value={filtroEstado}
+    onChange={(e) => setFiltroEstado(e.target.value)}
+    className="bg-slate-800 border border-slate-700 text-white p-3 rounded-xl"
+  >
+    <option value="todos">Todos</option>
+    <option value="pendiente">Pendientes</option>
+    <option value="aprobado">Aprobados</option>
+    <option value="rechazado">Rechazados</option>
+  </select>
 
+  <input
+    type="text"
+    placeholder="Buscar por correo..."
+    value={busquedaCorreo}
+    onChange={(e) => setBusquedaCorreo(e.target.value)}
+    className="bg-slate-800 border border-slate-700 text-white p-3 rounded-xl"
+  />
+</div>
         {cargando ? (
           <p>Cargando solicitudes...</p>
         ) : solicitudes.length === 0 ? (
           <p>No hay solicitudes todavía.</p>
         ) : (
           <div className="space-y-4">
-            {solicitudes.map((item) => (
+            {solicitudesFiltradas.map((item) => (
               <div
                 key={item.id}
                 className="bg-slate-800 rounded-2xl p-5 border border-slate-700"

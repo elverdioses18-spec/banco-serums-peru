@@ -337,30 +337,61 @@ export default function LoginPage() {
         />
 
         <button
-        onClick={async () => {
-            localStorage.setItem(
-              "usuarioActual",
-              JSON.stringify({
-                nombre: nombreRegistro,
-                correo: correoRegistro,
-                password: passwordRegistro,
-                premium: false,
-              })
-            );
-            
-            localStorage.setItem("premium", "false");
-            await supabase
-  .from("usuarios")
-  .insert([
-    {
-      nombre: nombreRegistro,
-      correo: correoRegistro,
-      premium: false,
-    },
-  ]);
-            setMostrarRegistro(false);
-            window.location.href = "/";
-          }}
+       onClick={async () => {
+        const correoLimpio = correoRegistro.trim().toLowerCase();
+        const nombreLimpio = nombreRegistro.trim();
+      
+        const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoLimpio);
+      
+        if (!nombreLimpio || !correoLimpio || !passwordRegistro.trim()) {
+          alert("Completa nombre, correo y contraseña.");
+          return;
+        }
+      
+        if (!correoValido) {
+          alert("Ingresa un correo válido.");
+          return;
+        }
+      
+        if (passwordRegistro.length < 6) {
+          alert("La contraseña debe tener mínimo 6 caracteres.");
+          return;
+        }
+      
+        const { data: usuarioExistente } = await supabase
+          .from("usuarios")
+          .select("correo")
+          .eq("correo", correoLimpio)
+          .maybeSingle();
+      
+        if (usuarioExistente) {
+          alert("Este correo ya está registrado.");
+          return;
+        }
+      
+        const { error } = await supabase
+          .from("usuarios")
+          .insert([
+            {
+              nombre: nombreLimpio,
+              correo: correoLimpio,
+              password: passwordRegistro,
+              premium: false,
+            },
+          ]);
+      
+        if (error) {
+          alert("Error al crear cuenta: " + error.message);
+          return;
+        }
+      
+        alert("Cuenta creada correctamente. Ahora inicia sesión.");
+      
+        setNombreRegistro("");
+        setCorreoRegistro("");
+        setPasswordRegistro("");
+        setMostrarRegistro(false);
+      }}
           className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold"
         >
           Crear cuenta
