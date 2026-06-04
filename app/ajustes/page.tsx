@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { userKey } from "@/lib/storageUsuario";
+import { guardarProgreso } from "@/lib/syncProgreso";
 
 export default function AjustesPage() {
 
@@ -182,12 +183,20 @@ export default function AjustesPage() {
 </p>
 
 <button
-  onClick={() => {
+  onClick={async () => {
 
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+    
+    if (usuario.correo) {
+      await guardarProgreso(usuario.correo, {});
+    }
+    
     localStorage.clear();
-
+    
     alert("Aplicación restablecida");
-
+    
     window.location.reload();
 
   }}
