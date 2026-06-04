@@ -355,16 +355,7 @@ useEffect(() => {
               totalPreguntas: preguntasTema.length,
               correctas,
             });
-          const usuario = JSON.parse(
-  localStorage.getItem("usuarioActual") || "{}"
-);
 
-if (usuario.correo) {
-  await guardarProgreso(
-    usuario.correo,
-    obtenerProgresoLocal()
-  );
-}
             setFinalizado(true);
                               
             const precision = Math.round(
@@ -405,6 +396,16 @@ if (usuario.correo) {
               userKey("progresoGestion"),
               JSON.stringify(progreso)
             );
+            const usuario = JSON.parse(
+              localStorage.getItem("usuarioActual") || "{}"
+            );
+            
+            if (usuario.correo) {
+              await guardarProgreso(
+                usuario.correo,
+                obtenerProgresoLocal()
+              );
+            }
           }}
           disabled={totalRespondidas < preguntasTema.length}
           className={`mt-8 w-full p-4 rounded-2xl text-xl font-bold ${
