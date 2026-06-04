@@ -579,7 +579,7 @@ const rachaEstudio =
 </details>
     </div>
     <Link href="/flashcards" className="block py-5 font-bold">
-  🧠 Flashcards
+  🗂️ Flashcards
 </Link>
     <div className="border-t border-white/20 my-5"></div>
 

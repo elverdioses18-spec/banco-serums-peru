@@ -6,6 +6,7 @@ import { userKey } from "@/lib/storageUsuario";
 import {
   guardarProgreso,
   obtenerProgresoLocal,
+  cargarProgreso,
 } from "@/lib/syncProgreso";
 
 type Flashcard = {
@@ -46,13 +47,31 @@ return;
       reverso,
     };
 
-    const actualizadas = [nueva, ...flashcards];
-
-    setFlashcards(actualizadas);
-    localStorage.setItem(userKey("flashcards"), JSON.stringify(actualizadas));
     const usuario = JSON.parse(
       localStorage.getItem("usuarioActual") || "{}"
     );
+    
+    let mezcladas = [nueva, ...flashcards];
+    
+    if (usuario.correo) {
+      const progresoRemoto = await cargarProgreso(usuario.correo);
+      const flashcardsRemotas = progresoRemoto?.flashcards || [];
+    
+      mezcladas = [
+        ...mezcladas,
+        ...flashcardsRemotas.filter(
+          (remota: any) =>
+            !mezcladas.some(
+              (local: any) =>
+                local.frente === remota.frente &&
+                local.reverso === remota.reverso
+            )
+        ),
+      ];
+    }
+    
+    setFlashcards(mezcladas);
+    localStorage.setItem(userKey("flashcards"), JSON.stringify(mezcladas));
     
     if (usuario.correo) {
       await guardarProgreso(
