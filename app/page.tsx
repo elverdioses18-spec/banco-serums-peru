@@ -235,7 +235,11 @@ const rachaEstudio =
   )
     ? 1
     : 0;
-    
+    const progresoMovilActual = temaMovilActivo
+  ? JSON.parse(
+      localStorage.getItem(userKey(temaMovilActivo.progresoKey)) || "{}"
+    )
+  : {};
    return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-[#06194a] overflow-x-hidden">
 
@@ -796,7 +800,7 @@ const rachaEstudio =
       <div>
         <p className="text-sm font-bold">❔ Preguntas correctas</p>
         <p className="text-x1 font-extrabold">
-          {progresoPopup?.mejorResultado || 0}/{progresoPopup?.mejorTotal || 20}
+        {progresoMovilActual?.mejorResultado || 0}/{progresoMovilActual?.mejorTotal || 20}
         </p>
       </div>
 
