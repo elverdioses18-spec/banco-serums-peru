@@ -401,6 +401,8 @@ export default function SimulacroMixtoPage(){
                 correctas
               ),
               mejorTotal: preguntasTema.length,
+              ultimoResultado: correctas,
+ultimoTotal: preguntasTema.length,
             };
           
             localStorage.setItem(

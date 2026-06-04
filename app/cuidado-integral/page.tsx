@@ -419,6 +419,8 @@ setRespuestas({
         correctas
       ),
       mejorTotal: preguntasTema.length,
+      ultimoResultado: correctas,
+ultimoTotal: preguntasTema.length,
     };
 
     localStorage.setItem(userKey("progresoCuidado"), JSON.stringify(progreso));
