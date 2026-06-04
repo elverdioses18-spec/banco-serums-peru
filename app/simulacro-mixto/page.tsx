@@ -93,8 +93,7 @@ export default function SimulacroMixtoPage(){
       localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
-    const premiumGuardado =
-      localStorage.getItem("premium") === "true";
+    const esPremium = localStorage.getItem("premium") === "true";
   
     if (!usuarioRegistrado) {
       setBloqueoAcceso(

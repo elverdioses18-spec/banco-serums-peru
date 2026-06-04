@@ -42,6 +42,14 @@ const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
 const [popupTema, setPopupTema] = useState<any>(null);
 const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
 const [temaMovilActivo, setTemaMovilActivo] = useState<any>(null);
+const cargarProgresoTemaMovil = (tema: any) => {
+  const progreso = JSON.parse(
+    localStorage.getItem(userKey(tema.progresoKey)) || "{}"
+  );
+
+  setProgresoPopup(progreso);
+  setTemaMovilActivo(tema);
+};
 const [usuarioActual, setUsuarioActual] = useState<any>(null);
 const [menuUsuarioOpen, setMenuUsuarioOpen] = useState(false);
 const [modalPasswordOpen, setModalPasswordOpen] = useState(false);
@@ -668,23 +676,13 @@ const rachaEstudio =
    <div
    key={index}
    onClick={() => {
-    const progreso = JSON.parse(
-      localStorage.getItem(userKey(tema.progresoKey)) || "{}"
-    );
-  
-    setProgresoPopup(progreso);
-       setTemaMovilActivo(tema);
+    cargarProgresoTemaMovil(tema);
   }}
    className="bg-white rounded-2xl p-3 shadow-md cursor-pointer"
  >
    <div
   onClick={() => {
-    const progreso = JSON.parse(
-      localStorage.getItem(userKey(tema.progresoKey)) || "{}"
-    );
-  
-    setProgresoPopup(progreso);
-    setTemaMovilActivo(tema);
+    cargarProgresoTemaMovil(tema);
   }}
   className="flex items-center gap-3 mb-3 cursor-pointer"
 >
@@ -874,12 +872,7 @@ const rachaEstudio =
                 key={tema.nombre}
               
                 onClick={(e) => {
-                  const progreso = JSON.parse(
-                    localStorage.getItem(userKey(tema.progresoKey)) || "{}"
-                  );
-                
-                  setProgresoPopup(progreso);
-                  setPopupTema(tema);
+                  cargarProgresoTemaMovil(tema);
                 
                   setPopupPos({
                     top: e.currentTarget.offsetTop,
