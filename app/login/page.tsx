@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { cargarProgreso } from "@/lib/syncProgreso";
+import { userKey } from "@/lib/storageUsuario";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -58,7 +59,7 @@ export default function LoginPage() {
 if (progresoRemoto) {
   Object.entries(progresoRemoto).forEach(([clave, valor]) => {
     localStorage.setItem(
-      clave,
+      userKey(clave),
       JSON.stringify(valor)
     );
   });
