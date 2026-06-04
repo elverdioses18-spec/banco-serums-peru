@@ -10,6 +10,7 @@ import { preguntasGestion } from "@/data/gestion";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 import { userKey } from "@/lib/storageUsuario";
+import { guardarProgreso, obtenerProgresoLocal } from "@/lib/syncProgreso";
 
 
 function GestionContent() {
@@ -347,13 +348,23 @@ useEffect(() => {
         </div>
 
         <button
-          onClick={() => {
+        onClick={async () => {
             guardarFalladas(preguntasTema, respuestas);
             guardarHistorialExamen({
               tema: "Gestión",
               totalPreguntas: preguntasTema.length,
               correctas,
             });
+          const usuario = JSON.parse(
+  localStorage.getItem("usuarioActual") || "{}"
+);
+
+if (usuario.correo) {
+  await guardarProgreso(
+    usuario.correo,
+    obtenerProgresoLocal()
+  );
+}
             setFinalizado(true);
                               
             const precision = Math.round(

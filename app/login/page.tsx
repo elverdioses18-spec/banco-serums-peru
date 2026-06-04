@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { cargarProgreso } from "@/lib/syncProgreso";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function LoginPage() {
   const [passwordRegistro, setPasswordRegistro] = useState("");
   const ingresar = async () => {
     const correoLimpio = correo.trim().toLowerCase();
-  
+    const progreso = await cargarProgreso(correoLimpio);
     if (!correoLimpio || !password) {
       alert("Completa tu correo y contraseña");
       return;
@@ -52,7 +53,16 @@ export default function LoginPage() {
       "premium",
       data.premium ? "true" : "false"
     );
-  
+    const progresoRemoto = await cargarProgreso(data.correo);
+
+if (progresoRemoto) {
+  Object.entries(progresoRemoto).forEach(([clave, valor]) => {
+    localStorage.setItem(
+      clave,
+      JSON.stringify(valor)
+    );
+  });
+}
     router.push("/");
   };
 
