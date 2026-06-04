@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { userKey } from "@/lib/storageUsuario";
+import {
+  guardarProgreso,
+  obtenerProgresoLocal,
+} from "@/lib/syncProgreso";
 
 type Flashcard = {
   id: number;
@@ -23,7 +27,7 @@ export default function FlashcardsPage() {
     setFlashcards(guardadas);
   }, []);
 
-  const guardarFlashcard = () => {
+  const guardarFlashcard = async () => {
     const esPremium = localStorage.getItem("premium") === "true";
 
 if (!esPremium) {
@@ -46,15 +50,35 @@ return;
 
     setFlashcards(actualizadas);
     localStorage.setItem(userKey("flashcards"), JSON.stringify(actualizadas));
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+    
+    if (usuario.correo) {
+      await guardarProgreso(
+        usuario.correo,
+        obtenerProgresoLocal()
+      );
+    }
 
     setFrente("");
     setReverso("");
   };
 
-  const eliminarFlashcard = (id: number) => {
+  const eliminarFlashcard = async (id: number) => {
     const actualizadas = flashcards.filter((card) => card.id !== id);
     setFlashcards(actualizadas);
     localStorage.setItem(userKey("flashcards"), JSON.stringify(actualizadas));
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+    
+    if (usuario.correo) {
+      await guardarProgreso(
+        usuario.correo,
+        obtenerProgresoLocal()
+      );
+    }
   };
 
   const filtradas = flashcards.filter((card) => card.tema === tema);
