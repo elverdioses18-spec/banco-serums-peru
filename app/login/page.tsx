@@ -54,16 +54,34 @@ export default function LoginPage() {
       "premium",
       data.premium ? "true" : "false"
     );
+    const clavesProgreso = [
+      "historialExamenes",
+      "preguntasFalladas",
+      "estadisticasPorTema",
+      "progresoSaludPublica",
+      "progresoGestion",
+      "progresoCuidado",
+      "progresoEtica",
+      "progresoInvestigacion",
+      "progresoMixto",
+      "preguntasUsadasGratis",
+      "flashcards",
+    ];
+    
     const progresoRemoto = await cargarProgreso(data.correo);
-
-if (progresoRemoto) {
-  Object.entries(progresoRemoto).forEach(([clave, valor]) => {
-    localStorage.setItem(
-      userKey(clave),
-      JSON.stringify(valor)
-    );
-  });
-}
+    
+    clavesProgreso.forEach((clave) => {
+      localStorage.removeItem(userKey(clave));
+    });
+    
+    if (progresoRemoto && Object.keys(progresoRemoto).length > 0) {
+      Object.entries(progresoRemoto).forEach(([clave, valor]) => {
+        localStorage.setItem(
+          userKey(clave),
+          JSON.stringify(valor)
+        );
+      });
+    }
     router.push("/");
   };
 
