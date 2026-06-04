@@ -93,7 +93,8 @@ export default function SimulacroMixtoPage(){
       localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
     );
   
-    const esPremium = localStorage.getItem("premium") === "true";
+    const premiumGuardado =
+      localStorage.getItem("premium") === "true";
   
     if (!usuarioRegistrado) {
       setBloqueoAcceso(
@@ -102,7 +103,7 @@ export default function SimulacroMixtoPage(){
       return;
     }
   
-    if (!premiumGuardado && preguntasRespondidas >= 10) {
+    if (!premiumGuardado && preguntasRespondidas >= 20) {
       setBloqueoAcceso(
         "Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando."
       );
