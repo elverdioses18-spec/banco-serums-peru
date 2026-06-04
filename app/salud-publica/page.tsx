@@ -391,6 +391,8 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
               ),
             
               mejorTotal: preguntasTema.length,
+              ultimoResultado: correctas,
+ultimoTotal: preguntasTema.length,
             };
           
             localStorage.setItem(

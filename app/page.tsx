@@ -800,7 +800,7 @@ const rachaEstudio =
       <div>
         <p className="text-sm font-bold">❔ Preguntas correctas</p>
         <p className="text-x1 font-extrabold">
-        {progresoMovilActual?.mejorResultado || 0}/{progresoMovilActual?.mejorTotal || 20}
+        {progresoPopup?.ultimoResultado || 0}/{progresoPopup?.ultimoTotal || 20}
         </p>
       </div>
 
