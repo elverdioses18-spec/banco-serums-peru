@@ -10,6 +10,10 @@ import { preguntas } from "@/data/preguntas";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 import { userKey } from "@/lib/storageUsuario";
+import {
+  guardarProgreso,
+  obtenerProgresoLocal,
+} from "@/lib/syncProgreso";
 
 function SaludPublicaContent() {
   const router = useRouter();
@@ -335,7 +339,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
         </div>
 
         <button
-          onClick={() => {
+          onClick={async () => {
            
             const correctas = Object.keys(respuestas).filter(
               (key) =>
@@ -393,6 +397,16 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
               userKey("progresoSaludPublica"),
               JSON.stringify(progreso)
             );
+            const usuario = JSON.parse(
+              localStorage.getItem("usuarioActual") || "{}"
+            );
+            
+            if (usuario.correo) {
+              await guardarProgreso(
+                usuario.correo,
+                obtenerProgresoLocal()
+              );
+            }
           }}
           disabled={totalRespondidas < preguntasTema.length}
           className={`mt-8 w-full p-4 rounded-2xl text-xl font-bold ${

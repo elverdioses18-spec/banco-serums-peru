@@ -14,6 +14,10 @@ import { preguntasEtica } from "@/data/eticaData";
 import { guardarFalladas } from "../../lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 import { userKey } from "@/lib/storageUsuario";
+import {
+  guardarProgreso,
+  obtenerProgresoLocal,
+} from "@/lib/syncProgreso";
 
 export default function SimulacroMixtoPage(){
   
@@ -351,7 +355,7 @@ export default function SimulacroMixtoPage(){
         </div>
 
         <button
-          onClick={() => {
+          onClick={async () => {
             
             guardarFalladas(preguntasTema, respuestas);
 
@@ -403,6 +407,16 @@ export default function SimulacroMixtoPage(){
               userKey("progresoMixto"),
               JSON.stringify(progreso)
             );
+            const usuario = JSON.parse(
+              localStorage.getItem("usuarioActual") || "{}"
+            );
+            
+            if (usuario.correo) {
+              await guardarProgreso(
+                usuario.correo,
+                obtenerProgresoLocal()
+              );
+            }
           }}
           disabled={totalRespondidas < preguntasTema.length}
           className={`mt-8 w-full p-4 rounded-2xl text-xl font-bold ${

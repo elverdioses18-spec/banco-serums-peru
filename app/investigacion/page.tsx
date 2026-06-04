@@ -10,6 +10,10 @@ import { preguntasInvestigacion } from "@/data/investigacionData";
 import { guardarFalladas } from "@/lib/falladas";
 import { guardarHistorialExamen } from "@/lib/historial";
 import { userKey } from "@/lib/storageUsuario";
+import {
+  guardarProgreso,
+  obtenerProgresoLocal,
+} from "@/lib/syncProgreso";
 
 function InvestigacionContent() {
   const searchParams = useSearchParams();
@@ -339,7 +343,7 @@ useEffect(() => {
         </div>
 
         <button
-          onClick={() => {
+          onClick={async () => {
             const correctas = Object.keys(respuestas).filter(
               (key) =>
                 respuestas[Number(key)] ===
@@ -393,6 +397,16 @@ useEffect(() => {
               userKey("progresoInvestigacion"),
               JSON.stringify(progreso)
             );
+            const usuario = JSON.parse(
+              localStorage.getItem("usuarioActual") || "{}"
+            );
+            
+            if (usuario.correo) {
+              await guardarProgreso(
+                usuario.correo,
+                obtenerProgresoLocal()
+              );
+            }
           }}
           disabled={totalRespondidas < preguntasTema.length}
           className={`mt-8 w-full p-4 rounded-2xl text-xl font-bold ${
