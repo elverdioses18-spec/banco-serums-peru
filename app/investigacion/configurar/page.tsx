@@ -16,7 +16,7 @@ if (!usuarioRegistrado) {
     <main className="min-h-screen bg-[#edf3f8] flex items-center justify-center p-6">
       <input id="premium-modal" type="checkbox" className="peer hidden" />
       <div className="bg-white rounded-3xl shadow-sm p-10 max-w-2xl w-full text-center">
-        <h1 className="text-5xl font-bold text-blue-950 mb-4">
+        <h1 className="text-4xl font-bold text-blue-950 mb-4">
           Investigación
         </h1>
 
