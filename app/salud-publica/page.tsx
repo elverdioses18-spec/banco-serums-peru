@@ -262,33 +262,40 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
   if (bloqueoAcceso) {
     return (
       <main className="min-h-screen bg-black/70 text-white flex items-center justify-center p-6">
-        <div className="bg-white text-slate-900 p-8 rounded-3xl max-w-md w-full text-center shadow-2xl">
-          <h1 className="text-3xl font-bold mb-4 text-blue-950">
-            Regístrate gratis
+        <div className="bg-[#07142b] w-full max-w-md rounded-3xl p-8 text-white shadow-2xl border border-blue-900 text-center">
+          <div className="text-6xl mb-5">
+            🔒
+          </div>
+  
+          <h1 className="text-3xl font-bold mb-4">
+            Límite gratuito alcanzado
           </h1>
   
-          <p className="text-lg mb-6 text-slate-600">
-            Debes registrarte para acceder a tus 20 preguntas gratuitas.
+          <p className="text-slate-300 leading-relaxed mb-6">
+            Ya completaste tus preguntas gratuitas ✅
+            <br /><br />
+            Aún puedes revisar tus estadísticas, progreso y reforzamiento.
+            <br /><br />
+            Hazte Premium para desbloquear preguntas y simulacros SERUMS completos.
           </p>
   
           <a
-            href="/login"
-            className="block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold mb-3"
+            href="/premium"
+            className="block w-full bg-blue-600 hover:bg-blue-700 transition rounded-2xl py-3 text-xl font-bold mb-3"
           >
-            Ir a registrarme
+            👑 Hazte Premium
           </a>
   
           <a
             href="/"
-            className="inline-block text-slate-500 font-bold"
+            className="block w-full text-slate-400 hover:text-white transition"
           >
-            Volver al inicio
+            Seguir explorando
           </a>
         </div>
       </main>
     );
   }
-  return (
     <main className="min-h-screen bg-[#edf3f8] flex flex-col md:flex-row">
   <Sidebar />
 
@@ -422,7 +429,7 @@ ultimoTotal: preguntasTema.length,
       </div>
       </div>
     </main>
-  );
+  
 }
 export default function SaludPublicaPage() {
   return (

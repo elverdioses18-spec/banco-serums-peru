@@ -233,7 +233,7 @@ export default function LoginPage() {
   <div className="flex gap-3">
   <button
     onClick={ingresar}
-    className="flex-1 h-13 rounded-2xl bg-blue-600 hover:bg-blue-700 text-xl font-bold transition"
+    className="flex-1 h-13 rounded-2xl bg-blue-600 hover:bg-blue-700 text-xl font-bold transition active:scale-95 active:translate-y-1 transition-all duration-150"
   >
     Ingresar
   </button>

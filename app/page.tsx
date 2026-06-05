@@ -52,8 +52,7 @@ const cargarProgresoTemaMovil = (tema: any) => {
 
   setProgresoPopup(progreso);
   setTemaMovilActivo(tema);
-  setPopupTema(tema);
-};
+ };
 const [usuarioActual, setUsuarioActual] = useState<any>(null);
 const [menuUsuarioOpen, setMenuUsuarioOpen] = useState(false);
 const [modalPasswordOpen, setModalPasswordOpen] = useState(false);
@@ -895,7 +894,16 @@ const rachaEstudio =
                 key={tema.nombre}
               
                 onClick={(e) => {
-                  cargarProgresoTemaMovil(tema);
+                  const progreso = JSON.parse(
+                    localStorage.getItem(userKey(tema.progresoKey)) || "{}"
+                  );
+                  
+                  if (popupTema?.nombre === tema.nombre) {
+                    setPopupTema(null);
+                  } else {
+                    setProgresoPopup(progreso);
+                    setPopupTema(tema);
+                  }
                 
                   setPopupPos({
                     top: e.currentTarget.offsetTop,
@@ -1830,9 +1838,13 @@ if (!usuarioRegistrado) {
         <p>✅ Acceso hasta en 2 dispositivos</p>
       </div>
 
-      <div className="text-center bg-yellow-100 border border-yellow-300 rounded-2xl p-4 mb-6 text-sm rounded-2xl text-lg">
-       S/.20
-      </div>
+      <span className="text-center blocktext-slate-500 text-xl">
+  Pago único:
+</span>
+
+<span className="text-center block text-4xl font-extrabold text-green-600">
+  S/. 20
+</span>
 
       <button
   onClick={() => setMostrarPagoPremium(true)}

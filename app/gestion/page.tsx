@@ -277,27 +277,41 @@ useEffect(() => {
   }
   if (bloqueoAcceso) {
     return (
-      <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
-        <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center">
+      <main className="min-h-screen bg-black/70 text-white flex items-center justify-center p-6">
+        <div className="bg-[#07142b] w-full max-w-md rounded-3xl p-8 text-white shadow-2xl border border-blue-900 text-center">
+          <div className="text-6xl mb-5">
+            🔒
+          </div>
+  
           <h1 className="text-3xl font-bold mb-4">
-            Acceso bloqueado
+            Límite gratuito alcanzado
           </h1>
   
-          <p className="text-lg mb-6">
-            {bloqueoAcceso}
+          <p className="text-slate-300 leading-relaxed mb-6">
+            Ya completaste tus preguntas gratuitas ✅
+            <br /><br />
+            Aún puedes revisar tus estadísticas, progreso y reforzamiento.
+            <br /><br />
+            Hazte Premium para desbloquear preguntas y simulacros SERUMS completos.
           </p>
   
           <a
-            href="/"
-            className="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+            href="/premium"
+            className="block w-full bg-blue-600 hover:bg-blue-700 transition rounded-2xl py-3 text-xl font-bold mb-3"
           >
-            Volver al inicio
+            👑 Hazte Premium
+          </a>
+  
+          <a
+            href="/"
+            className="block w-full text-slate-400 hover:text-white transition"
+          >
+            Seguir explorando
           </a>
         </div>
       </main>
     );
   }
-  return (
     <main className="min-h-screen bg-[#edf3f8] flex">
   <Sidebar />
 
@@ -421,7 +435,7 @@ ultimoTotal: preguntasTema.length,
       </div>
       </div>
     </main>
-  );
+  
 }
 export default function GestionPage() {
   return (
