@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  
   const esPremium =
   typeof window !== "undefined" &&
   localStorage.getItem("premium") === "true";

@@ -1,13 +1,16 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BloqueoRegistro from "../../../components/BloqueoRegistro";
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  const [esPremium, setEsPremium] = useState(false);
   const usuarioRegistrado =
   typeof window !== "undefined" &&
   localStorage.getItem("usuarioActual");
-
+  useEffect(() => {
+    setEsPremium(localStorage.getItem("premium") === "true");
+  }, []);
 if (!usuarioRegistrado) {
   return <BloqueoRegistro />;
 }
@@ -24,25 +27,52 @@ if (!usuarioRegistrado) {
         </p>
 
         <div className="grid grid-cols-2 gap-5 mb-10">
-        <label
-  htmlFor="premium-modal"
-  className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
->
-  🔒 25
-</label>
+        {esPremium ? (
+  <Link
+    href="/simulacro-mixto?cantidad=25"
+    className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold"
+  >
+    25
+  </Link>
+) : (
+  <label
+    htmlFor="premium-modal"
+    className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
+  >
+    🔒 25
+  </label>
+)}
 
-<label
-  htmlFor="premium-modal"
-  className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
->
-  🔒 50
-</label>
-<label
-  htmlFor="premium-modal"
-  className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
->
-  🔒 100
-</label>
+{esPremium ? (
+  <Link
+    href="/simulacro-mixto?cantidad=50"
+    className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold"
+  >
+    50
+  </Link>
+) : (
+  <label
+    htmlFor="premium-modal"
+    className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
+  >
+    🔒 50
+  </label>
+)}
+{esPremium ? (
+  <Link
+    href="/simulacro-mixto?cantidad=100"
+    className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold"
+  >
+    100
+  </Link>
+) : (
+  <label
+    htmlFor="premium-modal"
+    className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
+  >
+    🔒 100
+  </label>
+)}
           
         </div>
 

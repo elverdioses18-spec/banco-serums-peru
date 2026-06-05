@@ -1,13 +1,17 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BloqueoRegistro from "../../../components/BloqueoRegistro";
 
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  const [esPremium, setEsPremium] = useState(false);
   const usuarioRegistrado =
   typeof window !== "undefined" &&
   localStorage.getItem("usuarioActual");
+  useEffect(() => {
+    setEsPremium(localStorage.getItem("premium") === "true");
+  }, []);
 
 if (!usuarioRegistrado) {
   return <BloqueoRegistro />;
@@ -28,19 +32,36 @@ if (!usuarioRegistrado) {
           <Link href="/gestion?cantidad=20" className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold transition hover:scale-105">
             20
           </Link>
-
-          <label
-  htmlFor="premium-modal"
-  className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
->
-  🔒 35
-</label>
-<label
-  htmlFor="premium-modal"
-  className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
->
-  🔒 50
-</label>
+          {esPremium ? (
+  <Link
+    href="/cuidado-integral?cantidad=35"
+    className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold"
+  >
+    35
+  </Link>
+) : (
+  <label
+    htmlFor="premium-modal"
+    className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
+  >
+    🔒 35
+  </label>
+)}
+{esPremium ? (
+  <Link
+    href="/cuidado-integral?cantidad=50"
+    className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold"
+  >
+    50
+  </Link>
+) : (
+  <label
+    htmlFor="premium-modal"
+    className="bg-slate-400 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold cursor-pointer"
+  >
+    🔒 50
+  </label>
+)}
           </div>
 
 <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">

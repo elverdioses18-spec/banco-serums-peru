@@ -52,7 +52,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
       return;
     }
   
-    if (!premiumGuardado && preguntasRespondidas >= 10) {
+    if (!premiumGuardado && preguntasRespondidas >= 20) {
       setBloqueoAcceso(
         "Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando."
       );
