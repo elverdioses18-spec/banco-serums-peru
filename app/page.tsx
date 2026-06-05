@@ -10,7 +10,10 @@ import { preguntasInvestigacion } from "@/data/investigacionData";
 import { preguntasEtica } from "@/data/eticaData";
 import { supabase } from "@/lib/supabase";
 import { userKey } from "@/lib/storageUsuario";
-
+import {
+  cargarProgreso,
+  aplicarProgresoLocal,
+} from "@/lib/syncProgreso";
 console.log(preguntasSaludPublica)
 
 import {
@@ -71,6 +74,19 @@ const [codigoPago, setCodigoPago] = useState("");
 const [voucherPago, setVoucherPago] = useState<File | null>(null);
 
 useEffect(() => {
+  const sincronizarAlRecargar = async () => {
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+  
+    if (!usuario.correo) return;
+  
+    const progresoRemoto = await cargarProgreso(usuario.correo);
+  
+    aplicarProgresoLocal(progresoRemoto);
+  };
+  
+  sincronizarAlRecargar();
   const usuario = localStorage.getItem("usuarioActual");
   if (usuario) {
     setUsuarioActual(JSON.parse(usuario));

@@ -58,6 +58,31 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
     alert("Premium aprobado correctamente.");
     cargarSolicitudes();
   };
+  const quitarPremium = async (correo: string, idSolicitud: number) => {
+    const confirmar = confirm(`¿Quitar Premium a ${correo}?`);
+  
+    if (!confirmar) return;
+  
+    const { error: errorUsuario } = await supabase
+      .from("usuarios")
+      .update({ premium: false })
+      .eq("correo", correo);
+  
+    if (errorUsuario) {
+      alert("Error quitando premium: " + errorUsuario.message);
+      return;
+    }
+  
+    await supabase
+      .from("solicitudes_premium")
+      .update({ estado: "pendiente" })
+      .eq("id", idSolicitud);
+  
+    alert("Premium retirado correctamente.");
+    cargarSolicitudes();
+  };
+  
+ 
   if (!autorizado) {
     return (
       <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
@@ -171,18 +196,27 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
                   </a>
 
                   <button
-                    onClick={() => aprobarPremium(item.correo, item.id)}
-                    disabled={item.estado === "aprobado"}
-                    className={`px-4 py-3 rounded-xl font-bold ${
-                      item.estado === "aprobado"
-                        ? "bg-slate-600 cursor-not-allowed"
-                        : "bg-green-600 hover:bg-green-500"
-                    }`}
-                  >
-                    {item.estado === "aprobado"
-                      ? "Premium aprobado"
-                      : "Aprobar Premium"}
-                  </button>
+  onClick={() => aprobarPremium(item.correo, item.id)}
+  disabled={item.estado === "aprobado"}
+  className={`px-4 py-3 rounded-xl font-bold ${
+    item.estado === "aprobado"
+      ? "bg-slate-600 cursor-not-allowed"
+      : "bg-green-600 hover:bg-green-500"
+  }`}
+>
+  {item.estado === "aprobado"
+    ? "Premium aprobado"
+    : "Aprobar Premium"}
+</button>
+
+<button
+  onClick={() => quitarPremium(item.correo, item.id)}
+  className="px-4 py-3 rounded-xl font-bold bg-yellow-600 hover:bg-yellow-500"
+>
+  Quitar Premium
+</button>
+
+
                 </div>
               </div>
             ))}

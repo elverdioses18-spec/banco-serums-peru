@@ -73,3 +73,31 @@ export function obtenerProgresoLocal() {
   
     return datos;
   }
+  export function aplicarProgresoLocal(datos: any) {
+    const claves = [
+      "historialExamenes",
+      "preguntasFalladas",
+      "estadisticasPorTema",
+      "progresoSaludPublica",
+      "progresoGestion",
+      "progresoCuidado",
+      "progresoEtica",
+      "progresoInvestigacion",
+      "progresoMixto",
+      "preguntasUsadasGratis",
+      "flashcards",
+    ];
+  
+    claves.forEach((clave) => {
+      localStorage.removeItem(userKey(clave));
+    });
+  
+    if (datos && Object.keys(datos).length > 0) {
+      Object.entries(datos).forEach(([clave, valor]) => {
+        localStorage.setItem(
+          userKey(clave),
+          JSON.stringify(valor)
+        );
+      });
+    }
+  }
