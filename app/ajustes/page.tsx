@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { userKey } from "@/lib/storageUsuario";
-import { guardarProgreso } from "@/lib/syncProgreso";
+import {
+  guardarProgreso,
+  obtenerProgresoLocal,
+} from "@/lib/syncProgreso";
 
 export default function AjustesPage() {
 
@@ -96,10 +99,22 @@ export default function AjustesPage() {
         </h2>
 
         <button
-          onClick={() => {
-            localStorage.removeItem(userKey("preguntasFalladas"));
-            alert("Preguntas falladas eliminadas");
-          }}
+         onClick={async () => {
+          localStorage.removeItem(userKey("preguntasFalladas"));
+        
+          const usuario = JSON.parse(
+            localStorage.getItem("usuarioActual") || "{}"
+          );
+        
+          if (usuario.correo) {
+            await guardarProgreso(
+              usuario.correo,
+              obtenerProgresoLocal()
+            );
+          }
+        
+          alert("Preguntas falladas eliminadas");
+        }}
           className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-xl font-bold"
         >
           🗑 Vaciar preguntas falladas
@@ -115,7 +130,7 @@ export default function AjustesPage() {
         </h2>
 
         <button
-          onClick={() => {
+         onClick={async () => {
 
             localStorage.removeItem(userKey("progresoGestion"));
             localStorage.removeItem(userKey("progresoCuidado"));
@@ -125,7 +140,16 @@ export default function AjustesPage() {
             localStorage.removeItem(userKey("progresoMixto"));
 
             localStorage.removeItem(userKey("historialExamenes"));
-
+            const usuario = JSON.parse(
+              localStorage.getItem("usuarioActual") || "{}"
+            );
+            
+            if (usuario.correo) {
+              await guardarProgreso(
+                usuario.correo,
+                obtenerProgresoLocal()
+              );
+            }
             alert("Progreso reiniciado");
 
             window.location.reload();

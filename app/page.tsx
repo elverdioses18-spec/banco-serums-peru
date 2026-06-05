@@ -52,6 +52,7 @@ const cargarProgresoTemaMovil = (tema: any) => {
 
   setProgresoPopup(progreso);
   setTemaMovilActivo(tema);
+  setPopupTema(tema);
 };
 const [usuarioActual, setUsuarioActual] = useState<any>(null);
 const [menuUsuarioOpen, setMenuUsuarioOpen] = useState(false);
