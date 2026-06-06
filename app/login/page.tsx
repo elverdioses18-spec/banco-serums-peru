@@ -210,7 +210,7 @@ export default function LoginPage() {
           👤
         </div>
   
-        <h2 className="text-2xl font-bold text-center mb-4">
+        <h2 className="text-2xl font-bold text-center mb-4" >
           Crear cuenta
         </h2>
   
@@ -248,7 +248,7 @@ export default function LoginPage() {
 
   <button
    onClick={() => setMostrarRegistro(true)}
-    className="flex-1 h-13 rounded-2xl bg-slate-700 hover:bg-slate-600 text-xl font-bold transition transition-all duration-150 active:scale-95 active:brightness-90"
+    className="flex-1 h-13 rounded-2xl bg-slate-700 hover:bg-slate-600 text-xl font-bold transition-all duration-150 active:scale-90 active:brightness-75 active:translate-y-1"
   >
     Registrarme
   </button>
@@ -437,14 +437,14 @@ export default function LoginPage() {
         setPasswordRegistro("");
         setMostrarRegistro(false);
       }}
-          className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold"
+          className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold transition-all duration-150 active:scale-95 active:brightness-90"
         >
           Crear cuenta
         </button>
 
         <button
           onClick={() => setMostrarRegistro(false)}
-          className="w-full bg-slate-700 hover:bg-slate-600 py-3 rounded-xl font-bold"
+          className="w-full bg-slate-700 hover:bg-slate-600 py-3 rounded-xl font-bold transition-all duration-150 active:scale-95 active:brightness-90"
         >
           Cancelar
         </button>
