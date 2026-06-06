@@ -65,12 +65,7 @@ if (!usuarioRegistrado) {
           </div>
 
 <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-  <button
-    onClick={() => history.back()}
-    className="bg-slate-100 hover:bg-slate-200 text-blue-700 font-semibold px-5 py-3 rounded-xl transition"
-  >
-    ← Volver al examen
-  </button>
+ 
 
   <Link
     href="/"

@@ -823,7 +823,7 @@ const rachaEstudio =
 
     <div className="text-center space-y-8">
       <div>
-        <p className="text-sm font-bold">❔ Preguntas correctas</p>
+        <p className="text-sm font-bold">❔ Respuestas correctas</p>
         <p className="text-x1 font-extrabold">
         {progresoPopup?.ultimoResultado || 0}/{progresoPopup?.ultimoTotal || 20}
         </p>
@@ -1429,7 +1429,7 @@ if (!usuarioRegistrado) {
 
               <div className="border-l border-slate-200 pl-3 pt-3 space-y-3">
               <div>
-              <p className="font-bold text-xl text-slate-600">❔ Preguntas <br /> correctas</p>
+              <p className="font-bold text-xl text-slate-600">❔ Respuestas <br /> correctas</p>
   <p className="text-2xl font-bold ">
   {progresoActual?.correctas || 0} / {progresoActual?.total || 20}
 </p>
@@ -1930,7 +1930,7 @@ if (!usuarioRegistrado) {
       htmlFor="voucher"
       className="cursor-pointer block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl transition"
     >
-      📎 Seleccionar archivo
+      📎 Subir foto del comprobante
     </label>
   ) : (
     <div className="flex items-center justify-between bg-green-100 border border-green-300 rounded-xl px-4 py-3">
