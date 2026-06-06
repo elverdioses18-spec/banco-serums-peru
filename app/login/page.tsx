@@ -248,7 +248,7 @@ export default function LoginPage() {
 
   <button
    onClick={() => setMostrarRegistro(true)}
-    className="flex-1 h-13 rounded-2xl bg-slate-700 hover:bg-slate-600 text-xl font-bold transition"
+    className="flex-1 h-13 rounded-2xl bg-slate-700 hover:bg-slate-600 text-xl font-bold transition transition-all duration-150 active:scale-95 active:brightness-90"
   >
     Registrarme
   </button>

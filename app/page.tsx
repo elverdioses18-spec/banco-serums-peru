@@ -81,6 +81,7 @@ const [codigoPago, setCodigoPago] = useState("");
 const [voucherPago, setVoucherPago] = useState<File | null>(null);
 const [mostrarPagoEnviado, setMostrarPagoEnviado] = useState(false);
 const [mostrarPremiumActivado, setMostrarPremiumActivado] = useState(false);
+
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
 
@@ -1932,7 +1933,7 @@ if (!usuarioRegistrado) {
         <p>✅ Historial completo</p>
         <p>✅ Estadísticas y progreso completo</p>
         <p>✅ Reforzamiento inteligente</p>
-        <p>✅ Acceso hasta en 2 dispositivos</p>
+        <p>✅ Página de preguntas falladas</p>
       </div>
 
       <span className="text-center blocktext-slate-500 text-xl">
