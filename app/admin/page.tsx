@@ -12,6 +12,7 @@ const [passwordAdmin, setPasswordAdmin] = useState("");
 const [errorAdmin, setErrorAdmin] = useState("");
 const [filtroEstado, setFiltroEstado] = useState("todos");
 const [busquedaCorreo, setBusquedaCorreo] = useState("");
+const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const cargarSolicitudes = async () => {
     setCargando(true);
@@ -98,13 +99,22 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
             Acceso Admin
           </h1>
   
+          <div className="relative">
           <input
-            type="password"
+            type={mostrarPassword ? "text" : "password"}
             placeholder="Contraseña de administrador"
             value={passwordAdmin}
             onChange={(e) => setPasswordAdmin(e.target.value)}
-            className="w-full p-4 rounded-xl text-slate-900 mb-3"
+            className="w-full p-3 rounded-xl bg-zinc-800 text-white  border mb-4 border-zinc-600 "
           />
+          <button
+    type="button"
+    onClick={() => setMostrarPassword(!mostrarPassword)}
+    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+  >
+    {mostrarPassword ? "🙈" : "👁️"}
+  </button>
+</div>
   
           {errorAdmin && (
             <p className="text-red-400 text-sm font-bold mb-3">

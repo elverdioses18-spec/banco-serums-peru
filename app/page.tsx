@@ -646,6 +646,10 @@ const rachaEstudio =
 <Link href="/falladas" className="block">❌ Preguntas falladas</Link>
 <Link href="/reforzamiento" className="block">🧠 Reforzamiento</Link>
 <Link href="/historial" className="block">🕘 Historial</Link>
+<Link href="/colabora" className="block">🚀 Colabora</Link>
+<Link href="/soporte" className="block">
+  ❓ Ayuda y Soporte
+</Link>
 <Link href="/ajustes" className="block">⚙️ Ajustes</Link>
     </div>
   </div>
@@ -776,7 +780,7 @@ const rachaEstudio =
     <Link
   href={tema.ruta}
   onClick={(e) => e.stopPropagation()}
-  className={`${tema.color} block text-center text-white w-full py-2 rounded-xl font-bold text-[12px]`}
+  className={`${tema.color} block text-center text-white w-full py-2 rounded-xl font-bold text-[12px] shadow-md transition-all duration-150 active:scale-95 active:translate-y-1 active:shadow-sm`}
 >
   Comenzar
 </Link>
@@ -1042,6 +1046,14 @@ const rachaEstudio =
   </p>
 )}
             <div className="space-y-5 text-lg">
+            <Link href="/colabora" className="flex items-center gap-2">
+  <span>🚀</span>
+  {sidebarOpen && <span>Colabora</span>}
+</Link>
+<Link href="/soporte" className="flex items-center gap-2">
+  <span>❓</span>
+  {sidebarOpen && <span>Ayuda y Soporte</span>}
+</Link>
             <Link href="/ajustes" className="flex items-center gap-2">
   <span>⚙️</span>
   {sidebarOpen && <span>Ajustes</span>}
@@ -1946,6 +1958,7 @@ if (!usuarioRegistrado) {
 
       <button
   onClick={() => {
+    
     const usuario = JSON.parse(
       localStorage.getItem("usuarioActual") || "{}"
     );
@@ -1955,7 +1968,8 @@ if (!usuarioRegistrado) {
   
     setMostrarPagoPremium(true);
   }}
-  className="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
+  style={{ WebkitTapHighlightColor: "transparent" }}
+  className="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg transition-all duration-150 active:scale-95 active:translate-y-1"
 >
   Pagar
 </button>
@@ -2117,7 +2131,8 @@ setVoucherPago(null);
 setMostrarPagoPremium(false);
 setMostrarPagoEnviado(true);
   }}
-  className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
+  style={{ WebkitTapHighlightColor: "transparent" }}
+  className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg shadow-lg transition-all duration-150 active:scale-90 active:translate-y-2 active:shadow-none"
 >
   Enviar solicitud
 </button>
