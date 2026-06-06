@@ -53,6 +53,13 @@ const cargarProgresoTemaMovil = (tema: any) => {
   setProgresoPopup(progreso);
   setTemaMovilActivo(tema);
  };
+ const [modalMensaje, setModalMensaje] = useState("");
+const [mostrarModalMensaje, setMostrarModalMensaje] = useState(false);
+
+const mostrarAlertaBonita = (mensaje: string) => {
+  setModalMensaje(mensaje);
+  setMostrarModalMensaje(true);
+};
 const [usuarioActual, setUsuarioActual] = useState<any>(null);
 const [menuUsuarioOpen, setMenuUsuarioOpen] = useState(false);
 const [modalPasswordOpen, setModalPasswordOpen] = useState(false);
@@ -1889,7 +1896,7 @@ if (!usuarioRegistrado) {
             setMensajePassword("");
             setModalPasswordOpen(false);
 
-            alert("Contraseña actualizada correctamente.");
+            mostrarAlertaBonita("Contraseña actualizada correctamente");
           }}
           className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold"
         >
@@ -2066,7 +2073,7 @@ if (!usuarioRegistrado) {
 <button
   onClick={async () => {
     if (!voucherPago) {
-      alert("Debes adjuntar el voucher.");
+      mostrarAlertaBonita("Debes adjuntar el voucher.");
       return;
     }
     
@@ -2077,7 +2084,7 @@ if (!usuarioRegistrado) {
       .upload(nombreArchivo, voucherPago);
     
     if (uploadError) {
-      alert("Error al subir voucher: " + uploadError.message);
+      mostrarAlertaBonita("Error al subir voucher: " + uploadError.message);
       return;
     }
     
@@ -2098,7 +2105,7 @@ if (!usuarioRegistrado) {
       ]);
     
     if (error) {
-      alert("Error al enviar solicitud: " + error.message);
+      mostrarAlertaBonita("Error al enviar solicitud: " + error.message);
       return;
     }
     
@@ -2113,6 +2120,30 @@ setMostrarPagoEnviado(true);
 >
   Enviar solicitud
 </button>
+    </div>
+  </div>
+)}
+{mostrarModalMensaje && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-7 text-center">
+      <div className="text-5xl mb-4">
+        ⚠️
+      </div>
+
+      <h2 className="text-2xl font-extrabold text-slate-900 mb-3">
+        Atención
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed mb-6">
+        {modalMensaje}
+      </p>
+
+      <button
+        onClick={() => setMostrarModalMensaje(false)}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
+      >
+        Entendido
+      </button>
     </div>
   </div>
 )}

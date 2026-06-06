@@ -12,6 +12,7 @@ export default function LoginPage() {
 
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
+  
 
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
   const [nombreRegistro, setNombreRegistro] = useState("");
@@ -21,23 +22,24 @@ export default function LoginPage() {
     const correoLimpio = correo.trim().toLowerCase();
     const progreso = await cargarProgreso(correoLimpio);
     if (!correoLimpio || !password) {
-      alert("Completa tu correo y contraseña");
+      mostrarAlertaBonita("Completa tu correo y contraseña");
       return;
     }
+    
   
     const { data, error } = await supabase
       .from("usuarios")
       .select("*")
       .eq("correo", correoLimpio)
       .single();
-  
+        
     if (error || !data) {
-      alert("Usuario no encontrado");
+      mostrarAlertaBonita("Usuariono encontrado");
       return;
     }
   
     if (data.password !== password) {
-      alert("Contraseña incorrecta");
+      mostrarAlertaBonita("Contraseña incorrecta");
       return;
     }
   
@@ -84,7 +86,13 @@ export default function LoginPage() {
     }
     router.push("/");
   };
-
+  const [modalMensaje, setModalMensaje] = useState("");
+  const [mostrarModalMensaje, setMostrarModalMensaje] = useState(false);
+  
+  const mostrarAlertaBonita = (mensaje: string) => {
+    setModalMensaje(mensaje);
+    setMostrarModalMensaje(true);
+  };
   return (
     <main className="min-h-screen bg-[#020817] text-white overflow-x-hidden relative px-4 py-6">
   
@@ -381,17 +389,17 @@ export default function LoginPage() {
         const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoLimpio);
       
         if (!nombreLimpio || !correoLimpio || !passwordRegistro.trim()) {
-          alert("Completa nombre, correo y contraseña.");
+          mostrarAlertaBonita("Completa nombre, correo y contraseña.");
           return;
         }
       
         if (!correoValido) {
-          alert("Ingresa un correo válido.");
+          mostrarAlertaBonita("Ingresa un correo válido.");
           return;
         }
       
         if (passwordRegistro.length < 6) {
-          alert("La contraseña debe tener mínimo 6 caracteres.");
+          mostrarAlertaBonita("La contraseña debe tener mínimo 6 caracteres.");
           return;
         }
       
@@ -402,7 +410,7 @@ export default function LoginPage() {
           .maybeSingle();
       
         if (usuarioExistente) {
-          alert("Este correo ya está registrado.");
+          mostrarAlertaBonita("Este correo ya está registrado.");
           return;
         }
       
@@ -418,11 +426,11 @@ export default function LoginPage() {
           ]);
       
         if (error) {
-          alert("Error al crear cuenta: " + error.message);
+          mostrarAlertaBonita("Error al crear cuenta: " + error.message);
           return;
         }
       
-        alert("Cuenta creada correctamente. Ahora inicia sesión.");
+        mostrarAlertaBonita("Cuenta creada correctamente. Ahora inicia sesión.");
       
         setNombreRegistro("");
         setCorreoRegistro("");
@@ -444,6 +452,31 @@ export default function LoginPage() {
     </div>
   </div>
 )}
+{mostrarModalMensaje && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-7 text-center">
+      <div className="text-5xl mb-4">
+        ⚠️
+      </div>
+
+      <h2 className="text-2xl font-extrabold text-slate-900 mb-3">
+        Atención
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed mb-6">
+        {modalMensaje}
+      </p>
+
+      <button
+        onClick={() => setMostrarModalMensaje(false)}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
+
     </main>
   );
 }

@@ -6,7 +6,13 @@ import { userKey } from "@/lib/storageUsuario";
 
 export default function FalladasPage() {
   const [falladas, setFalladas] = useState<any[]>([]);
-
+  const [modalMensaje, setModalMensaje] = useState("");
+  const [mostrarModalMensaje, setMostrarModalMensaje] = useState(false);
+  
+  const mostrarAlertaBonita = (mensaje: string) => {
+    setModalMensaje(mensaje);
+    setMostrarModalMensaje(true);
+  };
   useEffect(() => {
     const guardadas = localStorage.getItem(userKey("preguntasFalladas"));
 
@@ -69,7 +75,7 @@ export default function FalladasPage() {
         setFalladas(nuevasFalladas);
         localStorage.setItem(userKey("preguntasFalladas"), JSON.stringify(nuevasFalladas));
       } else {
-        alert("Respuesta incorrecta. Inténtalo otra vez.");
+        mostrarAlertaBonita("Respuesta incorrecta. Inténtalo otra vez.");
       }
     }}
     className="w-full text-left bg-slate-700 hover:bg-slate-600 rounded-xl p-3"
@@ -84,6 +90,30 @@ export default function FalladasPage() {
           ))}
         </div>
       )}
+      {mostrarModalMensaje && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-7 text-center">
+      <div className="text-5xl mb-4">
+        ⚠️
+      </div>
+
+      <h2 className="text-2xl font-extrabold text-slate-900 mb-3">
+        Atención
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed mb-6">
+        {modalMensaje}
+      </p>
+
+      <button
+        onClick={() => setMostrarModalMensaje(false)}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
     </main>
   );
 }

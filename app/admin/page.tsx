@@ -12,16 +12,17 @@ const [passwordAdmin, setPasswordAdmin] = useState("");
 const [errorAdmin, setErrorAdmin] = useState("");
 const [filtroEstado, setFiltroEstado] = useState("todos");
 const [busquedaCorreo, setBusquedaCorreo] = useState("");
+
   const cargarSolicitudes = async () => {
     setCargando(true);
-
+    
     const { data, error } = await supabase
       .from("solicitudes_premium")
       .select("*")
       .order("created_at", { ascending: false });
-
+      
     if (error) {
-      alert("Error cargando solicitudes: " + error.message);
+     mostrarAlertaBonita("Error cargando solicitudes: " + error.message);
       setCargando(false);
       return;
     }
@@ -41,7 +42,7 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
       .eq("correo", correo);
 
     if (errorUsuario) {
-      alert("Error activando premium: " + errorUsuario.message);
+      mostrarAlertaBonita("Error activando premium: " + errorUsuario.message);
       return;
     }
 
@@ -51,11 +52,11 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
       .eq("id", idSolicitud);
 
     if (errorSolicitud) {
-      alert("Premium activado, pero no se pudo actualizar la solicitud.");
+      mostrarAlertaBonita("Premium activado, pero no se pudo actualizar la solicitud.");
       return;
     }
 
-    alert("Premium aprobado correctamente.");
+    mostrarAlertaBonita("Premium aprobado correctamente.");
     cargarSolicitudes();
   };
   const quitarPremium = async (correo: string, idSolicitud: number) => {
@@ -69,7 +70,7 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
       .eq("correo", correo);
   
     if (errorUsuario) {
-      alert("Error quitando premium: " + errorUsuario.message);
+      mostrarAlertaBonita("Error quitando premium: " + errorUsuario.message);
       return;
     }
   
@@ -78,11 +79,17 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
       .update({ estado: "pendiente" })
       .eq("id", idSolicitud);
   
-    alert("Premium retirado correctamente.");
+      mostrarAlertaBonita("Premium retirado correctamente.");
     cargarSolicitudes();
   };
   
- 
+  const [modalMensaje, setModalMensaje] = useState("");
+      const [mostrarModalMensaje, setMostrarModalMensaje] = useState(false);
+      
+      const mostrarAlertaBonita = (mensaje: string) => {
+        setModalMensaje(mensaje);
+        setMostrarModalMensaje(true);
+      };
   if (!autorizado) {
     return (
       <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
@@ -223,6 +230,30 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
           </div>
         )}
       </div>
+      {mostrarModalMensaje && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-7 text-center">
+      <div className="text-5xl mb-4">
+        ⚠️
+      </div>
+
+      <h2 className="text-2xl font-extrabold text-slate-900 mb-3">
+        Atención
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed mb-6">
+        {modalMensaje}
+      </p>
+
+      <button
+        onClick={() => setMostrarModalMensaje(false)}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
     </main>
   );
 }

@@ -12,6 +12,13 @@ export default function AjustesPage() {
 
     const [mostrarTemporizador, setMostrarTemporizador] = useState(true);
     const [mostrarExplicacion, setMostrarExplicacion] = useState(true);
+    const [modalMensaje, setModalMensaje] = useState("");
+const [mostrarModalMensaje, setMostrarModalMensaje] = useState(false);
+
+const mostrarAlertaBonita = (mensaje: string) => {
+  setModalMensaje(mensaje);
+  setMostrarModalMensaje(true);
+};
   
     useEffect(() => {
   
@@ -113,7 +120,7 @@ export default function AjustesPage() {
             );
           }
         
-          alert("Preguntas falladas eliminadas");
+          mostrarAlertaBonita("Preguntas falladas eliminadas");
         }}
           className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-xl font-bold"
         >
@@ -150,7 +157,7 @@ export default function AjustesPage() {
                 obtenerProgresoLocal()
               );
             }
-            alert("Progreso reiniciado");
+            mostrarAlertaBonita("Progreso reiniciado");
 
             window.location.reload();
 
@@ -184,7 +191,7 @@ export default function AjustesPage() {
               key={meta}
               onClick={() => {
                 localStorage.setItem("metaDiaria", String(meta));
-                alert(`Meta diaria actualizada a ${meta} preguntas`);
+                mostrarAlertaBonita(`Meta diaria actualizada a ${meta} preguntas`);
               }}
               className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl font-bold"
             >
@@ -219,7 +226,7 @@ export default function AjustesPage() {
     
     localStorage.clear();
     
-    alert("Aplicación restablecida");
+    ("alertAplicación restablecida");
     
     window.location.reload();
 
@@ -230,7 +237,30 @@ export default function AjustesPage() {
 </button>
 
 </div>
+{mostrarModalMensaje && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-7 text-center">
+      <div className="text-5xl mb-4">
+        ⚠️
+      </div>
 
+      <h2 className="text-2xl font-extrabold text-slate-900 mb-3">
+        Atención
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed mb-6">
+        {modalMensaje}
+      </p>
+
+      <button
+        onClick={() => setMostrarModalMensaje(false)}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
             
     </main>
   );
