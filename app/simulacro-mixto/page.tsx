@@ -33,7 +33,7 @@ export default function SimulacroMixtoPage(){
 
       useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const cantidadElegida = Number(params.get("cantidad")) || 25;
+        const cantidadElegida = Number(params.get("cantidad")) || 20;
       
         setPreguntasTema(
           [...todasLasPreguntas]

@@ -263,20 +263,37 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
     return (
       <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
         <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center">
-          <h1 className="text-3xl font-bold mb-4">
-            Acceso bloqueado
-          </h1>
-  
-          <p className="text-lg mb-6">
-            {bloqueoAcceso}
-          </p>
-  
-          <a
-            href="/"
-            className="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
-          >
-            Volver al inicio
-          </a>
+        <div className="text-6xl mb-5">
+  🔒
+</div>
+
+<h1 className="text-3xl font-bold mb-4">
+  Límite gratuito alcanzado
+</h1>
+
+<p className="text-slate-300 leading-relaxed mb-6">
+  Ya completaste tus preguntas gratuitas ✅
+  <br /><br />
+  Aún puedes revisar tus estadísticas,
+  progreso y reforzamiento.
+  <br /><br />
+  Hazte Premium para desbloquear preguntas
+  y simulacros SERUMS completos.
+</p>
+
+<a
+  href="/?premium=true"
+  className="block w-full bg-blue-600 hover:bg-blue-700 transition rounded-2xl py-3 text-xl font-bold mb-3"
+>
+  👑 Hazte Premium
+</a>
+
+<a
+  href="/"
+  className="block w-full text-slate-400 hover:text-white transition"
+>
+  Seguir explorando
+</a>
         </div>
       </main>
     );

@@ -76,7 +76,7 @@ useEffect(() => {
   const params = new URLSearchParams(window.location.search);
 
   if (params.get("premium") === "true") {
-    setMostrarPagoPremium(true);
+    setMostrarPremium(true);
   }
 }, []);
 
@@ -1557,6 +1557,10 @@ if (!usuarioRegistrado) {
       </p>
 
       <button
+      onClick={() => {
+        setMostrarBloqueoPremium(false);
+        setMostrarPremium(true);
+      }}
         className="w-full bg-blue-600 hover:bg-blue-700 transition rounded-2xl py-3 text-xl font-bold mb-3"
       >
         👑 Hazte Premium
