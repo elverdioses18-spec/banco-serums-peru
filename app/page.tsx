@@ -15,7 +15,7 @@ import {
   aplicarProgresoLocal,
 } from "@/lib/syncProgreso";
 console.log(preguntasSaludPublica)
-
+import InfoTooltip from "@/components/InfoTooltip";
 import {
   Users,
   Building2,
@@ -73,6 +73,7 @@ const [correoPago, setCorreoPago] = useState("");
 const [codigoPago, setCodigoPago] = useState("");
 const [voucherPago, setVoucherPago] = useState<File | null>(null);
 const [mostrarPagoEnviado, setMostrarPagoEnviado] = useState(false);
+const [mostrarPremiumActivado, setMostrarPremiumActivado] = useState(false);
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
 
@@ -129,6 +130,31 @@ useEffect(() => {
   
   setPreguntasHoy(totalHoy);
 
+}, []);
+useEffect(() => {
+  const verificarPremium = async () => {
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+
+    if (!usuario.correo) return;
+
+    const premiumLocal =
+      localStorage.getItem("premium") === "true";
+
+    const { data } = await supabase
+      .from("usuarios")
+      .select("premium")
+      .eq("correo", usuario.correo)
+      .single();
+
+    if (data?.premium === true && !premiumLocal) {
+      localStorage.setItem("premium", "true");
+      setMostrarPremiumActivado(true);
+    }
+  };
+
+  verificarPremium();
 }, []);
   const [progresoSalud, setProgresoSalud] = useState<any>(null);
   const [progresoCuidado, setProgresoCuidado] = useState<any>(null);
@@ -668,7 +694,9 @@ const rachaEstudio =
         <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-xl mx-auto">
   ❔
 </div>
+<InfoTooltip texto="Muestra el número total de examenes realizados.">
           <p className="text-xs font-bold mt-1">Total</p>
+          </InfoTooltip>
           <p className="text-xl font-extrabold">
   {totalPreguntasResueltas}
 </p>
@@ -678,7 +706,9 @@ const rachaEstudio =
         <div className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center text-2xl mx-auto">
   🎯
 </div>
+           <InfoTooltip texto="Porcentaje promedio de respuestas correctas de todos tus examenes.">
           <p className="text-xs font-bold mt-1">Precisión</p>
+          </InfoTooltip>
           <p className="text-xl font-extrabold">
   {precisionPromedio}%
 </p>
@@ -688,7 +718,9 @@ const rachaEstudio =
         <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center text-2xl mx-auto">
   📅
 </div>
+         <InfoTooltip texto="Días consecutivos en los que has practicado en la plataforma.">
           <p className="text-xs font-bold mt-1">Racha</p>
+          </InfoTooltip>
           <p className="text-xl font-extrabold">
   {rachaEstudio} días
 </p>
@@ -811,9 +843,11 @@ const rachaEstudio =
     </div>
 
     <div className="text-center border-x border-slate-300 px-1">
+    <InfoTooltip texto="Muestra tu avance total de respuestas del tema seleccionado.">
       <h2 className="text-sm font-extrabold mb-2">
         Avance general
       </h2>
+      </InfoTooltip>
 
       <div className="w-24 h-24 rounded-full border-[12px] border-blue-100 flex items-center justify-center mx-auto">
         <span className="text-xl font-extrabold">
@@ -824,14 +858,18 @@ const rachaEstudio =
 
     <div className="text-center space-y-8">
       <div>
+      <InfoTooltip texto="Número de respuestas correctas de tu último examen.">
         <p className="text-sm font-bold">❔ Respuestas correctas</p>
+        </InfoTooltip>
         <p className="text-x1 font-extrabold">
         {progresoPopup?.ultimoResultado || 0}/{progresoPopup?.ultimoTotal || 20}
         </p>
       </div>
 
       <div>
+      <InfoTooltip texto="Porcentaje de respuestas correctas de tu último examen.">
         <p className="text-sm font-bold">🎯 Precisión</p>
+        </InfoTooltip>
         <p className="text-x1 font-extrabold">
           {progresoPopup?.precision || 0}%
         </p>
@@ -1183,9 +1221,11 @@ const rachaEstudio =
     </div>
 
         <div className="flex-2 text-center">
+  <InfoTooltip texto="Muestra el número total de examenes realizados.">
     <p className="text-sm font-semibold">
   Total de Preguntas resueltas
 </p>
+</InfoTooltip>
 
 <p className="text-2xl font-extrabold">
   {totalPreguntasResueltas}
@@ -1199,9 +1239,11 @@ const rachaEstudio =
     </div>
 
         <div className="flex-1 text-center">
+        <InfoTooltip texto="Porcentaje promedio de respuestas correctas de todos tus examenes.">
     <p className="text-sm font-semibold">
   Precisión promedio
 </p>
+</InfoTooltip>
 
 <p className="text-2xl font-extrabold">
   {precisionPromedio}%
@@ -1215,9 +1257,11 @@ const rachaEstudio =
     </div>
 
     <div>
+    <InfoTooltip texto="Días consecutivos en los que has practicado en la plataforma.">
     <p className="text-sm font-semibold">
   Racha de estudio
 </p>
+</InfoTooltip>
 
 <p className="text-2xl font-extrabold">
   {rachaEstudio} días
@@ -1408,7 +1452,9 @@ if (!usuarioRegistrado) {
 </div>
 
 <div className="border-l border-slate-400 pl-6 text-center">
+<InfoTooltip texto="Muestra tu avance total de respuestas del tema seleccionado.">
               <p className="font-bold text-2xl mb-2 -mt-2">Avance general</p>
+              </InfoTooltip>
               <div
   className={`w-40 h-40 rounded-full border-[16px] flex items-center justify-center text-3xl font-bold mx-auto ${
     temaSeleccionado.color === "bg-blue-600"
@@ -1430,14 +1476,18 @@ if (!usuarioRegistrado) {
 
               <div className="border-l border-slate-200 pl-3 pt-3 space-y-3">
               <div>
+              <InfoTooltip texto="Número de respuestas correctas de tu último examen.">
               <p className="font-bold text-xl text-slate-600">❔ Respuestas <br /> correctas</p>
+              </InfoTooltip>
   <p className="text-2xl font-bold ">
   {progresoActual?.correctas || 0} / {progresoActual?.total || 20}
 </p>
 </div>
 
 <div className="mt-8">
+<InfoTooltip texto="Porcentaje de respuestas correctas de tu último examen.">
   <p className="font-bold text-xl text-slate-600">🎯 Precisión</p>
+  </InfoTooltip>
   <p className="text-2xl font-bold">
   {progresoActual?.precision || 0}%
 </p>
@@ -1704,6 +1754,34 @@ if (!usuarioRegistrado) {
           Guardar
         </button>
       </div>
+    </div>
+  </div>
+)}
+{mostrarPremiumActivado && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center">
+      <div className="text-6xl mb-4">
+        🎉
+      </div>
+
+      <h2 className="text-2xl font-extrabold text-slate-900 mb-3">
+        Cuenta Premium activada
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed mb-6">
+        Tu acceso Premium ya está activo. Ya puedes usar todas las preguntas,
+        simulacros y funciones desbloqueadas.
+      </p>
+
+      <button
+        onClick={() => {
+          setMostrarPremiumActivado(false);
+          window.location.reload();
+        }}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
+      >
+        Actualizar mi cuenta
+      </button>
     </div>
   </div>
 )}
