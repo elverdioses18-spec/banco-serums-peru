@@ -247,8 +247,12 @@ export default function LoginPage() {
   </button>
 
   <button
-   onClick={() => setMostrarRegistro(true)}
-    className="flex-1 h-13 rounded-2xl bg-slate-700 hover:bg-slate-600 text-xl font-bold transition-all duration-150 active:scale-90 active:brightness-75 active:translate-y-1"
+   onClick={() => {
+    setTimeout(() => {
+      setMostrarRegistro(true);
+    }, 120);
+  }}
+    className="flex-1 h-13 rounded-2xl bg-slate-700 hover:bg-slate-600 text-xl font-bold transition-all duration-150 active:scale-95 active:translate-y-1"
   >
     Registrarme
   </button>
@@ -383,6 +387,9 @@ export default function LoginPage() {
 
         <button
        onClick={async () => {
+        await new Promise(resolve =>
+          setTimeout(resolve, 150)
+        );
         const correoLimpio = correoRegistro.trim().toLowerCase();
         const nombreLimpio = nombreRegistro.trim();
       
@@ -437,13 +444,17 @@ export default function LoginPage() {
         setPasswordRegistro("");
         setMostrarRegistro(false);
       }}
-          className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold transition-all duration-150 active:scale-95 active:brightness-90"
+          className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold transition-all duration-150 active:scale-95 active:translate-y-1"
         >
           Crear cuenta
         </button>
 
         <button
-          onClick={() => setMostrarRegistro(false)}
+          onClick={() => {
+            setTimeout(() => {
+              setMostrarRegistro(false);
+            }, 150);
+          }}
           className="w-full bg-slate-700 hover:bg-slate-600 py-3 rounded-xl font-bold transition-all duration-150 active:scale-95 active:brightness-90"
         >
           Cancelar
