@@ -17,7 +17,7 @@ import {
 
 function SaludPublicaContent() {
   const router = useRouter();
-const LIMITE_GRATIS = 10;
+const LIMITE_GRATIS = 20;
   const searchParams = useSearchParams();
 
 const cantidad = Number(searchParams.get("cantidad")) || 20;
