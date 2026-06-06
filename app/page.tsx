@@ -72,6 +72,7 @@ const [nombrePago, setNombrePago] = useState("");
 const [correoPago, setCorreoPago] = useState("");
 const [codigoPago, setCodigoPago] = useState("");
 const [voucherPago, setVoucherPago] = useState<File | null>(null);
+const [mostrarPagoEnviado, setMostrarPagoEnviado] = useState(false);
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
 
@@ -1876,6 +1877,30 @@ if (!usuarioRegistrado) {
       </div>
 </div>
 )}
+{mostrarPagoEnviado && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center">
+      <div className="text-6xl mb-4">
+        ✅
+      </div>
+
+      <h2 className="text-2xl font-extrabold text-slate-900 mb-3">
+        Solicitud enviada
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed mb-6">
+        Su pago será verificado y su cuenta será activada en las próximas horas.
+      </p>
+
+      <button
+        onClick={() => setMostrarPagoEnviado(false)}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
 {mostrarPagoPremium && (
   <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[99999] px-4">
     <div className="bg-white text-slate-900 rounded-3xl p-6 w-full max-w-md relative shadow-2xl">
@@ -1999,13 +2024,12 @@ if (!usuarioRegistrado) {
       return;
     }
     
-    alert("Solicitud enviada correctamente.");
-    
     setNombrePago("");
-    setCorreoPago("");
-    setCodigoPago("");
-    setVoucherPago(null);
-    setMostrarPagoPremium(false);
+setCorreoPago("");
+setCodigoPago("");
+setVoucherPago(null);
+setMostrarPagoPremium(false);
+setMostrarPagoEnviado(true);
   }}
   className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
 >
