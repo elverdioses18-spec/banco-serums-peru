@@ -1858,7 +1858,16 @@ if (!usuarioRegistrado) {
 </span>
 
       <button
-  onClick={() => setMostrarPagoPremium(true)}
+  onClick={() => {
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+  
+    setNombrePago(usuario.nombre || "");
+    setCorreoPago(usuario.correo || "");
+  
+    setMostrarPagoPremium(true);
+  }}
   className="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg"
 >
   Pagar
