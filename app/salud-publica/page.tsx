@@ -280,7 +280,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
           </p>
   
           <a
-            href="/premium"
+            href="/?premium=true"
             className="block w-full bg-blue-600 hover:bg-blue-700 transition rounded-2xl py-3 text-xl font-bold mb-3"
           >
             👑 Hazte Premium

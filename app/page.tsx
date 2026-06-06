@@ -72,6 +72,13 @@ const [nombrePago, setNombrePago] = useState("");
 const [correoPago, setCorreoPago] = useState("");
 const [codigoPago, setCodigoPago] = useState("");
 const [voucherPago, setVoucherPago] = useState<File | null>(null);
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("premium") === "true") {
+    setMostrarPagoPremium(true);
+  }
+}, []);
 
 useEffect(() => {
   const sincronizarAlRecargar = async () => {
