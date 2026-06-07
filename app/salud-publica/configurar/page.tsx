@@ -1,9 +1,36 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  const router = useRouter();
+
+const validarGratis = async () => {
+  const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+
+  if (!usuario.correo) return;
+
+  const { data } = await supabase
+    .from("usuarios")
+    .select("gratis_bloqueado, premium")
+    .eq("correo", usuario.correo)
+    .single();
+
+  if (!data?.premium && data?.gratis_bloqueado) {
+    setMostrarPremium(true);
+    return;
+  }
+
+  await supabase
+    .from("usuarios")
+    .update({ gratis_bloqueado: true })
+    .eq("correo", usuario.correo);
+
+  router.push("/salud-publica?cantidad=20");
+};
   
   const esPremium =
   typeof window !== "undefined" &&
@@ -55,12 +82,12 @@ export default function ConfigurarSimulacro() {
 
         <div className="grid grid-cols-3 gap-5 mb-10">
         {usuarioRegistrado ? (
-  <Link
-    href="/salud-publica?cantidad=20"
-    className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold transition hover:scale-105"
-  >
-    20
-  </Link>
+ <button
+ onClick={validarGratis}
+ className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold transition-all duration-150 active:scale-95 active:translate-y-1"
+>
+ 20
+</button>
 ) : (
   <label
     htmlFor="registro-modal"

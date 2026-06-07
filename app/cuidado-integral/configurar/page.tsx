@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BloqueoRegistro from "../../../components/BloqueoRegistro";
+import { supabase } from "@/lib/supabase";
 
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
@@ -17,6 +18,25 @@ if (!usuarioRegistrado) {
   return <BloqueoRegistro />;
 }
   const router = useRouter();
+  const entrarGratis20 = async () => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+  
+    if (esPremium) {
+      router.push("/cuidado-integral?cantidad=20");
+      return;
+    }
+  
+    const { data, error } = await supabase.rpc("usar_gratis", {
+      p_usuario_id: usuario.id,
+    });
+  
+    if (error || data === false) {
+      alert("Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando.");
+      return;
+    }
+  
+    router.push("/cuidado-integral?cantidad=20");
+  };
   useEffect(() => {
   const usuarioRegistrado =
     localStorage.getItem("usuarioActual");
