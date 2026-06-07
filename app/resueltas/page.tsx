@@ -6,6 +6,8 @@ import { userKey } from "@/lib/storageUsuario";
 
 export default function ResueltasPage() {
   const [resueltas, setResueltas] = useState<any[]>([]);
+  const [filtro, setFiltro] = useState("todas");
+  const [busqueda, setBusqueda] = useState("");
 
   useEffect(() => {
     const guardadas = JSON.parse(
@@ -15,6 +17,32 @@ export default function ResueltasPage() {
     setResueltas(guardadas);
   }, []);
 
+  const totalExamen = resueltas.filter(
+    (item) => item.origen === "examen"
+  ).length;
+  
+  const totalRecuperadas = resueltas.filter(
+    (item) => item.origen === "recuperada"
+  ).length;
+
+  const resueltasFiltradas = resueltas.filter((item) => {
+    const coincideFiltro =
+      filtro === "examen"
+        ? item.origen === "examen"
+        : filtro === "recuperada"
+        ? item.origen === "recuperada"
+        : true;
+  
+    const texto = `
+      ${item.pregunta || ""}
+      ${item.explicacion || ""}
+      ${item.tema || ""}
+    `.toLowerCase();
+  
+    const coincideBusqueda = texto.includes(busqueda.toLowerCase());
+  
+    return coincideFiltro && coincideBusqueda;
+  });
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
       <div className="max-w-4xl mx-auto">
@@ -35,12 +63,84 @@ export default function ResueltasPage() {
             Aquí encontrarás las preguntas que ya resolviste correctamente.
           </p>
 
-          <p className="mt-4 font-bold text-green-600">
-            Total resueltas: {resueltas.length}
-          </p>
-        </div>
+         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+  <div className="bg-green-50 border border-green-200 rounded-2xl p-4">
+    <p className="text-sm text-green-700 font-semibold">
+      Total resueltas
+    </p>
+    <p className="text-2xl font-extrabold text-green-700">
+      {resueltas.length}
+    </p>
+  </div>
 
-        {resueltas.length === 0 ? (
+  <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+    <p className="text-sm text-blue-700 font-semibold">
+      Correctas en examen
+    </p>
+    <p className="text-2xl font-extrabold text-blue-700">
+      {totalExamen}
+    </p>
+  </div>
+
+  <div className="bg-purple-50 border border-purple-200 rounded-2xl p-4">
+    <p className="text-sm text-purple-700 font-semibold">
+      Corregidas en falladas
+    </p>
+    <p className="text-2xl font-extrabold text-purple-700">
+      {totalRecuperadas}
+    </p>
+  </div>
+</div>
+
+<div className="flex flex-wrap gap-2 mt-4">
+            
+  <button
+    onClick={() => setFiltro("todas")}
+    className={`px-4 py-2 rounded-xl font-bold ${
+      filtro === "todas"
+        ? "bg-[#06194a] text-white"
+        : "bg-slate-100 text-slate-700"
+    }`}
+  >
+    Todas
+  </button>
+
+  <button
+    onClick={() => setFiltro("examen")}
+    className={`px-4 py-2 rounded-xl font-bold ${
+      filtro === "examen"
+        ? "bg-green-600 text-white"
+        : "bg-slate-100 text-slate-700"
+    }`}
+  >
+    Correctas en examen
+  </button>
+
+  <button
+    onClick={() => setFiltro("recuperada")}
+    className={`px-4 py-2 rounded-xl font-bold ${
+      filtro === "recuperada"
+        ? "bg-blue-600 text-white"
+        : "bg-slate-100 text-slate-700"
+    }`}
+  >
+    Corregidas en falladas
+  </button>
+</div>
+<div className="flex flex-wrap gap-2 mt-4">
+  ...
+</div>
+
+<input
+  type="text"
+  placeholder="Buscar por pregunta, explicación o tema..."
+  value={busqueda}
+  onChange={(e) => setBusqueda(e.target.value)}
+  className="w-full mt-4 p-3 rounded-xl border border-slate-300"
+/>
+                 
+
+        {resueltasFiltradas.length === 0 ? (
           <div className="bg-white rounded-3xl shadow-md p-6 border text-center">
             <p className="text-slate-600">
               Aún no tienes preguntas resueltas guardadas.
@@ -48,7 +148,7 @@ export default function ResueltasPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {resueltas.map((item, index) => (
+            {resueltasFiltradas.map((item, index) => (
               <div
                 key={index}
                 className="bg-white rounded-3xl shadow-md p-5 border"
@@ -93,7 +193,8 @@ export default function ResueltasPage() {
             ))}
           </div>
         )}
-      </div>
-    </main>
-  );
+     </div>
+</div>
+</main>
+);
 }
