@@ -54,6 +54,7 @@ export function obtenerProgresoLocal() {
       "progresoInvestigacion",
       "progresoMixto",
       "preguntasUsadasGratis",
+      "preguntasResueltas",
       "flashcards",
     ];
   
@@ -85,6 +86,7 @@ export function obtenerProgresoLocal() {
       "progresoInvestigacion",
       "progresoMixto",
       "preguntasUsadasGratis",
+      "preguntasResueltas",
       "flashcards",
     ];
   

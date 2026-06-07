@@ -8,6 +8,7 @@ export default function ResueltasPage() {
   const [resueltas, setResueltas] = useState<any[]>([]);
   const [filtro, setFiltro] = useState("todas");
   const [busqueda, setBusqueda] = useState("");
+  const [filtroArea, setFiltroArea] = useState("todas");
 
   useEffect(() => {
     const guardadas = JSON.parse(
@@ -26,23 +27,27 @@ export default function ResueltasPage() {
   ).length;
 
   const resueltasFiltradas = resueltas.filter((item) => {
-    const coincideFiltro =
-      filtro === "examen"
-        ? item.origen === "examen"
-        : filtro === "recuperada"
-        ? item.origen === "recuperada"
-        : true;
-  
-    const texto = `
-      ${item.pregunta || ""}
-      ${item.explicacion || ""}
-      ${item.tema || ""}
-    `.toLowerCase();
-  
-    const coincideBusqueda = texto.includes(busqueda.toLowerCase());
-  
-    return coincideFiltro && coincideBusqueda;
-  });
+  const coincideFiltro =
+    filtro === "examen"
+      ? item.origen === "examen"
+      : filtro === "recuperada"
+      ? item.origen === "recuperada"
+      : true;
+
+  const texto = `
+    ${item.pregunta || ""}
+    ${item.explicacion || ""}
+    ${item.tema || ""}
+    ${item.area || ""}
+  `.toLowerCase();
+
+  const coincideBusqueda = texto.includes(busqueda.toLowerCase());
+
+  const coincideArea =
+    filtroArea === "todas" ? true : item.area === filtroArea;
+
+  return coincideFiltro && coincideBusqueda && coincideArea;
+});
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
       <div className="max-w-4xl mx-auto">
@@ -128,7 +133,7 @@ export default function ResueltasPage() {
   </button>
 </div>
 <div className="flex flex-wrap gap-2 mt-4">
-  ...
+  
 </div>
 
 <input

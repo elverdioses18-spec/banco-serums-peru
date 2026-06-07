@@ -647,6 +647,7 @@ const rachaEstudio =
 <Link href="/falladas" className="block">❌ Preguntas falladas</Link>
 <Link href="/reforzamiento" className="block">🧠 Reforzamiento</Link>
 <Link href="/historial" className="block">🕘 Historial</Link>
+<div className="border-t border-white/20 my-4"></div>
 <Link href="/colabora" className="block">🚀 Colabora</Link>
 <Link href="/soporte" className="block">
   ❓ Ayuda y Soporte
