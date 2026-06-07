@@ -7,6 +7,8 @@ import { supabase } from "@/lib/supabase";
 export default function AdminPage() {
   const [solicitudes, setSolicitudes] = useState<any[]>([]);
   const [cargando, setCargando] = useState(true);
+  const [vistaAdmin, setVistaAdmin] = useState("solicitudes");
+const [usuarios, setUsuarios] = useState<any[]>([]);
   const [autorizado, setAutorizado] = useState(false);
 const [passwordAdmin, setPasswordAdmin] = useState("");
 const [errorAdmin, setErrorAdmin] = useState("");
@@ -16,26 +18,7 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const cargarSolicitudes = async () => {
     setCargando(true);
-    useEffect(() => {
-      const canal = supabase
-        .channel("solicitudes-premium")
-        .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "solicitudes_premium",
-          },
-          () => {
-            cargarSolicitudes();
-          }
-        )
-        .subscribe();
     
-      return () => {
-        supabase.removeChannel(canal);
-      };
-    }, []);
     
     const { data, error } = await supabase
       .from("solicitudes_premium")
@@ -52,8 +35,43 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
     setCargando(false);
   };
 
+  const cargarUsuarios = async () => {
+    const { data, error } = await supabase
+      .from("usuarios")
+      .select("*")
+      .order("created_at", { ascending: false });
+  
+    if (error) {
+      mostrarAlertaBonita("Error cargando usuarios: " + error.message);
+      return;
+    }
+  
+    setUsuarios(data || []);
+  };
   useEffect(() => {
     cargarSolicitudes();
+    cargarUsuarios();
+  }, []);
+
+  useEffect(() => {
+    const canal = supabase
+      .channel("solicitudes-premium-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "solicitudes_premium",
+        },
+        () => {
+          cargarSolicitudes();
+        }
+      )
+      .subscribe();
+  
+    return () => {
+      supabase.removeChannel(canal);
+    };
   }, []);
 
   const aprobarPremium = async (correo: string, idSolicitud: number) => {
@@ -174,6 +192,29 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
         <h1 className="text-3xl font-extrabold mb-6">
           Panel Admin - Solicitudes Premium
         </h1>
+        <div className="flex gap-2 mb-4">
+  <button
+    onClick={() => setVistaAdmin("solicitudes")}
+    className={`flex-1 py-3 rounded-xl font-bold ${
+      vistaAdmin === "solicitudes"
+        ? "bg-blue-600 text-white"
+        : "bg-slate-800 text-slate-300"
+    }`}
+  >
+    Solicitudes
+  </button>
+
+  <button
+    onClick={() => setVistaAdmin("usuarios")}
+    className={`flex-1 py-3 rounded-xl font-bold ${
+      vistaAdmin === "usuarios"
+        ? "bg-blue-600 text-white"
+        : "bg-slate-800 text-slate-300"
+    }`}
+  >
+    Usuarios
+  </button>
+</div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
   <select
     value={filtroEstado}
@@ -194,6 +235,35 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
     className="bg-slate-800 border border-slate-700 text-white p-3 rounded-xl"
   />
 </div>
+
+{vistaAdmin === "usuarios" && (
+  <div className="space-y-4">
+    {usuarios.length === 0 ? (
+      <p className="text-slate-300">No hay usuarios registrados.</p>
+    ) : (
+      usuarios.map((usuario) => (
+        <div
+          key={usuario.id}
+          className="bg-slate-800 rounded-2xl p-5 border border-slate-700"
+        >
+          <p><b>Nombre:</b> {usuario.nombre}</p>
+          <p><b>Correo:</b> {usuario.correo}</p>
+          <p>
+            <b>Premium:</b>{" "}
+            {usuario.premium ? (
+              <span className="text-green-400 font-bold">Sí</span>
+            ) : (
+              <span className="text-yellow-400 font-bold">No</span>
+            )}
+          </p>
+        </div>
+      ))
+    )}
+  </div>
+)}
+
+{vistaAdmin === "solicitudes" && (
+  <div>
         {cargando ? (
           <p>Cargando solicitudes...</p>
         ) : solicitudes.length === 0 ? (
@@ -258,8 +328,11 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
               </div>
             ))}
           </div>
-        )}
-      </div>
+                )}
+                </div>
+              )}
+                    </div>
+      
       {mostrarModalMensaje && (
   <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
     <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-7 text-center">
