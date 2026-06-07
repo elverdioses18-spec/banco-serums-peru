@@ -72,6 +72,26 @@ export default function FalladasPage() {
     onClick={() => {
       if (i === pregunta.correcta) {
         const nuevasFalladas = falladas.filter((_, pos) => pos !== index);
+        const resueltasGuardadas = JSON.parse(
+          localStorage.getItem(userKey("preguntasResueltas")) || "[]"
+        );
+        
+        const existe = resueltasGuardadas.some(
+          (p: any) => p.pregunta === pregunta.pregunta
+        );
+        
+        if (!existe) {
+          resueltasGuardadas.push({
+            ...pregunta,
+            origen: "recuperada",
+            fecha: new Date().toISOString(),
+          });
+        
+          localStorage.setItem(
+            userKey("preguntasResueltas"),
+            JSON.stringify(resueltasGuardadas)
+          );
+        }
         setFalladas(nuevasFalladas);
         localStorage.setItem(userKey("preguntasFalladas"), JSON.stringify(nuevasFalladas));
       } else {

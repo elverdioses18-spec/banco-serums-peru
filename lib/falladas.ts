@@ -11,6 +11,29 @@ export function guardarFalladas(preguntas: any[], respuestas: any) {
   const respondidasBien = preguntas.filter(
     (pregunta, index) => respuestas[index] === pregunta.correcta
   );
+  
+  const resueltasGuardadas = JSON.parse(
+    localStorage.getItem(userKey("preguntasResueltas")) || "[]"
+  );
+
+  respondidasBien.forEach((pregunta: any) => {
+    const existe = resueltasGuardadas.some(
+      (p: any) => p.pregunta === pregunta.pregunta
+    );
+  
+    if (!existe) {
+      resueltasGuardadas.push({
+        ...pregunta,
+        origen: "examen",
+        fecha: new Date().toISOString(),
+      });
+    }
+  });
+
+  localStorage.setItem(
+    userKey("preguntasResueltas"),
+    JSON.stringify(resueltasGuardadas)
+  );
 
   let actualizadas = falladasGuardadas.filter(
     (guardada: any) =>

@@ -643,6 +643,7 @@ const rachaEstudio =
 
     <div className="space-y-4 text-lg font-bold">
     <Link href="/estadisticas" className="block">📊 Estadísticas</Link>
+    <Link href="/resueltas" className="block">📚 Resueltas</Link>
 <Link href="/falladas" className="block">❌ Preguntas falladas</Link>
 <Link href="/reforzamiento" className="block">🧠 Reforzamiento</Link>
 <Link href="/historial" className="block">🕘 Historial</Link>
@@ -1016,6 +1017,11 @@ const rachaEstudio =
             <Link href="/estadisticas" className="flex items-center gap-2">
   <span>📊</span>
   {sidebarOpen && <span>Estadísticas</span>}
+</Link>
+
+<Link href="/resueltas" className="flex items-center gap-2">
+  <span>📚</span>
+  {sidebarOpen && <span>Preguntas resueltas</span>}
 </Link>
 
 <Link href="/falladas" className="flex items-center gap-2">

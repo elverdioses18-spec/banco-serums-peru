@@ -2,9 +2,36 @@
 import Link from "next/link";
 import BloqueoRegistro from "../../../components/BloqueoRegistro";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  const [mostrarBloqueo, setMostrarBloqueo] = useState(false);
+const router = useRouter();
+const validarGratis = async () => {
+  const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+
+  if (!usuario.correo) return;
+
+  const { data } = await supabase
+    .from("usuarios")
+    .select("gratis_bloqueado, premium")
+    .eq("correo", usuario.correo)
+    .single();
+
+  if (!data?.premium && data?.gratis_bloqueado) {
+    setMostrarBloqueo(true);
+    return;
+  }
+
+  await supabase
+    .from("usuarios")
+    .update({ gratis_bloqueado: true })
+    .eq("correo", usuario.correo);
+
+    router.push("/etica?cantidad=20");
+};
   const [esPremium, setEsPremium] = useState(false);
   const usuarioRegistrado =
   typeof window !== "undefined" &&
@@ -29,9 +56,12 @@ if (!usuarioRegistrado) {
         </p>
 
         <div className="grid grid-cols-3 gap-5 mb-10">
-          <Link href="/etica?cantidad=20" className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold transition hover:scale-105">
-            20
-          </Link>
+        <button
+  onClick={validarGratis}
+  className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold transition-all duration-150 active:scale-95 active:translate-y-1"
+>
+  20
+</button>
 
           {esPremium ? (
   <Link
@@ -114,6 +144,22 @@ if (!usuarioRegistrado) {
 </label>
     </div>
   </div>
+  {mostrarBloqueo && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center text-white">
+      <h1 className="text-3xl font-bold mb-4">Acceso bloqueado</h1>
+      <p className="text-lg mb-6">
+        Ya agotaste tus preguntas gratis. Activa Premium para seguir practicando.
+      </p>
+      <button
+        onClick={() => setMostrarBloqueo(false)}
+        className="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
 </main>
   );
 }
