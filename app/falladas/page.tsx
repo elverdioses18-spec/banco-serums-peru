@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { userKey } from "@/lib/storageUsuario";
+import {
+  guardarProgreso,
+  obtenerProgresoLocal,
+} from "@/lib/syncProgreso";
 
 export default function FalladasPage() {
   const [falladas, setFalladas] = useState<any[]>([]);
@@ -69,7 +73,7 @@ export default function FalladasPage() {
               {pregunta.opciones?.map((opcion: string, i: number) => (
   <button
     key={i}
-    onClick={() => {
+    onClick={async () => {
       if (i === pregunta.correcta) {
         const nuevasFalladas = falladas.filter((_, pos) => pos !== index);
         const resueltasGuardadas = JSON.parse(
@@ -94,6 +98,16 @@ export default function FalladasPage() {
         }
         setFalladas(nuevasFalladas);
         localStorage.setItem(userKey("preguntasFalladas"), JSON.stringify(nuevasFalladas));
+        const usuario = JSON.parse(
+          localStorage.getItem("usuarioActual") || "{}"
+        );
+        
+        if (usuario.correo) {
+          await guardarProgreso(
+            usuario.correo,
+            obtenerProgresoLocal()
+          );
+        }
       } else {
         mostrarAlertaBonita("Respuesta incorrecta. Inténtalo otra vez.");
       }
