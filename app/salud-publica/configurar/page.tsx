@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-const [mostrarBloqueo, setMostrarBloqueo] = useState(false);
+
 
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
   const router = useRouter();
+  const [mostrarBloqueo, setMostrarBloqueo] = useState(false);
 
 const validarGratis = async () => {
   const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
