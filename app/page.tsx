@@ -10,6 +10,11 @@ import { preguntasInvestigacion } from "@/data/investigacionData";
 import { preguntasEtica } from "@/data/eticaData";
 import { supabase } from "@/lib/supabase";
 import { userKey } from "@/lib/storageUsuario";
+import OnboardingModal from "@/components/OnboardingModal";
+import {
+  guardarProgreso,
+  obtenerProgresoLocal,
+} from "@/lib/syncProgreso";
 import {
   cargarProgreso,
   aplicarProgresoLocal,
@@ -81,8 +86,13 @@ const [codigoPago, setCodigoPago] = useState("");
 const [voucherPago, setVoucherPago] = useState<File | null>(null);
 const [mostrarPagoEnviado, setMostrarPagoEnviado] = useState(false);
 const [mostrarPremiumActivado, setMostrarPremiumActivado] = useState(false);
-
+const [mostrarOnboarding, setMostrarOnboarding] = useState(false);
 useEffect(() => {
+  const onboardingVisto = localStorage.getItem(userKey("onboardingVisto"))
+
+if (!onboardingVisto) {
+  setMostrarOnboarding(true);
+}
   const params = new URLSearchParams(window.location.search);
 
   if (params.get("premium") === "true") {
@@ -2169,6 +2179,25 @@ setMostrarPagoEnviado(true);
       </button>
     </div>
   </div>
+)}
+{mostrarOnboarding && (
+  <OnboardingModal
+  onClose={async () => {
+    localStorage.setItem(userKey("onboardingVisto"), "true");
+    setMostrarOnboarding(false);
+
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+
+    if (usuario.correo) {
+      await guardarProgreso(
+        usuario.correo,
+        obtenerProgresoLocal()
+      );
+    }
+  }}
+/>
 )}
 </main>
 );

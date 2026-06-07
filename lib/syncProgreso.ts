@@ -56,6 +56,7 @@ export function obtenerProgresoLocal() {
       "preguntasUsadasGratis",
       "preguntasResueltas",
       "flashcards",
+      "onboardingVisto",
     ];
   
     const datos: any = {};
@@ -88,6 +89,7 @@ export function obtenerProgresoLocal() {
       "preguntasUsadasGratis",
       "preguntasResueltas",
       "flashcards",
+      "onboardingVisto",
     ];
   
     claves.forEach((clave) => {
