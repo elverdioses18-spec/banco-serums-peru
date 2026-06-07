@@ -19,6 +19,7 @@ if (!usuarioRegistrado) {
 }
   const router = useRouter();
   const entrarGratis20 = async () => {
+    
     const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
   
     if (!usuario.correo) return;
@@ -30,6 +31,7 @@ if (!usuarioRegistrado) {
       .single();
   
     if (!data?.premium && data?.gratis_bloqueado) {
+      
       setMostrarBloqueo(true);
       return;
     }
@@ -154,7 +156,26 @@ if (!usuarioRegistrado) {
 </label>
     </div>
   </div>
+  {mostrarBloqueo && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div className="bg-slate-800 p-8 rounded-2xl max-w-lg text-center text-white">
+      <h1 className="text-3xl font-bold mb-4">
+        Acceso bloqueado
+      </h1>
 
+      <p className="text-lg mb-6">
+        Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando.
+      </p>
+
+      <button
+        onClick={() => setMostrarBloqueo(false)}
+        className="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
 </main>
   );
 }
