@@ -16,6 +16,26 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const cargarSolicitudes = async () => {
     setCargando(true);
+    useEffect(() => {
+      const canal = supabase
+        .channel("solicitudes-premium")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "solicitudes_premium",
+          },
+          () => {
+            cargarSolicitudes();
+          }
+        )
+        .subscribe();
+    
+      return () => {
+        supabase.removeChannel(canal);
+      };
+    }, []);
     
     const { data, error } = await supabase
       .from("solicitudes_premium")
