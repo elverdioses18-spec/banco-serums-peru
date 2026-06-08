@@ -73,6 +73,26 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
       supabase.removeChannel(canal);
     };
   }, []);
+  useEffect(() => {
+    const canal = supabase
+      .channel("usuarios-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "usuarios",
+        },
+        () => {
+          cargarUsuarios();
+        }
+      )
+      .subscribe();
+  
+    return () => {
+      supabase.removeChannel(canal);
+    };
+  }, []);
 
   const aprobarPremium = async (correo: string, idSolicitud: number) => {
     const { error: errorUsuario } = await supabase
@@ -102,7 +122,7 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
     const confirmar = confirm(`¿Quitar Premium a ${correo}?`);
   
     if (!confirmar) return;
-  
+     
     const { error: errorUsuario } = await supabase
       .from("usuarios")
       .update({ premium: false })
@@ -121,7 +141,24 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
       mostrarAlertaBonita("Premium retirado correctamente.");
     cargarSolicitudes();
   };
+  const eliminarSolicitud = async (idSolicitud: number) => {
+    const confirmar = confirm("¿Eliminar esta solicitud de la bandeja?");
   
+    if (!confirmar) return;
+  
+    const { error } = await supabase
+      .from("solicitudes_premium")
+      .delete()
+      .eq("id", idSolicitud);
+  
+    if (error) {
+      mostrarAlertaBonita("Error eliminando solicitud: " + error.message);
+      return;
+    }
+  
+    mostrarAlertaBonita("Solicitud eliminada de la bandeja.");
+    cargarSolicitudes();
+  };
   const [modalMensaje, setModalMensaje] = useState("");
       const [mostrarModalMensaje, setMostrarModalMensaje] = useState(false);
       
@@ -323,6 +360,12 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
   Quitar Premium
 </button>
 
+<button
+  onClick={() => eliminarSolicitud(item.id)}
+  className="px-4 py-3 rounded-xl font-bold bg-red-600 hover:bg-red-500"
+>
+  🗑️ Eliminar de bandeja
+</button>
 
                 </div>
               </div>
