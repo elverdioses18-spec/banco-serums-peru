@@ -237,21 +237,12 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
   
     return coincideEstado && coincideCorreo;
   });
-  const obtenerPreguntasRespondidasUsuario = (correo: string) => {
+  const obtenerResueltasUsuario = (correo: string) => {
     const progreso = progresosUsuarios.find(
       (item) => item.correo === correo
     );
   
-    const datos = progreso?.datos || {};
-  
-    return (
-      (datos.progresoSaludPublica?.total || 0) +
-      (datos.progresoGestion?.total || 0) +
-      (datos.progresoCuidado?.total || 0) +
-      (datos.progresoEtica?.total || 0) +
-      (datos.progresoInvestigacion?.total || 0) +
-      (datos.progresoMixto?.total || 0)
-    );
+    return progreso?.datos?.preguntasResueltas?.length || 0;
   };
   return (
     <main className="min-h-screen bg-slate-950 text-white p-6">
@@ -326,9 +317,9 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
   </p>
 </div>
 <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 text-center min-w-[110px]">
-<p className="text-xs text-slate-400">📝 Respondidas</p>
+<p className="text-xs text-slate-400">📚 Resueltas</p>
   <p className="text-2xl font-extrabold text-blue-400">
-  {obtenerPreguntasRespondidasUsuario(usuario.correo)}
+  {obtenerResueltasUsuario(usuario.correo)}
   </p>
 </div>
         </div>
