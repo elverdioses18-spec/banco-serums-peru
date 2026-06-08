@@ -366,7 +366,7 @@ useEffect(() => {
 
         <button
         onClick={async () => {
-            guardarFalladas(preguntasTema, respuestas);
+          await guardarFalladas(preguntasTema, respuestas);
             guardarHistorialExamen({
               tema: "Gestión",
               totalPreguntas: preguntasTema.length,

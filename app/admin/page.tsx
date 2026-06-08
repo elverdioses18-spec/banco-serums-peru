@@ -9,6 +9,7 @@ export default function AdminPage() {
   const [cargando, setCargando] = useState(true);
   const [vistaAdmin, setVistaAdmin] = useState("solicitudes");
 const [usuarios, setUsuarios] = useState<any[]>([]);
+const [progresosUsuarios, setProgresosUsuarios] = useState<any[]>([]);
   const [autorizado, setAutorizado] = useState(false);
 const [passwordAdmin, setPasswordAdmin] = useState("");
 const [errorAdmin, setErrorAdmin] = useState("");
@@ -51,8 +52,20 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
   useEffect(() => {
     cargarSolicitudes();
     cargarUsuarios();
+    cargarProgresosUsuarios();
   }, []);
-
+  const cargarProgresosUsuarios = async () => {
+    const { data, error } = await supabase
+      .from("progreso_usuarios")
+      .select("*");
+  
+    if (error) {
+      mostrarAlertaBonita("Error cargando progresos: " + error.message);
+      return;
+    }
+  
+    setProgresosUsuarios(data || []);
+  };
   useEffect(() => {
     const canal = supabase
       .channel("solicitudes-premium-realtime")
@@ -167,6 +180,13 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
         setMostrarModalMensaje(true);
       };
   if (!autorizado) {
+    const obtenerResueltasUsuario = (correo: string) => {
+      const progreso = progresosUsuarios.find(
+        (item) => item.correo === correo
+      );
+    
+      return progreso?.datos?.preguntasResueltas?.length || 0;
+    };
     return (
       <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
         <div className="bg-slate-800 p-8 rounded-3xl max-w-md w-full shadow-2xl">
@@ -223,6 +243,13 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
   
     return coincideEstado && coincideCorreo;
   });
+  const obtenerResueltasUsuario = (correo: string) => {
+    const progreso = progresosUsuarios.find(
+      (item) => item.correo === correo
+    );
+  
+    return progreso?.datos?.preguntasResueltas?.length || 0;
+  };
   return (
     <main className="min-h-screen bg-slate-950 text-white p-6">
       <div className="max-w-5xl mx-auto">
@@ -280,19 +307,27 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
     ) : (
       usuarios.map((usuario) => (
         <div
-          key={usuario.id}
-          className="bg-slate-800 rounded-2xl p-5 border border-slate-700"
-        >
-          <p><b>Nombre:</b> {usuario.nombre}</p>
-          <p><b>Correo:</b> {usuario.correo}</p>
-          <p>
-            <b>Premium:</b>{" "}
-            {usuario.premium ? (
-              <span className="text-green-400 font-bold">Sí</span>
-            ) : (
-              <span className="text-yellow-400 font-bold">No</span>
-            )}
-          </p>
+        key={usuario.id}
+        className="bg-slate-800 rounded-2xl p-5 border border-slate-700 flex items-center justify-between gap-4"
+      >
+         <div>
+  <p><b>Nombre:</b> {usuario.nombre}</p>
+  <p><b>Correo:</b> {usuario.correo}</p>
+  <p>
+    <b>Premium:</b>{" "}
+    {usuario.premium ? (
+      <span className="text-green-400 font-bold">Sí</span>
+    ) : (
+      <span className="text-yellow-400 font-bold">No</span>
+    )}
+  </p>
+</div>
+<div className="bg-slate-900 rounded-xl p-4 border border-slate-700 text-center min-w-[110px]">
+  <p className="text-xs text-slate-400">📚 Resueltas</p>
+  <p className="text-2xl font-extrabold text-blue-400">
+    {obtenerResueltasUsuario(usuario.correo)}
+  </p>
+</div>
         </div>
       ))
     )}
