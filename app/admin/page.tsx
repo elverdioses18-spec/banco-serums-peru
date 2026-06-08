@@ -180,13 +180,7 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
         setMostrarModalMensaje(true);
       };
   if (!autorizado) {
-    const obtenerResueltasUsuario = (correo: string) => {
-      const progreso = progresosUsuarios.find(
-        (item) => item.correo === correo
-      );
-    
-      return progreso?.datos?.preguntasResueltas?.length || 0;
-    };
+   
     return (
       <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
         <div className="bg-slate-800 p-8 rounded-3xl max-w-md w-full shadow-2xl">
@@ -243,12 +237,21 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
   
     return coincideEstado && coincideCorreo;
   });
-  const obtenerResueltasUsuario = (correo: string) => {
+  const obtenerPreguntasRespondidasUsuario = (correo: string) => {
     const progreso = progresosUsuarios.find(
       (item) => item.correo === correo
     );
   
-    return progreso?.datos?.preguntasResueltas?.length || 0;
+    const datos = progreso?.datos || {};
+  
+    return (
+      (datos.progresoSaludPublica?.total || 0) +
+      (datos.progresoGestion?.total || 0) +
+      (datos.progresoCuidado?.total || 0) +
+      (datos.progresoEtica?.total || 0) +
+      (datos.progresoInvestigacion?.total || 0) +
+      (datos.progresoMixto?.total || 0)
+    );
   };
   return (
     <main className="min-h-screen bg-slate-950 text-white p-6">
@@ -323,9 +326,9 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
   </p>
 </div>
 <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 text-center min-w-[110px]">
-  <p className="text-xs text-slate-400">📚 Resueltas</p>
+<p className="text-xs text-slate-400">📝 Respondidas</p>
   <p className="text-2xl font-extrabold text-blue-400">
-    {obtenerResueltasUsuario(usuario.correo)}
+  {obtenerPreguntasRespondidasUsuario(usuario.correo)}
   </p>
 </div>
         </div>
