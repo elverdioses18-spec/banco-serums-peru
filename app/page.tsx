@@ -87,6 +87,7 @@ const [voucherPago, setVoucherPago] = useState<File | null>(null);
 const [mostrarPagoEnviado, setMostrarPagoEnviado] = useState(false);
 const [mostrarPremiumActivado, setMostrarPremiumActivado] = useState(false);
 const [mostrarOnboarding, setMostrarOnboarding] = useState(false);
+const [simulacroEvento, setSimulacroEvento] = useState<any>(null);
 useEffect(() => {
   const onboardingVisto = localStorage.getItem(userKey("onboardingVisto"))
 
@@ -98,6 +99,20 @@ if (!onboardingVisto) {
   if (params.get("premium") === "true") {
     setMostrarPremium(true);
   }
+  const cargarSimulacroEvento = async () => {
+    const { data, error } = await supabase
+      .from("simulacros_evento")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+  
+    if (!error && data) {
+      setSimulacroEvento(data);
+    }
+  };
+  
+  cargarSimulacroEvento();
 }, []);
 
 useEffect(() => {
@@ -666,14 +681,14 @@ const rachaEstudio =
     </div>
   </div>
 </div>
-    <div className="bg-white rounded-3xl shadow-md -p-1 mb-6">
+    <div className="bg-white rounded-2xl shadow-md -p-1 mb-6">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-xl font-extrabold text-[#06194a] leading-tight">
+          <h2 className="text-xl p-1 font-extrabold text-[#06194a] leading-tight">
             ¡Bienvenido a Ruta SERUMS!
           </h2>
 
-          <p className="text-sm text-slate-600 mt-1 leading-relaxed">
+          <p className="text-sm p-1 text-slate-600 mt-1 leading-relaxed">
             Plataforma de simulacros y banco de preguntas para el examen SERUMS.
           </p>
         </div>
@@ -685,7 +700,51 @@ const rachaEstudio =
         />
       </div>
       {!esPremium && (
+        
   <>
+  {simulacroEvento && (
+  <div className="mb-4 rounded-2xl border border-purple-300 bg-purple-50 p-3 shadow-sm">
+    <div className="flex items-center gap-3">
+      <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center text-3xl shrink-0">
+        🏆
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <span className="inline-block bg-purple-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-lg mb-1">
+          PRÓXIMO EVENTO
+        </span>
+
+        <h2 className="text-text-base font-extrabold text-[#06194a] leading-tight">
+          {simulacroEvento.titulo}
+        </h2>
+
+        <p className="text-xs text-slate-600">
+          Disponible del 10 al 14 de junio
+        </p>
+      </div>
+    </div>
+
+    <div className="mt-1 flex items-center gap-2">
+      <div className="flex-1 bg-white border border-purple-200 rounded-xl p-1 flex items-center gap-3">
+        <span className="text-2xl">📅</span>
+
+        <div>
+          <p className="text-xs text-slate-500">Inicia en:</p>
+          <p className="text-sm text-base font-extrabold text-[#06194a]">
+            2 días 14 horas 35 min
+          </p>
+        </div>
+      </div>
+
+      <Link
+        href="/simulacro-evento"
+        className="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-xl text-sm whitespace-nowrap"
+      >
+        Ver detalles
+      </Link>
+    </div>
+  </div>
+)}
       {/* FRANJA PREMIUM MÓVIL */}
 <div className="md:hidden bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-1 mb-5 shadow-sm flex items-center justify-between gap-3">
   <div className="flex items-center gap-3">
@@ -1130,6 +1189,7 @@ const rachaEstudio =
 
         {/* CONTENIDO */}
         <section className="flex-1">
+          
 
           {/* HEADER */}
           <header className="h-[96px] bg-[#062b73] text-white px-8 flex items-center justify-end gap-6">
@@ -1309,13 +1369,81 @@ const rachaEstudio =
 </div>
               
 </div>
-            </div>
 
+            </div>
+            {simulacroEvento && (
+  <div className="mb-5 rounded-3xl border-2 border-dashed border-purple-400 bg-gradient-to-r from-purple-50 via-white to-purple-50 p-4 shadow-sm">
+    <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+
+      <div className="flex items-center gap-4 flex-1">
+        <div className="w-24 h-24 rounded-2xl bg-purple-100 flex items-center justify-center text-6xl shrink-0">
+          🏆
+        </div>
+
+        <div>
+          <span className="inline-block bg-purple-600 text-white text-xs font-extrabold px-4 py-1 rounded-lg mb-2">
+            PRÓXIMO EVENTO
+          </span>
+
+          <h2 className="text-2xl font-extrabold text-[#06194a] leading-tight">
+            {simulacroEvento.titulo}
+          </h2>
+
+          <p className="text-slate-700 mt-1">
+            Pon a prueba tus conocimientos y mide tu nivel antes del examen SERUMS.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 lg:w-[360px]">
+        <div className="bg-white rounded-2xl border border-purple-200 p-4 shadow-sm flex items-center gap-3">
+          <div className="text-3xl">📋</div>
+          <div>
+            <p className="text-sm font-bold text-[#06194a]">Preguntas</p>
+            <p className="text-3xl font-extrabold text-[#06194a]">
+              {simulacroEvento.cantidad_preguntas}
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-purple-200 p-4 shadow-sm flex items-center gap-3">
+          <div className="text-3xl">🕒</div>
+          <div>
+            <p className="text-sm font-bold text-[#06194a]">Tiempo</p>
+            <p className="text-3xl font-extrabold text-[#06194a]">
+              {simulacroEvento.tiempo_minutos} min
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="lg:w-[230px]">
+        <div className="flex items-center gap-2 text-[#06194a] font-bold mb-3">
+          <span className="text-2xl">📅</span>
+          <div>
+            <p className="text-sm text-slate-600">Disponible del</p>
+            <p className="text-lg">10 al 14 de junio</p>
+          </div>
+        </div>
+
+        <Link
+          href="/simulacro-evento"
+          className="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3 rounded-xl shadow-md transition-all active:scale-95"
+        >
+          Ver detalles
+          <span>→</span>
+        </Link>
+      </div>
+
+    </div>
+  </div>
+)}
             {/* TARJETAS */}
             <h2 className="text-2xl font-bold mb-5">Elige un tema para comenzar</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2 mb-7">
             {temas.map((tema) => (
+              
   <div
     key={tema.nombre}
     onClick={() => {
