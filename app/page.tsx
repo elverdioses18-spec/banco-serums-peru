@@ -1400,6 +1400,9 @@ const rachaEstudio =
 </div>
 
             </div>
+            <p className="text-red-500">
+  {simulacroEvento ? "HAY SIMULACRO" : "NO HAY SIMULACRO"}
+</p>
             {simulacroEvento && (
   <div className="mb-5 rounded-3xl border-2 border-dashed border-purple-400 bg-gradient-to-r from-purple-50 via-white to-purple-50 p-4 shadow-sm">
     <div className="flex flex-col lg:flex-row lg:items-center gap-4">
