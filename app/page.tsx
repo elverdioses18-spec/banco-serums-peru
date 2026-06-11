@@ -716,10 +716,9 @@ const rachaEstudio =
           className="w-38 rounded-xl"
         />
       </div>
-      {!esPremium && (
+     
         
-  <>
-  {simulacroEvento && (
+   {simulacroEvento && (
   <div className="mb-4 rounded-2xl border border-purple-300 bg-purple-50 p-3 shadow-sm">
     <div className="flex items-center gap-3">
       <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center text-3xl shrink-0">
@@ -748,8 +747,17 @@ const rachaEstudio =
         </h2>
 
         <p className="text-xs text-slate-600">
-          Disponible del 10 al 14 de junio
-        </p>
+  Disponible del{" "}
+  {new Date(simulacroEvento.fecha_inicio).toLocaleDateString("es-PE", {
+    day: "numeric",
+    month: "long",
+  })}{" "}
+  al{" "}
+  {new Date(simulacroEvento.fecha_fin).toLocaleDateString("es-PE", {
+    day: "numeric",
+    month: "long",
+  })}
+</p>
       </div>
     </div>
 
@@ -758,10 +766,15 @@ const rachaEstudio =
         <span className="text-2xl">📅</span>
 
         <div>
-          <p className="text-xs text-slate-500">Inicia en:</p>
+        <p className="text-xs text-slate-500">Inicio:</p>
           <p className="text-sm text-base font-extrabold text-[#06194a]">
-            2 días 14 horas 35 min
-          </p>
+  {new Date(simulacroEvento.fecha_inicio).toLocaleString("es-PE", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
+</p>
         </div>
       </div>
 
@@ -774,6 +787,8 @@ const rachaEstudio =
     </div>
   </div>
 )}
+ {!esPremium && (
+  <>
       {/* FRANJA PREMIUM MÓVIL */}
 <div className="md:hidden bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-1 mb-5 shadow-sm flex items-center justify-between gap-3">
   <div className="flex items-center gap-3">
@@ -800,6 +815,7 @@ const rachaEstudio =
 </div>
 </>
 )}
+
 
       <div className="grid grid-cols-3 gap-3 mt-5">
         <div className="border border-slate-300 rounded-2xl p-1 text-center">
@@ -1400,9 +1416,6 @@ const rachaEstudio =
 </div>
 
             </div>
-            <p className="text-red-500">
-  {simulacroEvento ? "HAY SIMULACRO" : "NO HAY SIMULACRO"}
-</p>
             {simulacroEvento && (
   <div className="mb-5 rounded-3xl border-2 border-dashed border-purple-400 bg-gradient-to-r from-purple-50 via-white to-purple-50 p-4 shadow-sm">
     <div className="flex flex-col lg:flex-row lg:items-center gap-4">
@@ -1484,7 +1497,7 @@ const rachaEstudio =
           href="/simulacro-evento"
           className="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3 rounded-xl shadow-md transition-all active:scale-95"
         >
-          Ver detalles
+          Ver detalles2
           <span>→</span>
         </Link>
       </div>

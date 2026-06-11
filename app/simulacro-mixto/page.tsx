@@ -215,6 +215,9 @@ export default function SimulacroMixtoPage(){
           <p className="text-xl mb-6">
             Puntaje: {correctas} / {preguntasTema.length}
           </p>
+          <p className="text-xl mb-6">
+  Tiempo: {tiempoFormateado}
+</p>
           <div className="flex gap-2 mt-6 mb-6 justify-center">
   <Link href="/simulacro-mixto/configurar" className="bg-slate-600 hover:bg-slate-500 text-white px-3 py-3 rounded-xl font-bold text-sm">
     ⬅️ Volver

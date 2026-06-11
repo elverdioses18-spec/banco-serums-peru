@@ -207,6 +207,9 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
           <p className="text-xl mb-6">
             Puntaje: {correctas} / {preguntasTema.length}
           </p>
+          <p className="text-xl mb-6">
+  Tiempo: {tiempoFormateado}
+</p>
           <div className="flex gap-2 mt-6 mb-6 justify-center">
   <Link
     href="/salud-publica/configurar"
