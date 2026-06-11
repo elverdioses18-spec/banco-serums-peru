@@ -62,14 +62,14 @@ export async function guardarFalladas(preguntas: any[], respuestas: any) {
     userKey("preguntasFalladas"),
     JSON.stringify(actualizadas)
   );
-}
-const usuario = JSON.parse(
-  localStorage.getItem("usuarioActual") || "{}"
-);
-
-if (usuario.correo) {
-  await guardarProgreso(
-    usuario.correo,
-    obtenerProgresoLocal()
+  const usuario = JSON.parse(
+    localStorage.getItem("usuarioActual") || "{}"
   );
+  
+  if (usuario.correo) {
+    await guardarProgreso(
+      usuario.correo,
+      obtenerProgresoLocal()
+    );
+  }
 }

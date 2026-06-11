@@ -43,65 +43,69 @@ export async function cargarProgreso(correo: string) {
   return data?.datos || null;
 }
 export function obtenerProgresoLocal() {
-    const claves = [
-      "historialExamenes",
-      "preguntasFalladas",
-      "estadisticasPorTema",
-      "progresoSaludPublica",
-      "progresoGestion",
-      "progresoCuidado",
-      "progresoEtica",
-      "progresoInvestigacion",
-      "progresoMixto",
-      "preguntasUsadasGratis",
-      "preguntasResueltas",
-      "flashcards",
-      "onboardingVisto",
-    ];
-  
-    const datos: any = {};
-  
-    claves.forEach((clave) => {
-        const valor = localStorage.getItem(userKey(clave));
-  
-      if (valor) {
-        try {
-          datos[clave] = JSON.parse(valor);
-        } catch {
-          datos[clave] = valor;
-        }
+  if (typeof window === "undefined") return {};
+
+  const claves = [
+    "historialExamenes",
+    "preguntasFalladas",
+    "estadisticasPorTema",
+    "progresoSaludPublica",
+    "progresoGestion",
+    "progresoCuidado",
+    "progresoEtica",
+    "progresoInvestigacion",
+    "progresoMixto",
+    "preguntasUsadasGratis",
+    "preguntasResueltas",
+    "flashcards",
+    "onboardingVisto",
+  ];
+
+  const datos: any = {};
+
+  claves.forEach((clave) => {
+    const valor = localStorage.getItem(userKey(clave));
+
+    if (valor) {
+      try {
+        datos[clave] = JSON.parse(valor);
+      } catch {
+        datos[clave] = valor;
       }
-    });
-  
-    return datos;
-  }
-  export function aplicarProgresoLocal(datos: any) {
-    const claves = [
-      "historialExamenes",
-      "preguntasFalladas",
-      "estadisticasPorTema",
-      "progresoSaludPublica",
-      "progresoGestion",
-      "progresoCuidado",
-      "progresoEtica",
-      "progresoInvestigacion",
-      "progresoMixto",
-      "preguntasUsadasGratis",
-      "preguntasResueltas",
-      "flashcards",
-      "onboardingVisto",
-    ];
-  
-    claves.forEach((clave) => {
-      localStorage.removeItem(userKey(clave));
-    });
-  
-    if (datos && Object.keys(datos).length > 0) {
-      Object.entries(datos).forEach(([clave, valor]) => {
-        localStorage.setItem(
-          userKey(clave),
-          JSON.stringify(valor)
-        );
-      });
     }
+  });
+
+  return datos;
+}
+export function aplicarProgresoLocal(datos: any) {
+  if (typeof window === "undefined") return;
+
+  const claves = [
+    "historialExamenes",
+    "preguntasFalladas",
+    "estadisticasPorTema",
+    "progresoSaludPublica",
+    "progresoGestion",
+    "progresoCuidado",
+    "progresoEtica",
+    "progresoInvestigacion",
+    "progresoMixto",
+    "preguntasUsadasGratis",
+    "preguntasResueltas",
+    "flashcards",
+    "onboardingVisto",
+  ];
+
+  claves.forEach((clave) => {
+    localStorage.removeItem(userKey(clave));
+  });
+
+  if (datos && Object.keys(datos).length > 0) {
+    Object.entries(datos).forEach(([clave, valor]) => {
+      localStorage.setItem(
+        userKey(clave),
+        JSON.stringify(valor)
+      );
+    });
   }
+}
