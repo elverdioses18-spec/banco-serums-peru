@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -59,30 +57,7 @@ useEffect(() => {
       return;
     }
   }, []);
-  useEffect(() => {
-    const usuarioRegistrado = localStorage.getItem("usuarioActual");
-  
-    const preguntasRespondidas = Number(
-      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
-    );
-  
-    const premiumGuardado =
-      localStorage.getItem("premium") === "true";
-  
-    if (!usuarioRegistrado) {
-      setBloqueoAcceso(
-        "Debes registrarte para acceder a tus 20 preguntas gratis."
-      );
-      return;
-    }
-  
-    if (!premiumGuardado && preguntasRespondidas >= 20) {
-      setBloqueoAcceso(
-        "Ya agotaste tus 20 preguntas gratis. Activa Premium para seguir practicando."
-      );
-      return;
-    }
-  }, []);
+ 
   useEffect(() => {
     const correctas = Object.keys(respuestas).filter(
       (key) =>
@@ -149,10 +124,12 @@ if (esCorrecta) {
   estadisticasTema[temaPregunta].incorrectas += 1;
 }
 
-localStorage.setItem(
-  userKey("estadisticasPorTema"),
-  JSON.stringify(estadisticasTema)
-);
+if (typeof window !== "undefined") {
+  localStorage.setItem(
+    userKey("estadisticasPorTema"),
+    JSON.stringify(estadisticasTema)
+  );
+}
 
 setRespuestas({
   ...respuestas,
@@ -420,7 +397,10 @@ ultimoTotal: preguntasTema.length,
     };
 
     localStorage.setItem(userKey("progresoCuidado"), JSON.stringify(progreso));
-    const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+    const usuario =
+  typeof window !== "undefined"
+    ? JSON.parse(localStorage.getItem("usuarioActual") || "{}")
+    : {};
 
 if (usuario.correo) {
   await guardarProgreso(usuario.correo, obtenerProgresoLocal());
