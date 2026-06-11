@@ -12,6 +12,15 @@ import {
   guardarProgreso,
   obtenerProgresoLocal,
 } from "@/lib/syncProgreso";
+const getLocal = (key: string) => {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem(key);
+};
+
+const setLocal = (key: string, value: string) => {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(key, value);
+};
 
 function CuidadoIntegralContent() {
   const searchParams = useSearchParams();
@@ -34,14 +43,14 @@ useEffect(() => {
   const [mostrarTemporizador, setMostrarTemporizador] = useState(true);
   const [bloqueoAcceso, setBloqueoAcceso] = useState("");
   useEffect(() => {
-    const usuarioRegistrado = localStorage.getItem("usuarioActual");
+    const usuarioRegistrado = getLocal("usuarioActual");
   
     const preguntasRespondidas = Number(
-      localStorage.getItem(userKey("preguntasUsadasGratis")) || "0"
+      getLocal(userKey("preguntasUsadasGratis")) || "0"
     );
   
     const premiumGuardado =
-      localStorage.getItem("premium") === "true";
+      getLocal("premium") === "true";
   
     if (!usuarioRegistrado) {
       setBloqueoAcceso(
@@ -75,7 +84,7 @@ useEffect(() => {
   useEffect(() => {
 
     const temporizadorGuardado =
-      localStorage.getItem("mostrarTemporizador");
+      getLocal("mostrarTemporizador");
   
     if (temporizadorGuardado !== null) {
   
@@ -96,8 +105,8 @@ useEffect(() => {
       if (finalizado) return;
     
       if (respuestas[numeroPregunta] === undefined) {
-        const usadas = Number(localStorage.getItem(userKey("preguntasUsadasGratis")) || "0");
-        localStorage.setItem(userKey("preguntasUsadasGratis"), String(usadas + 1));
+        const usadas = Number(getLocal(userKey("preguntasUsadasGratis")) || "0");
+        setLocal(userKey("preguntasUsadasGratis"), String(usadas + 1));
       }
     
       const preguntaActual = preguntasTema[numeroPregunta];
@@ -107,7 +116,7 @@ const esCorrecta = alternativa === preguntaActual.correcta;
 const estadisticasTema =
   typeof window !== "undefined"
     ? JSON.parse(
-        localStorage.getItem(userKey("estadisticasPorTema")) || "{}"
+        localStorage.getLocal(userKey("estadisticasPorTema")) || "{}"
       )
     : {};
 
@@ -125,7 +134,7 @@ if (esCorrecta) {
 }
 
 if (typeof window !== "undefined") {
-  localStorage.setItem(
+  setLocal(
     userKey("estadisticasPorTema"),
     JSON.stringify(estadisticasTema)
   );
@@ -365,7 +374,7 @@ setRespuestas({
     const precision = Math.round((correctas / preguntasTema.length) * 100);
 
     const progresoAnterior = JSON.parse(
-      localStorage.getItem(userKey("progresoCuidado")) || "{}"
+      getLocal(userKey("progresoCuidado")) || "{}"
     );
 
     const avanceAnterior = progresoAnterior.avance || 0;
@@ -396,10 +405,10 @@ setRespuestas({
 ultimoTotal: preguntasTema.length,
     };
 
-    localStorage.setItem(userKey("progresoCuidado"), JSON.stringify(progreso));
+    setLocal(userKey("progresoCuidado"), JSON.stringify(progreso));
     const usuario =
   typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("usuarioActual") || "{}")
+    ? JSON.parse(getLocal("usuarioActual") || "{}")
     : {};
 
 if (usuario.correo) {
