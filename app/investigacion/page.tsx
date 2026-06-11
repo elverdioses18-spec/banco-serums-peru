@@ -367,7 +367,7 @@ useEffect(() => {
                 preguntasTema[Number(key)].correcta
             ).length;
           
-            guardarFalladas(preguntasTema, respuestas);
+            await guardarFalladas(preguntasTema, respuestas);
             guardarHistorialExamen({
               tema: "Investigación",
               totalPreguntas: preguntasTema.length,

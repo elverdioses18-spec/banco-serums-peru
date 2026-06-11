@@ -356,7 +356,7 @@ const [preguntasTema, setPreguntasTema] = useState<any[]>(() =>
                 respuestas[Number(key)] === preguntasTema[Number(key)].correcta
             ).length;
             
-            guardarFalladas(preguntasTema, respuestas);
+            await guardarFalladas(preguntasTema, respuestas);
             
             guardarHistorialExamen({
               tema: "Salud Pública",

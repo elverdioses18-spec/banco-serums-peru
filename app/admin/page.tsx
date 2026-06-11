@@ -16,6 +16,146 @@ const [errorAdmin, setErrorAdmin] = useState("");
 const [filtroEstado, setFiltroEstado] = useState("todos");
 const [busquedaCorreo, setBusquedaCorreo] = useState("");
 const [mostrarPassword, setMostrarPassword] = useState(false);
+const [tituloSimulacro, setTituloSimulacro] = useState("");
+const [descripcionSimulacro, setDescripcionSimulacro] = useState("");
+const [fechaInicio, setFechaInicio] = useState("");
+const [fechaFin, setFechaFin] = useState("");
+const [cantidadPreguntas, setCantidadPreguntas] = useState(50);
+const [tiempoMinutos, setTiempoMinutos] = useState(60);
+const [guardandoSimulacro, setGuardandoSimulacro] = useState(false);
+const [simulacroActual, setSimulacroActual] = useState<any>(null);
+const [cargandoSimulacroActual, setCargandoSimulacroActual] = useState(true);
+const [totalInscritosSimulacro, setTotalInscritosSimulacro] = useState(0);
+const [totalRindieronSimulacro, setTotalRindieronSimulacro] = useState(0);
+const [totalPendientesSimulacro, setTotalPendientesSimulacro] = useState(0);
+const [editandoSimulacro, setEditandoSimulacro] = useState(false);
+const [guardandoEdicionSimulacro, setGuardandoEdicionSimulacro] = useState(false);
+
+const [editTituloSimulacro, setEditTituloSimulacro] = useState("");
+const [editDescripcionSimulacro, setEditDescripcionSimulacro] = useState("");
+const [editFechaInicio, setEditFechaInicio] = useState("");
+const [editFechaFin, setEditFechaFin] = useState("");
+const [editCantidadPreguntas, setEditCantidadPreguntas] = useState(50);
+const [editTiempoMinutos, setEditTiempoMinutos] = useState(60);
+
+const cargarSimulacroActual = async () => {
+  setCargandoSimulacroActual(true);
+
+  const { data, error } = await supabase
+    .from("simulacros_evento")
+    .select("*")
+    .order("id", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error(error);
+    setCargandoSimulacroActual(false);
+    return;
+  }
+
+  setSimulacroActual(data);
+  if (data) {
+    setEditTituloSimulacro(data.titulo || "");
+    setEditDescripcionSimulacro(data.descripcion || "");
+    setEditFechaInicio(
+      data.fecha_inicio
+        ? new Date(data.fecha_inicio).toISOString().slice(0, 16)
+        : ""
+    );
+    setEditFechaFin(
+      data.fecha_fin
+        ? new Date(data.fecha_fin).toISOString().slice(0, 16)
+        : ""
+    );
+    setEditCantidadPreguntas(data.cantidad_preguntas || 50);
+    setEditTiempoMinutos(data.tiempo_minutos || 60);
+  }
+  if (data?.id) {
+    const { count: inscritos } = await supabase
+      .from("simulacro_inscritos")
+      .select("*", { count: "exact", head: true })
+      .eq("simulacro_id", data.id);
+  
+    const { count: rindieron } = await supabase
+      .from("simulacro_resultados")
+      .select("*", { count: "exact", head: true })
+      .eq("simulacro_id", data.id);
+  
+    setTotalInscritosSimulacro(inscritos || 0);
+    setTotalRindieronSimulacro(rindieron || 0);
+    setTotalPendientesSimulacro(
+      (inscritos || 0) - (rindieron || 0)
+    );
+  }
+  setCargandoSimulacroActual(false);
+};
+const guardarEdicionSimulacro = async () => {
+  if (!simulacroActual?.id) return;
+
+  setGuardandoEdicionSimulacro(true);
+
+  const { error } = await supabase
+    .from("simulacros_evento")
+    .update({
+      titulo: editTituloSimulacro,
+      descripcion: editDescripcionSimulacro,
+      fecha_inicio: new Date(editFechaInicio).toISOString(),
+      fecha_fin: new Date(editFechaFin).toISOString(),
+      cantidad_preguntas: editCantidadPreguntas,
+      tiempo_minutos: editTiempoMinutos,
+    })
+    .eq("id", simulacroActual.id);
+
+  setGuardandoEdicionSimulacro(false);
+
+  if (error) {
+    console.error(error);
+    alert("Error al editar simulacro.");
+    return;
+  }
+
+  alert("Simulacro actualizado correctamente.");
+  setEditandoSimulacro(false);
+  await cargarSimulacroActual();
+};
+const crearSimulacroEvento = async () => {
+  if (!tituloSimulacro || !fechaInicio || !fechaFin) {
+    alert("Completa título, fecha de inicio y fecha de fin.");
+    return;
+  }
+
+  setGuardandoSimulacro(true);
+
+  const { error } = await supabase.from("simulacros_evento").insert({
+    titulo: tituloSimulacro,
+    descripcion: descripcionSimulacro,
+    fecha_inicio: new Date(fechaInicio).toISOString(),
+    fecha_fin: new Date(fechaFin).toISOString(),
+    cantidad_preguntas: cantidadPreguntas,
+    tiempo_minutos: tiempoMinutos,
+    estado: "programado",
+  });
+
+  setGuardandoSimulacro(false);
+
+  if (error) {
+    console.error(error);
+    alert("Error al crear simulacro.");
+    return;
+  }
+
+  alert("Simulacro creado correctamente.");
+
+  await cargarSimulacroActual();
+
+  setTituloSimulacro("");
+  setDescripcionSimulacro("");
+  setFechaInicio("");
+  setFechaFin("");
+  setCantidadPreguntas(50);
+  setTiempoMinutos(60);
+};
 
   const cargarSolicitudes = async () => {
     setCargando(true);
@@ -54,6 +194,11 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
     cargarUsuarios();
     cargarProgresosUsuarios();
   }, []);
+
+  useEffect(() => {
+    cargarSimulacroActual();
+  }, []);
+
   const cargarProgresosUsuarios = async () => {
     const { data, error } = await supabase
       .from("progreso_usuarios")
@@ -251,6 +396,7 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
           Panel Admin - Solicitudes Premium
         </h1>
         <div className="flex gap-2 mb-4">
+          
   <button
     onClick={() => setVistaAdmin("solicitudes")}
     className={`flex-1 py-3 rounded-xl font-bold ${
@@ -258,21 +404,34 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
         ? "bg-blue-600 text-white"
         : "bg-slate-800 text-slate-300"
     }`}
+    
   >
     Solicitudes
   </button>
 
   <button
-    onClick={() => setVistaAdmin("usuarios")}
-    className={`flex-1 py-3 rounded-xl font-bold ${
-      vistaAdmin === "usuarios"
-        ? "bg-blue-600 text-white"
-        : "bg-slate-800 text-slate-300"
-    }`}
-  >
-    Usuarios
-  </button>
+  onClick={() => setVistaAdmin("usuarios")}
+  className={`flex-1 py-3 rounded-xl font-bold ${
+    vistaAdmin === "usuarios"
+      ? "bg-blue-600 text-white"
+      : "bg-slate-800 text-slate-300"
+  }`}
+>
+  Usuarios
+</button>
+
+<button
+  onClick={() => setVistaAdmin("crearSimulacro")}
+  className={`flex-1 py-3 rounded-xl font-bold ${
+    vistaAdmin === "crearSimulacro"
+      ? "bg-purple-600 text-white"
+      : "bg-slate-800 text-slate-300"
+  }`}
+>
+  Crear simulacro
+</button>
 </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
   <select
     value={filtroEstado}
@@ -327,6 +486,210 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
     )}
   </div>
 )}
+
+{vistaAdmin === "crearSimulacro" && (
+  <>
+  
+<section className="bg-slate-800 rounded-2xl shadow-sm border border-slate-700 p-6 space-y-4 mb-6 text-white">
+  <h2 className="text-2xl font-extrabold text-[#06174a]">
+    Crear simulacro evento
+  </h2>
+
+  <input
+    type="text"
+    placeholder="Título del simulacro"
+    value={tituloSimulacro}
+    onChange={(e) => setTituloSimulacro(e.target.value)}
+    className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
+  />
+
+  <textarea
+    placeholder="Descripción"
+    value={descripcionSimulacro}
+    onChange={(e) => setDescripcionSimulacro(e.target.value)}
+    className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
+  />
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label className="font-bold text-sm">Inicio</label>
+      <input
+        type="datetime-local"
+        value={fechaInicio}
+        onChange={(e) => setFechaInicio(e.target.value)}
+        className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
+      />
+    </div>
+
+    <div>
+      <label className="font-bold text-sm">Fin</label>
+      <input
+        type="datetime-local"
+        value={fechaFin}
+        onChange={(e) => setFechaFin(e.target.value)}
+       className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
+      />
+    </div>
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label className="font-bold text-sm">Cantidad de preguntas</label>
+      <input
+        type="number"
+        value={cantidadPreguntas}
+        onChange={(e) => setCantidadPreguntas(Number(e.target.value))}
+        className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
+      />
+    </div>
+
+    <div>
+      <label className="font-bold text-sm">Tiempo límite en minutos</label>
+      <input
+        type="number"
+        value={tiempoMinutos}
+        onChange={(e) => setTiempoMinutos(Number(e.target.value))}
+        className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
+      />
+    </div>
+  </div>
+
+  <button
+    onClick={crearSimulacroEvento}
+    disabled={guardandoSimulacro}
+    className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-300 text-white font-bold py-3 rounded-xl"
+  >
+    {guardandoSimulacro ? "Creando..." : "Crear simulacro"}
+  </button>
+</section>
+
+<section className="bg-slate-800 rounded-2xl p-5 border border-slate-700 mt-6">
+  <h2 className="text-xl font-bold text-white mb-4">
+    📌 Simulacro actual
+  </h2>
+
+  {cargandoSimulacroActual ? (
+    <p className="text-slate-400">
+      Cargando simulacro...
+    </p>
+  ) : !simulacroActual ? (
+    <p className="text-slate-400">
+      No hay simulacros creados.
+    </p>
+  ) : (
+    <div className="space-y-2 text-slate-200">
+      <p>
+        <b>ID:</b> {simulacroActual.id}
+      </p>
+
+      <p>
+        <b>Título:</b> {simulacroActual.titulo}
+      </p>
+
+      <p>
+        <b>Preguntas:</b> {simulacroActual.cantidad_preguntas}
+      </p>
+
+      <p>
+        <b>Tiempo:</b> {simulacroActual.tiempo_minutos} min
+      </p>
+      <p>
+  <b>👥 Inscritos:</b> {totalInscritosSimulacro}
+</p>
+
+<p>
+  <b>📝 Rindieron:</b> {totalRindieronSimulacro}
+</p>
+
+<p>
+  <b>⏳ Pendientes:</b> {totalPendientesSimulacro}
+</p>
+      <p>
+        <b>Inicio:</b>{" "}
+        {new Date(
+          simulacroActual.fecha_inicio
+        ).toLocaleString("es-PE")}
+      </p>
+
+      <p>
+        <b>Fin:</b>{" "}
+        {new Date(
+          simulacroActual.fecha_fin
+        ).toLocaleString("es-PE")}
+      </p>
+      <button
+  onClick={() => setEditandoSimulacro(true)}
+  className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl"
+>
+  ✏️ Editar simulacro
+</button>
+{editandoSimulacro && (
+  <div className="mt-5 border-t border-slate-700 pt-5 space-y-3">
+    <input
+      type="text"
+      value={editTituloSimulacro}
+      onChange={(e) => setEditTituloSimulacro(e.target.value)}
+      className="w-full rounded-xl p-3 bg-slate-900 border border-slate-600 text-white"
+    />
+
+    <textarea
+      value={editDescripcionSimulacro}
+      onChange={(e) => setEditDescripcionSimulacro(e.target.value)}
+      className="w-full rounded-xl p-3 bg-slate-900 border border-slate-600 text-white"
+    />
+
+    <input
+      type="datetime-local"
+      value={editFechaInicio}
+      onChange={(e) => setEditFechaInicio(e.target.value)}
+      className="w-full rounded-xl p-3 bg-slate-900 border border-slate-600 text-white"
+    />
+
+    <input
+      type="datetime-local"
+      value={editFechaFin}
+      onChange={(e) => setEditFechaFin(e.target.value)}
+      className="w-full rounded-xl p-3 bg-slate-900 border border-slate-600 text-white"
+    />
+
+    <input
+      type="number"
+      value={editCantidadPreguntas}
+      onChange={(e) => setEditCantidadPreguntas(Number(e.target.value))}
+      className="w-full rounded-xl p-3 bg-slate-900 border border-slate-600 text-white"
+    />
+
+    <input
+      type="number"
+      value={editTiempoMinutos}
+      onChange={(e) => setEditTiempoMinutos(Number(e.target.value))}
+      className="w-full rounded-xl p-3 bg-slate-900 border border-slate-600 text-white"
+    />
+
+    <div className="flex gap-3">
+    <button
+  onClick={guardarEdicionSimulacro}
+  disabled={guardandoEdicionSimulacro}
+  className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white font-bold py-3 rounded-xl"
+>
+  {guardandoEdicionSimulacro ? "Guardando..." : "Guardar cambios"}
+</button>
+
+      <button
+        onClick={() => setEditandoSimulacro(false)}
+        className="flex-1 bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 rounded-xl"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+)}
+    </div>
+  )}
+</section>
+  </>
+)}
+
 
 {vistaAdmin === "solicitudes" && (
   <div>
@@ -429,6 +792,7 @@ const [mostrarPassword, setMostrarPassword] = useState(false);
     </div>
   </div>
 )}
+
     </main>
   );
 }

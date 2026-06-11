@@ -376,7 +376,7 @@ setRespuestas({
 
         <button
   onClick={async () => {
-    guardarFalladas(preguntasTema, respuestas);
+    await guardarFalladas(preguntasTema, respuestas);
     guardarHistorialExamen({
       tema: "Cuidado Integral",
       totalPreguntas: preguntasTema.length,

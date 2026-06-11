@@ -88,6 +88,23 @@ const [mostrarPagoEnviado, setMostrarPagoEnviado] = useState(false);
 const [mostrarPremiumActivado, setMostrarPremiumActivado] = useState(false);
 const [mostrarOnboarding, setMostrarOnboarding] = useState(false);
 const [simulacroEvento, setSimulacroEvento] = useState<any>(null);
+const obtenerEstadoSimulacroHome = () => {
+  if (!simulacroEvento?.fecha_inicio || !simulacroEvento?.fecha_fin) {
+    return "programado";
+  }
+
+  const ahora = new Date().getTime();
+  const inicio = new Date(simulacroEvento.fecha_inicio).getTime();
+  const fin = new Date(simulacroEvento.fecha_fin).getTime();
+  
+
+  if (ahora < inicio) return "programado";
+  if (ahora >= inicio && ahora <= fin) return "activo";
+  return "finalizado";
+};
+
+const estadoSimulacroHome = obtenerEstadoSimulacroHome();
+
 useEffect(() => {
   const onboardingVisto = localStorage.getItem(userKey("onboardingVisto"))
 
@@ -103,7 +120,7 @@ if (!onboardingVisto) {
     const { data, error } = await supabase
       .from("simulacros_evento")
       .select("*")
-      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
       .limit(1)
       .maybeSingle();
   
@@ -710,9 +727,21 @@ const rachaEstudio =
       </div>
 
       <div className="flex-1 min-w-0">
-        <span className="inline-block bg-purple-600 text-white text-[10px] font-extrabold px-3 py-1 rounded-lg mb-1">
-          PRÓXIMO EVENTO
-        </span>
+        <span
+  className={`inline-block text-white text-[10px] font-extrabold px-3 py-1 rounded-lg mb-1 ${
+    estadoSimulacroHome === "programado"
+      ? "bg-purple-600"
+      : estadoSimulacroHome === "activo"
+      ? "bg-green-600"
+      : "bg-slate-500"
+  }`}
+>
+  {estadoSimulacroHome === "programado"
+    ? "PRÓXIMO EVENTO"
+    : estadoSimulacroHome === "activo"
+    ? "EVENTO ACTIVO"
+    : "EVENTO TERMINADO"}
+</span>
 
         <h2 className="text-text-base font-extrabold text-[#06194a] leading-tight">
           {simulacroEvento.titulo}
@@ -1381,9 +1410,21 @@ const rachaEstudio =
         </div>
 
         <div>
-          <span className="inline-block bg-purple-600 text-white text-xs font-extrabold px-4 py-1 rounded-lg mb-2">
-            PRÓXIMO EVENTO
-          </span>
+          <span
+  className={`inline-block text-white text-[10px] font-extrabold px-3 py-1 rounded-lg mb-1 ${
+    estadoSimulacroHome === "programado"
+      ? "bg-purple-600"
+      : estadoSimulacroHome === "activo"
+      ? "bg-green-600"
+      : "bg-slate-500"
+  }`}
+>
+  {estadoSimulacroHome === "programado"
+    ? "PRÓXIMO EVENTO"
+    : estadoSimulacroHome === "activo"
+    ? "EVENTO ACTIVO"
+    : "EVENTO TERMINADO"}
+</span>
 
           <h2 className="text-2xl font-extrabold text-[#06194a] leading-tight">
             {simulacroEvento.titulo}
@@ -1421,8 +1462,18 @@ const rachaEstudio =
         <div className="flex items-center gap-2 text-[#06194a] font-bold mb-3">
           <span className="text-2xl">📅</span>
           <div>
-            <p className="text-sm text-slate-600">Disponible del</p>
-            <p className="text-lg">10 al 14 de junio</p>
+           <p className="text-xl text-slate-800">
+  Disponible del{" "}
+  {new Date(simulacroEvento.fecha_inicio).toLocaleDateString("es-PE", {
+    day: "numeric",
+    month: "long",
+  })}{" "}
+  al{" "}
+  {new Date(simulacroEvento.fecha_fin).toLocaleDateString("es-PE", {
+    day: "numeric",
+    month: "long",
+  })}
+</p>
           </div>
         </div>
 

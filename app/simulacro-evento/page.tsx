@@ -16,6 +16,8 @@ export default function SimulacroEventoPage() {
   const [simulacro, setSimulacro] = useState<any>(null);
   const [usuario, setUsuario] = useState<any>(null);
 const [yaInscrito, setYaInscrito] = useState(false);
+const [yaRindio, setYaRindio] = useState(false);
+const [tieneProgreso, setTieneProgreso] = useState(false);
 const [registrando, setRegistrando] = useState(false);
 const [tiempoRestante, setTiempoRestante] = useState({
     dias: 0,
@@ -23,40 +25,86 @@ const [tiempoRestante, setTiempoRestante] = useState({
     minutos: 0,
     segundos: 0,
   });
-
+  const [modalRegistro, setModalRegistro] = useState(false);
   useEffect(() => {
     const cargarSimulacro = async () => {
       const { data } = await supabase
         .from("simulacros_evento")
         .select("*")
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .order("id", { ascending: false })
+.limit(1)
+.maybeSingle();
 
       setSimulacro(data);
       if (data && usuarioGuardado?.correo) {
+        const correoUsuario = usuarioGuardado?.correo?.trim().toLowerCase();
+        if (!correoUsuario) return;
+
         const { data: inscrito } = await supabase
-          .from("simulacro_inscritos")
-          .select("*")
-          .eq("simulacro_id", data.id)
-          .eq("correo", usuarioGuardado.correo)
-          .maybeSingle();
-      
-        if (inscrito) {
-          setYaInscrito(true);
-        }
+  .from("simulacro_inscritos")
+  .select("*")
+  .eq("simulacro_id", data.id)
+  .ilike("correo", correoUsuario)
+  .limit(1)
+  .maybeSingle();
+
+if (inscrito) {
+  setYaInscrito(true);
+} else {
+  setYaInscrito(false);
+}
       }
+      const correoUsuario =
+      usuarioGuardado?.correo?.trim()?.toLowerCase();
+    
+    if (!correoUsuario) return;
+const { data: resultado } = await supabase
+  .from("simulacro_resultados")
+  .select("*")
+  .eq("simulacro_id", data.id)
+  .ilike("correo", correoUsuario)
+  .limit(1)
+  .maybeSingle();
+
+if (resultado) {
+  setYaRindio(true);
+}
+const { data: progreso } = await supabase
+  .from("simulacro_progreso")
+  .select("*")
+  .eq("simulacro_id", data.id)
+  .ilike("correo", correoUsuario)
+  .eq("estado", "en_progreso")
+  .maybeSingle();
+
+if (progreso) {
+  setTieneProgreso(true);
+}
     };
     const usuarioGuardado = JSON.parse(
         localStorage.getItem("usuarioActual") || "{}"
       );
-      
+     
       if (usuarioGuardado?.correo) {
         setUsuario(usuarioGuardado);
       }
     cargarSimulacro();
   }, []);
 
+  useEffect(() => {
+    const refrescarAlVolver = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+  
+    window.addEventListener("pageshow", refrescarAlVolver);
+  
+    return () => {
+      window.removeEventListener("pageshow", refrescarAlVolver);
+    };
+  }, []);
+ 
   const registrarseAlSimulacro = async () => {
     if (!usuario?.correo) {
       return;
@@ -80,7 +128,8 @@ const [tiempoRestante, setTiempoRestante] = useState({
     }
   
     setYaInscrito(true);
-    alert("Te registraste correctamente al simulacro.");
+
+    setModalRegistro(true);
   };
 
   useEffect(() => {
@@ -141,6 +190,8 @@ const [tiempoRestante, setTiempoRestante] = useState({
   };
   
   const estadoSimulacro = obtenerEstadoSimulacro();
+  
+  
   if (!simulacro) {
     return (
       <main className="min-h-screen bg-slate-50 p-4 text-[#06194a]">
@@ -233,13 +284,29 @@ const [tiempoRestante, setTiempoRestante] = useState({
               <div>
                 <p className="text-sm text-slate-600">Inicio:</p>
                 <p className="text-base font-bold mb-4">
-                  10 de junio - 8:00 p.m.
-                </p>
+  {simulacro?.fecha_inicio
+    ? new Date(simulacro.fecha_inicio).toLocaleString("es-PE", {
+        day: "numeric",
+        month: "long",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+    : "-"}
+</p>
 
                 <p className="text-sm text-slate-600">Fin:</p>
                 <p className="text-base font-bold">
-                  14 de junio - 11:59 p.m.
-                </p>
+  {simulacro?.fecha_fin
+    ? new Date(simulacro.fecha_fin).toLocaleString("es-PE", {
+        day: "numeric",
+        month: "long",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+    : "-"}
+</p>
               </div>
             </div>
           </div>
@@ -346,7 +413,7 @@ const [tiempoRestante, setTiempoRestante] = useState({
   >
     👤 Iniciar sesión
   </Link>
-) : estadoSimulacro === "programado" && !yaInscrito ? (
+) : !yaInscrito ? (
   <button
     onClick={registrarseAlSimulacro}
     disabled={registrando}
@@ -354,17 +421,36 @@ const [tiempoRestante, setTiempoRestante] = useState({
   >
     {registrando ? "Registrando..." : "Registrarme al simulacro"}
   </button>
-) : estadoSimulacro === "activo" ? (
+) : yaRindio ? (
+  <div className="w-full md:w-60 md:justify-self-end space-y-2">
     <Link
+      href="/simulacro-evento/revision"
+      className="block w-full bg-purple-600 hover:bg-purple-700 text-white text-center font-bold py-3 rounded-xl"
+    >
+      📄 Revisar mi examen
+    </Link>
+
+    <Link
+      href="/simulacro-evento/ranking"
+      className="block w-full bg-yellow-500 hover:bg-yellow-600 text-white text-center font-bold py-3 rounded-xl"
+    >
+      🏆 Ver ranking
+    </Link>
+  </div>
+) : estadoSimulacro === "activo" ? (
+  <Link
     href="/simulacro-evento/examen"
     className="w-full md:w-60 md:justify-self-end bg-green-600 hover:bg-green-700 text-white text-center font-bold py-3 rounded-xl"
   >
-    🚀 Iniciar simulacro
+    {tieneProgreso ? "🔁 Continuar simulacro" : "🚀 Iniciar simulacro"}
   </Link>
 ) : estadoSimulacro === "finalizado" ? (
-  <button className="w-full md:w-60 md:justify-self-end bg-yellow-500 hover:bg-yellow-600 text-white text-center font-bold py-3 rounded-xl">
+  <Link
+    href="/simulacro-evento/ranking"
+    className="w-full md:w-60 md:justify-self-end bg-yellow-500 hover:bg-yellow-600 text-white text-center font-bold py-3 rounded-xl"
+  >
     🏆 Ver ranking
-  </button>
+  </Link>
 ) : (
   <div className="w-full md:w-72 md:justify-self-end bg-green-50 border border-green-300 text-green-700 font-bold text-center py-3 rounded-xl">
     ✅ Ya estás registrado
@@ -395,6 +481,30 @@ const [tiempoRestante, setTiempoRestante] = useState({
 </section>
 
       </div>
+      {modalRegistro && (
+  <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-xl max-w-sm w-full p-6 text-center border border-slate-100">
+      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center text-4xl">
+        ✅
+      </div>
+
+      <h2 className="text-2xl font-extrabold text-[#06194a] mb-2">
+        ¡Registro exitoso!
+      </h2>
+
+      <p className="text-slate-600 mb-5">
+        Ya estás inscrito en el Simulacro Nacional Gratuito.
+      </p>
+
+      <button
+        onClick={() => setModalRegistro(false)}
+        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
     </main>
   );
 }
