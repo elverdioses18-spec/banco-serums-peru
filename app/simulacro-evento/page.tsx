@@ -26,6 +26,7 @@ const [tiempoRestante, setTiempoRestante] = useState({
     segundos: 0,
   });
   const [modalRegistro, setModalRegistro] = useState(false);
+  const [mostrarPremium, setMostrarPremium] = useState(false);
   useEffect(() => {
     const cargarSimulacro = async () => {
       const { data } = await supabase
@@ -326,13 +327,46 @@ if (progreso) {
             </ul>
           </div>
         </section>
+        <div className="bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-5 mb-5 shadow-sm">
+  <div className="flex items-center gap-3 mb-3">
+    <div className="w-14 h-14 rounded-full bg-yellow-500 text-white flex items-center justify-center text-3xl shadow-md">
+      👑
+    </div>
 
+    <div>
+      <h2 className="font-extrabold text-lg text-slate-800">
+        Beneficios Premium
+      </h2>
+
+      <p className="text-sm text-slate-600">
+        Lleva tu preparación SERUMS al siguiente nivel.
+      </p>
+    </div>
+  </div>
+
+  <div className="space-y-2 text-sm text-slate-700 mb-4">
+    <p>✅ Simulacros semanales o quincenales</p>
+    <p>✅ Explicaciones fundamentadas de cada pregunta</p>
+    <p>✅ Acceso a simulacros anteriores</p>
+    <p>✅ Revisión completa de respuestas</p>
+    <p>✅ Ranking nacional detallado</p>
+    <p>✅ Banco completo de preguntas</p>
+  </div>
+
+  <button
+    onClick={() => setMostrarPremium(true)}
+    className="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-3 rounded-xl"
+  >
+    ⭐ HAZTE PREMIUM
+  </button>
+</div>
         {/* RANKING */}
         <section className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
           <div className="flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 mb-3">
               <Trophy className="w-7 h-7 text-purple-600" />
+              
                 <h3 className="text-xl font-extrabold">
                   ¿Cómo funciona el ranking?
                 </h3>

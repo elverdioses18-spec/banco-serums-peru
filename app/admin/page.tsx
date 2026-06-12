@@ -37,6 +37,8 @@ const [editFechaInicio, setEditFechaInicio] = useState("");
 const [editFechaFin, setEditFechaFin] = useState("");
 const [editCantidadPreguntas, setEditCantidadPreguntas] = useState(50);
 const [editTiempoMinutos, setEditTiempoMinutos] = useState(60);
+const [textoPreguntasSimulacro, setTextoPreguntasSimulacro] = useState("");
+const [importandoPreguntas, setImportandoPreguntas] = useState(false);
 
 const cargarSimulacroActual = async () => {
   setCargandoSimulacroActual(true);
@@ -89,6 +91,65 @@ const cargarSimulacroActual = async () => {
     );
   }
   setCargandoSimulacroActual(false);
+};
+const importarPreguntasSimulacro = async () => {
+  if (!simulacroActual?.id) {
+    alert("No hay simulacro actual.");
+    return;
+  }
+
+  if (!textoPreguntasSimulacro.trim()) {
+    alert("Pega las preguntas antes de importar.");
+    return;
+  }
+
+  setImportandoPreguntas(true);
+
+  try {
+    const texto = `[${textoPreguntasSimulacro}]`;
+
+    const preguntas = Function(`"use strict"; return (${texto});`)();
+
+    if (!Array.isArray(preguntas) || preguntas.length === 0) {
+      alert("No se detectaron preguntas válidas.");
+      setImportandoPreguntas(false);
+      return;
+    }
+
+    const letras = ["A", "B", "C", "D"];
+
+    const preguntasParaInsertar = preguntas.map((item: any, index: number) => ({
+      simulacro_id: simulacroActual.id,
+      pregunta: item.pregunta,
+      opcion_a: item.opciones?.[0] || "",
+      opcion_b: item.opciones?.[1] || "",
+      opcion_c: item.opciones?.[2] || "",
+      opcion_d: item.opciones?.[3] || "",
+      correcta: letras[item.correcta],
+      explicacion: item.explicacion || "",
+      orden: index + 1,
+    }));
+
+    const { error } = await supabase
+      .from("simulacro_preguntas")
+      .insert(preguntasParaInsertar);
+
+    setImportandoPreguntas(false);
+
+    if (error) {
+      console.error(error);
+      alert("Error al importar preguntas.");
+      return;
+    }
+
+    alert(`Se importaron ${preguntas.length} preguntas correctamente.`);
+    setTextoPreguntasSimulacro("");
+    await cargarSimulacroActual();
+  } catch (error) {
+    console.error(error);
+    setImportandoPreguntas(false);
+    alert("Formato inválido. Revisa comas, llaves y corchetes.");
+  }
 };
 const guardarEdicionSimulacro = async () => {
   if (!simulacroActual?.id) return;
@@ -623,6 +684,41 @@ const crearSimulacroEvento = async () => {
 >
   ✏️ Editar simulacro
 </button>
+<div className="mt-6 border-t border-slate-700 pt-5">
+  <h3 className="text-lg font-bold text-white mb-2">
+    📋 Importar preguntas
+  </h3>
+
+  <p className="text-sm text-slate-400 mb-3">
+    Pega aquí las preguntas del simulacro en formato objeto.
+  </p>
+
+  <textarea
+    value={textoPreguntasSimulacro}
+    onChange={(e) => setTextoPreguntasSimulacro(e.target.value)}
+    placeholder={`{
+  pregunta: "Texto de la pregunta...",
+  opciones: [
+    "Opción A",
+    "Opción B",
+    "Opción C",
+    "Opción D"
+  ],
+  correcta: 1,
+  explicacion: "Explicación..."
+},`}
+    className="w-full min-h-[260px] rounded-xl p-4 bg-slate-900 border border-slate-600 text-white text-sm font-mono"
+  />
+
+  <button
+  onClick={importarPreguntasSimulacro}
+   
+    disabled={importandoPreguntas}
+    className="mt-3 w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-300 text-white font-bold py-3 rounded-xl"
+  >
+    {importandoPreguntas ? "Importando..." : "Importar preguntas"}
+  </button>
+</div>
 {editandoSimulacro && (
   <div className="mt-5 border-t border-slate-700 pt-5 space-y-3">
     <input
