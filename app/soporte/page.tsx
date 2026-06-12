@@ -62,6 +62,13 @@ useEffect(() => {
               </div>
   
               <div className="p-3 bg-slate-50 rounded-xl border">
+                <strong>¿Cuando termina mi suscripción?</strong>
+                <p className="mt-1 text-sm">
+                  El acceso Premium termina hasta el mismo día del exámen.
+                </p>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border">
                 <strong>¿Cómo realizo el pago?</strong>
                 <p className="mt-1 text-sm">
                   Mediante Yape. Luego envías tu voucher para validación.

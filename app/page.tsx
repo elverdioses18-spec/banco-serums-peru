@@ -741,7 +741,13 @@ const rachaEstudio =
     ? "EVENTO ACTIVO"
     : "EVENTO TERMINADO"}
 </span>
-
+<span
+  className={`ml-2 inline-block text-white text-[10px] font-extrabold px-3 py-1 rounded-lg mb-1 ${
+    simulacroEvento.solo_premium ? "bg-yellow-500" : "bg-blue-600"
+  }`}
+>
+  {simulacroEvento.solo_premium ? "👑 PREMIUM" : "🏆 GRATUITO"}
+</span>
         <h2 className="text-text-base font-extrabold text-[#06194a] leading-tight">
           {simulacroEvento.titulo}
         </h2>
@@ -1441,7 +1447,13 @@ const rachaEstudio =
     ? "EVENTO ACTIVO"
     : "EVENTO TERMINADO"}
 </span>
-
+<span
+  className={`ml-2 inline-block text-white text-[10px] font-extrabold px-3 py-1 rounded-lg mb-1 ${
+    simulacroEvento.solo_premium ? "bg-yellow-500" : "bg-blue-600"
+  }`}
+>
+  {simulacroEvento.solo_premium ? "👑 PREMIUM" : "🏆 GRATUITO"}
+</span>
           <h2 className="text-2xl font-extrabold text-[#06194a] leading-tight">
             {simulacroEvento.titulo}
           </h2>
@@ -1497,7 +1509,7 @@ const rachaEstudio =
           href="/simulacro-evento"
           className="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3 rounded-xl shadow-md transition-all active:scale-95"
         >
-          Ver detalles2
+          Ver detalles
           <span>→</span>
         </Link>
       </div>
@@ -2152,7 +2164,7 @@ if (!usuarioRegistrado) {
 
       <div className="space-y-3 mb-6 text-lg">
       <p>✅ Más de 2300 preguntas  </p>
-        <p>✅ simulacros ilimitados </p>
+        <p>✅ Simulacros ilimitados </p>
         <p>✅ Todas las áreas desbloqueadas</p>
         <p>✅ Historial completo</p>
         <p>✅ Estadísticas y progreso completo</p>

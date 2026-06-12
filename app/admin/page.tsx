@@ -18,6 +18,7 @@ const [busquedaCorreo, setBusquedaCorreo] = useState("");
 const [mostrarPassword, setMostrarPassword] = useState(false);
 const [tituloSimulacro, setTituloSimulacro] = useState("");
 const [descripcionSimulacro, setDescripcionSimulacro] = useState("");
+const [soloPremiumSimulacro, setSoloPremiumSimulacro] = useState(false);
 const [fechaInicio, setFechaInicio] = useState("");
 const [fechaFin, setFechaFin] = useState("");
 const [cantidadPreguntas, setCantidadPreguntas] = useState(50);
@@ -33,6 +34,7 @@ const [guardandoEdicionSimulacro, setGuardandoEdicionSimulacro] = useState(false
 
 const [editTituloSimulacro, setEditTituloSimulacro] = useState("");
 const [editDescripcionSimulacro, setEditDescripcionSimulacro] = useState("");
+const [editSoloPremiumSimulacro, setEditSoloPremiumSimulacro] = useState(false);
 const [editFechaInicio, setEditFechaInicio] = useState("");
 const [editFechaFin, setEditFechaFin] = useState("");
 const [editCantidadPreguntas, setEditCantidadPreguntas] = useState(50);
@@ -196,6 +198,7 @@ const crearSimulacroEvento = async () => {
     cantidad_preguntas: cantidadPreguntas,
     tiempo_minutos: tiempoMinutos,
     estado: "programado",
+    solo_premium: soloPremiumSimulacro,
   });
 
   setGuardandoSimulacro(false);
@@ -216,6 +219,7 @@ const crearSimulacroEvento = async () => {
   setFechaFin("");
   setCantidadPreguntas(50);
   setTiempoMinutos(60);
+  setSoloPremiumSimulacro(false);
 };
 
   const cargarSolicitudes = async () => {
@@ -614,7 +618,18 @@ const crearSimulacroEvento = async () => {
       />
     </div>
   </div>
+  <div className="flex items-center gap-3 mt-4">
+  <input
+    type="checkbox"
+    checked={soloPremiumSimulacro}
+    onChange={(e) => setSoloPremiumSimulacro(e.target.checked)}
+    className="w-5 h-5"
+  />
 
+  <label className="text-white font-medium">
+    ⭐ Simulacro exclusivo para usuarios Premium
+  </label>
+</div>
   <button
     onClick={crearSimulacroEvento}
     disabled={guardandoSimulacro}
@@ -654,6 +669,14 @@ const crearSimulacroEvento = async () => {
       <p>
         <b>Tiempo:</b> {simulacroActual.tiempo_minutos} min
       </p>
+
+      <p>
+  <b>Tipo:</b>{" "}
+  {simulacroActual.solo_premium
+    ? "👑 Premium"
+    : "🏆 Gratuito"}
+</p>
+
       <p>
   <b>👥 Inscritos:</b> {totalInscritosSimulacro}
 </p>

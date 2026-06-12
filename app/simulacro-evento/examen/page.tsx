@@ -40,6 +40,8 @@ const [sinSesion, setSinSesion] = useState(false);
 const [noInscrito, setNoInscrito] = useState(false);
 const [simulacroActual, setSimulacroActual] = useState<any>(null);
 const [modalInicio, setModalInicio] = useState(false);
+const [esPremium, setEsPremium] = useState(false);
+const [bloqueoPremium, setBloqueoPremium] = useState(false);
 
   useEffect(() => {
     cargarPreguntas();
@@ -59,6 +61,14 @@ if (!simulacroData) {
 }
 
 setSimulacroActual(simulacroData);
+const premiumGuardado = localStorage.getItem("premium") === "true";
+setEsPremium(premiumGuardado);
+
+if (simulacroData.solo_premium && !premiumGuardado) {
+  setBloqueoPremium(true);
+  setCargando(false);
+  return;
+}
 const usuarioModal = JSON.parse(
   localStorage.getItem("usuarioActual") || "{}"
 );
@@ -221,6 +231,30 @@ if (!localStorage.getItem(claveModal)) {
           <a
             href="/simulacro-evento"
             className="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl"
+          >
+            Volver al evento
+          </a>
+        </div>
+      </main>
+    );
+  }
+  if (bloqueoPremium) {
+    return (
+      <main className="min-h-screen bg-slate-50 p-4 flex items-center justify-center">
+        <div className="bg-white rounded-2xl p-8 shadow-sm border text-center max-w-md">
+          <div className="text-5xl mb-4">👑</div>
+  
+          <h1 className="text-2xl font-extrabold mb-2">
+            Simulacro exclusivo Premium
+          </h1>
+  
+          <p className="text-slate-600 mb-6">
+            Este simulacro está disponible solo para usuarios Premium.
+          </p>
+  
+          <a
+            href="/simulacro-evento"
+            className="block bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-3 rounded-xl"
           >
             Volver al evento
           </a>

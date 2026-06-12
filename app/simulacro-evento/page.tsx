@@ -26,6 +26,7 @@ const [tiempoRestante, setTiempoRestante] = useState({
     segundos: 0,
   });
   const [modalRegistro, setModalRegistro] = useState(false);
+  const [esPremium, setEsPremium] = useState(false);
   const [mostrarPremium, setMostrarPremium] = useState(false);
   useEffect(() => {
     const cargarSimulacro = async () => {
@@ -85,6 +86,8 @@ if (progreso) {
     const usuarioGuardado = JSON.parse(
         localStorage.getItem("usuarioActual") || "{}"
       );
+      const premiumGuardado = localStorage.getItem("premium") === "true";
+setEsPremium(premiumGuardado);
      
       if (usuarioGuardado?.correo) {
         setUsuario(usuarioGuardado);
@@ -440,7 +443,24 @@ if (progreso) {
       </div>
     </div>
 
-    {!usuario?.correo ? (
+    {simulacro?.solo_premium && !esPremium ? (
+      <div className="w-full md:w-72 md:justify-self-end bg-yellow-50 border border-yellow-400 rounded-xl p-4">
+      <p className="font-bold text-yellow-700 mb-2">
+        👑 Simulacro exclusivo Premium
+      </p>
+    
+      <p className="text-sm text-slate-600 mb-3">
+        Este simulacro está disponible solo para usuarios Premium.
+      </p>
+    
+      <button
+        onClick={() => setMostrarPremium(true)}
+        className="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-3 rounded-xl"
+      >
+        ⭐ HAZTE PREMIUM
+      </button>
+    </div>
+    ) : !usuario?.correo ? (
   <Link
     href="/login"
     className="w-full md:w-72 md:justify-self-end bg-purple-600 hover:bg-purple-700 text-white text-center font-bold py-3 rounded-xl text-base shadow-md"
