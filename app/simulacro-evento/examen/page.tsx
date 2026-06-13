@@ -507,7 +507,7 @@ if (!localStorage.getItem(claveModal)) {
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-10">
+          <div className="flex md:flex items-center gap-4 overflow-x-auto mt-4">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center">
                 <Clock className="w-8 h-8 text-white" />
