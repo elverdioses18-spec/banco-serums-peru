@@ -492,25 +492,25 @@ if (!localStorage.getItem(claveModal)) {
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
         {/* BANNER AZUL */}
         <section className="bg-[#07347e] text-white rounded-2xl px-8 py-7 flex items-center justify-between shadow-md">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
             <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center">
               <GraduationCap className="w-11 h-11 text-white" />
             </div>
 
             <div>
-              <h2 className="text-3xl font-extrabold">
+              <h2 className="text-xl font-extrabold">
                 Simulacro Nacional Gratuito
               </h2>
-              <p className="text-xl text-white/90">
+              <p className="text-xl font-extrabold">
                SERUMS 2026 - II
               </p>
             </div>
           </div>
 
-          <div className="flex md:flex items-center gap-4 overflow-x-auto mt-4">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center">
-                <Clock className="w-8 h-8 text-white" />
+          <div className="flex md:flex items-center gap-1 overflow-x-auto mt-2">
+            <div className="flex items-center gap-1">
+              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                <Clock className="w-4 h-6 text-white" />
               </div>
               <div>
                 <p className="text-sm text-white/80">Tiempo restante</p>
@@ -521,8 +521,8 @@ if (!localStorage.getItem(claveModal)) {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center">
-                <List className="w-8 h-8 text-white" />
+              <div className="w-0 h-0 bg-blue-000 rounded-full flex items-center justify-center">
+              
               </div>
               <div>
                 <p className="text-sm text-white/80">Pregunta</p>
