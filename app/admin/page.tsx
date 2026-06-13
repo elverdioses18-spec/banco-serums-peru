@@ -193,6 +193,7 @@ const crearSimulacroEvento = async () => {
 
   const { error } = await supabase.from("simulacros_evento").insert({
     titulo: tituloSimulacro,
+    numero_simulacro: numeroSimulacro,
     descripcion: descripcionSimulacro,
     fecha_inicio: new Date(fechaInicio).toISOString(),
     fecha_fin: new Date(fechaFin).toISOString(),
@@ -215,6 +216,7 @@ const crearSimulacroEvento = async () => {
   await cargarSimulacroActual();
 
   setTituloSimulacro("");
+  setNumeroSimulacro(1);
   setDescripcionSimulacro("");
   setFechaInicio("");
   setFechaFin("");
