@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
 
@@ -13,6 +14,7 @@ type Pregunta = {
   opcion_c: string;
   opcion_d: string;
   correcta: string;
+  explicacion?: string;
 };
 
 export default function RevisionSimulacroPage() {
@@ -20,6 +22,10 @@ export default function RevisionSimulacroPage() {
   const [resultado, setResultado] = useState<any>(null);
   const [cargando, setCargando] = useState(true);
   const [sinPermiso, setSinPermiso] = useState(false);
+  const [esPremium, setEsPremium] = useState(false);
+  const [mostrarPremium, setMostrarPremium] = useState(false);
+  const searchParams = useSearchParams();
+const simulacroIdUrl = searchParams.get("simulacro_id");
 
   useEffect(() => {
     cargarRevision();
@@ -27,6 +33,10 @@ export default function RevisionSimulacroPage() {
 
   const cargarRevision = async () => {
     const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+    const premiumGuardado =
+  localStorage.getItem("premium") === "true";
+
+setEsPremium(premiumGuardado);
 
     if (!usuario?.correo) {
       setSinPermiso(true);
@@ -35,12 +45,19 @@ export default function RevisionSimulacroPage() {
     }
 
     const correoUsuario = usuario.correo.trim().toLowerCase();
-    const { data: simulacroData } = await supabase
-    .from("simulacros_evento")
-    .select("*")
+    let consultaSimulacro = supabase
+  .from("simulacros_evento")
+  .select("*");
+
+if (simulacroIdUrl) {
+  consultaSimulacro = consultaSimulacro.eq("id", Number(simulacroIdUrl));
+} else {
+  consultaSimulacro = consultaSimulacro
     .order("id", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+    .limit(1);
+}
+
+const { data: simulacroData } = await consultaSimulacro.maybeSingle();
   
   if (!simulacroData) {
     setCargando(false);
@@ -74,6 +91,7 @@ export default function RevisionSimulacroPage() {
 
     setResultado(resultadoData);
     setPreguntas(preguntasData || []);
+    console.log(preguntasData);
     setCargando(false);
   };
 
@@ -172,6 +190,31 @@ export default function RevisionSimulacroPage() {
                     <span className="font-bold">Respuesta correcta: </span>
                     {pregunta.correcta} - {textoOpcion(pregunta, pregunta.correcta)}
                   </div>
+                  {esPremium ? (
+  pregunta.explicacion && (
+    <div className="mt-3 bg-blue-50 border border-blue-200 rounded-xl p-3 text-blue-800">
+      <span className="font-bold">📌 Explicación: </span>
+      {pregunta.explicacion}
+    </div>
+  )
+) : (
+  <div className="mt-3 bg-yellow-50 border border-yellow-300 rounded-xl p-3">
+    <p className="font-bold text-yellow-700 mb-2">
+      🔒 Explicación disponible para usuarios Premium
+    </p>
+
+    <p className="text-sm text-slate-600 mb-3">
+      Desbloquea las explicaciones fundamentadas, simulacros constantes y acceso a simulacros anteriores.
+    </p>
+
+    <button
+      onClick={() => setMostrarPremium(true)}
+      className="bg-yellow-500 hover:bg-yellow-400 text-white font-bold px-4 py-2 rounded-xl"
+    >
+      ⭐ HAZTE PREMIUM
+    </button>
+  </div>
+)}
                 </div>
               </section>
             );

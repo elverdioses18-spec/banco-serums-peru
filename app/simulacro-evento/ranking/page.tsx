@@ -18,9 +18,11 @@ import { Medal } from "lucide-react";
 
 export default function RankingSimulacroPage() {
   const [resultados, setResultados] = useState<any[]>([]);
+  const [historialResultados, setHistorialResultados] = useState<any[]>([]);
   const [cargando, setCargando] = useState(true);
   const [simulacroActual, setSimulacroActual] = useState<any>(null);
-
+  const [tabActiva, setTabActiva] = useState<"ranking" | "misResultados">("ranking");
+  
   useEffect(() => {
     cargarRanking();
   }, []);
@@ -66,6 +68,19 @@ export default function RankingSimulacroPage() {
     }
   
     setResultados(data || []);
+    const usuarioGuardado = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+    
+    if (usuarioGuardado?.correo) {
+      const historialUsuario = (data || []).filter(
+        (item) =>
+          item.correo?.trim().toLowerCase() ===
+          usuarioGuardado.correo.trim().toLowerCase()
+      );
+    
+      setHistorialResultados(historialUsuario);
+    }
     setCargando(false);
   };
   const formatearTiempo = (segundos: number) => {
@@ -73,6 +88,23 @@ export default function RankingSimulacroPage() {
     const seg = segundos % 60;
     return `${String(min).padStart(2, "0")}:${String(seg).padStart(2, "0")}`;
   };
+
+  const correoUsuarioActual =
+  typeof window !== "undefined"
+    ? JSON.parse(
+        localStorage.getItem("usuarioActual") || "{}"
+      )?.correo?.trim()?.toLowerCase()
+    : "";
+
+  const miResultadoIndex = resultados.findIndex(
+    (item) => item.correo?.trim().toLowerCase() === correoUsuarioActual
+  );
+  
+  const miResultado =
+    miResultadoIndex >= 0 ? resultados[miResultadoIndex] : null;
+    const nombreSimulacro = simulacroActual?.solo_premium
+    ? `👑 Simulacro Premium #${simulacroActual?.numero_simulacro}`
+    : `🏆 Simulacro Nacional Gratuito #${simulacroActual?.numero_simulacro}`;
   const obtenerEstadoSimulacro = () => {
     if (!simulacroActual?.fecha_inicio || !simulacroActual?.fecha_fin) {
       return "programado";
@@ -239,16 +271,119 @@ export default function RankingSimulacroPage() {
 
           {/* TABS */}
           <div className="border-b border-slate-200 mb-4">
-            <div className="grid grid-cols-2 text-center font-bold">
-              <div className="text-purple-700 py-3 border-b-4 border-purple-600">
-                Ranking general
-              </div>
-              <div className="text-slate-500 py-3">
-                Mis resultados
-              </div>
-            </div>
-          </div>
+  <div className="grid grid-cols-2 text-center font-bold">
 
+    <button
+      onClick={() => setTabActiva("ranking")}
+      className={`py-3 ${
+        tabActiva === "ranking"
+          ? "text-purple-700 border-b-4 border-purple-600"
+          : "text-slate-500"
+      }`}
+    >
+      Ranking general
+    </button>
+
+    <button
+      onClick={() => setTabActiva("misResultados")}
+      className={`py-3 ${
+        tabActiva === "misResultados"
+          ? "text-purple-700 border-b-4 border-purple-600"
+          : "text-slate-500"
+      }`}
+    >
+      Mis resultados
+    </button>
+
+  </div>
+</div>
+
+{tabActiva === "misResultados" && (
+<>
+{miResultado ? (
+  <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-5">
+
+    <h3 className="font-extrabold text-lg text-[#06194a] mb-3">
+    {nombreSimulacro}
+    </h3>
+
+    <div className="flex items-center justify-between gap-3 mb-4">
+
+      <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 flex-1 text-center">
+        <p className="text-sm text-slate-500">Puesto</p>
+        <p className="text-3xl font-extrabold text-purple-700">
+          #{miResultadoIndex + 1}
+        </p>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex-1 text-center">
+        <p className="text-sm text-slate-500">Tiempo</p>
+        <p className="text-xl font-extrabold text-blue-700">
+          {formatearTiempo(miResultado.tiempo_segundos || 0)}
+        </p>
+      </div>
+
+    </div>
+
+    <Link
+  href={`/simulacro-evento/revision?simulacro_id=${simulacroActual?.id}`}
+  className="block w-full bg-purple-600 hover:bg-purple-700 text-white text-center font-bold py-3 rounded-xl"
+>
+  📄 Ver examen
+</Link>
+{historialResultados.length > 1 && (
+    <div className="mt-6 border-t border-slate-200 pt-4">
+  <h4 className="font-extrabold text-[#06194a] mb-3">
+    📚 Historial de simulacros
+  </h4>
+
+  {historialResultados.length === 0 ? (
+    <p className="text-sm text-slate-500">
+      Aún no tienes simulacros registrados.
+    </p>
+  ) : (
+    <div className="space-y-3">
+      {historialResultados.map((item) => (
+        <div
+          key={item.id}
+          className="border border-slate-200 rounded-xl p-3"
+        >
+          <p className="font-bold text-[#06194a]">
+            {nombreSimulacro}
+          </p>
+
+          <p className="text-sm text-slate-600">
+            Nota: {item.puntaje}/{item.total_preguntas}
+          </p>
+
+          <p className="text-sm text-slate-600">
+            Tiempo: {formatearTiempo(item.tiempo_segundos || 0)}
+          </p>
+
+          <Link
+            href={`/simulacro-evento/revision?simulacro_id=${item.simulacro_id}`}
+            className="mt-2 inline-block text-purple-700 font-bold text-sm"
+          >
+            📄 Ver examen
+          </Link>
+        </div>
+        
+      ))}
+    </div>
+  )}
+</div>
+)}
+  </div>
+
+) : (
+  <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-5 text-center">
+    <p className="text-slate-500">
+      Aún no tienes resultado en este simulacro.
+    </p>
+  </div>
+)}
+</>
+)}
           {/* INFO */}
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center gap-3 mb-5 text-blue-800">
             <Info className="w-5 h-5" />
@@ -257,8 +392,10 @@ export default function RankingSimulacroPage() {
             </p>
           </div>
 
-        {/* TABLA RANKING */}
-<div className="overflow-x-auto">
+{tabActiva === "ranking" && (
+  <>
+    {/* TABLA RANKING */}
+    <div className="overflow-x-auto">
   <table className="w-full min-w-[650px] border-collapse">
     <thead>
       <tr className="border-b border-slate-200 text-slate-500">
@@ -322,12 +459,15 @@ export default function RankingSimulacroPage() {
       )}
     </tbody>
   </table>
-</div>
+  </div>
+ 
           {/* MENSAJE FINAL */}
           <div className="mt-5 bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center gap-3 text-blue-800">
             <Trophy className="w-5 h-5" />
             <p>El ranking se actualiza en tiempo real.</p>
           </div>
+          </>
+)}
         </section>
       </div>
     </main>

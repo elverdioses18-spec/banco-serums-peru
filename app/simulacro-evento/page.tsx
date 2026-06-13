@@ -244,6 +244,7 @@ setEsPremium(premiumGuardado);
               <div>
                 <span className="inline-block bg-purple-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-lg mb-1">
                 {estadoSimulacro === "programado"
+                
   ? "PRÓXIMO EVENTO"
   : estadoSimulacro === "activo"
   ? "EVENTO ACTIVO"
@@ -330,6 +331,7 @@ setEsPremium(premiumGuardado);
             </ul>
           </div>
         </section>
+        {!esPremium && (
         <div className="bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-5 mb-5 shadow-sm">
   <div className="flex items-center gap-3 mb-3">
     <div className="w-14 h-14 rounded-full bg-yellow-500 text-white flex items-center justify-center text-3xl shadow-md">
@@ -355,7 +357,6 @@ setEsPremium(premiumGuardado);
     <p>✅ Ranking nacional detallado</p>
     <p>✅ Banco completo de preguntas</p>
   </div>
-
   <button
     onClick={() => setMostrarPremium(true)}
     className="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-3 rounded-xl"
@@ -363,6 +364,8 @@ setEsPremium(premiumGuardado);
     ⭐ HAZTE PREMIUM
   </button>
 </div>
+)}
+
         {/* RANKING */}
         <section className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
           <div className="flex items-center justify-between gap-4">

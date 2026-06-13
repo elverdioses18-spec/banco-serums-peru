@@ -1431,14 +1431,14 @@ const rachaEstudio =
           🏆
         </div>
 
-        <div>
+        <div > 
           <span
   className={`inline-block text-white text-[10px] font-extrabold px-3 py-1 rounded-lg mb-1 ${
     estadoSimulacroHome === "programado"
       ? "bg-purple-600"
       : estadoSimulacroHome === "activo"
       ? "bg-green-600"
-      : "bg-slate-500"
+      : "bg-red-100"
   }`}
 >
   {estadoSimulacroHome === "programado"
