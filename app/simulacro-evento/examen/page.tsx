@@ -491,7 +491,7 @@ if (!localStorage.getItem(claveModal)) {
 
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
         {/* BANNER AZUL */}
-        <section className="bg-[#07347e] text-white rounded-2xl px-8 py-7 flex items-center justify-between shadow-md">
+        <section className="bg-[#07347e] text-white rounded-2xl px-4 md:px-8 py-7 flex flex-col md:flex-row gap-4 md:items-center md:justify-between shadow-md">
           <div className="flex items-center gap-3">
             <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center">
               <GraduationCap className="w-11 h-11 text-white" />
@@ -507,7 +507,7 @@ if (!localStorage.getItem(claveModal)) {
             </div>
           </div>
 
-          <div className="flex md:flex items-center gap-1 overflow-x-auto mt-2">
+          <div className="flex items-center gap-3 mt-2">
             <div className="flex items-center gap-1">
               <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                 <Clock className="w-4 h-6 text-white" />
@@ -520,17 +520,7 @@ if (!localStorage.getItem(claveModal)) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="w-0 h-0 bg-blue-000 rounded-full flex items-center justify-center">
-              
-              </div>
-              <div>
-                <p className="text-sm text-white/80">Pregunta</p>
-                <p className="text-xl font-extrabold">
-                  {indiceActual + 1} de {preguntas.length}
-                </p>
-              </div>
-            </div>
+            
           </div>
         </section>
 
