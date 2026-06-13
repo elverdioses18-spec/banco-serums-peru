@@ -25,10 +25,18 @@ export default function RankingSimulacroPage() {
   
   useEffect(() => {
     cargarRanking();
+  
+    const intervalo = setInterval(() => {
+      cargarRanking(true);
+    }, 5000);
+  
+    return () => clearInterval(intervalo);
   }, []);
 
-  const cargarRanking = async () => {
-    setCargando(true);
+  const cargarRanking = async (silencioso = false) => {
+    if (!silencioso) {
+      setCargando(true);
+    }
   
     const { data: simulacroData, error: errorSimulacro } = await supabase
       .from("simulacros_evento")
