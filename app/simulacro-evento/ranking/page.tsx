@@ -91,14 +91,34 @@ if (usuarioGuardado?.correo) {
     .select("id, numero_simulacro, solo_premium, titulo")
     .in("id", idsSimulacros);
 
+    const { data: todosLosResultados } = await supabase
+  .from("simulacro_resultados")
+  .select("*")
+  .in("simulacro_id", idsSimulacros);
+
   const historialCompleto = (todosMisResultados || []).map((resultado) => {
     const simulacro = (simulacrosInfo || []).find(
       (s) => s.id === resultado.simulacro_id
     );
-
+  
+    const rankingDelSimulacro = (todosLosResultados || [])
+      .filter((r) => r.simulacro_id === resultado.simulacro_id)
+      .sort((a, b) => {
+        if (b.puntaje !== a.puntaje) return b.puntaje - a.puntaje;
+        return (a.tiempo_segundos || 0) - (b.tiempo_segundos || 0);
+      });
+  
+    const puesto =
+      rankingDelSimulacro.findIndex(
+        (r) =>
+          r.correo?.trim().toLowerCase() ===
+          resultado.correo?.trim().toLowerCase()
+      ) + 1;
+  
     return {
       ...resultado,
       simulacro,
+      puesto,
     };
   });
 
@@ -376,6 +396,10 @@ if (usuarioGuardado?.correo) {
     ? `👑 Simulacro Premium #${item.simulacro?.numero_simulacro}`
     : `🏆 Simulacro Nacional Gratuito #${item.simulacro?.numero_simulacro}`}
 </p>
+
+          <p className="text-sm text-slate-600">
+           Puesto: #{item.puesto}
+          </p>
 
           <p className="text-sm text-slate-600">
             Nota: {item.puntaje}/{item.total_preguntas}

@@ -190,6 +190,17 @@ const crearSimulacroEvento = async () => {
   }
 
   setGuardandoSimulacro(true);
+  const { data: simulacroExistente } = await supabase
+  .from("simulacros_evento")
+  .select("id")
+  .eq("numero_simulacro", numeroSimulacro)
+  .maybeSingle();
+
+if (simulacroExistente) {
+  setGuardandoSimulacro(false);
+  alert("Ya existe un simulacro con ese número. Usa otro número.");
+  return;
+}
 
   const { error } = await supabase.from("simulacros_evento").insert({
     titulo: tituloSimulacro,
