@@ -241,7 +241,7 @@ if (usuarioGuardado?.correo) {
                 Tu posición actual
               </p>
               <p className="text-3xl font-extrabold text-purple-700">
-                #{resultados.length || 1}
+              #{miResultadoIndex >= 0 ? miResultadoIndex + 1 : "-"}
               </p>
             </div>
             )}
