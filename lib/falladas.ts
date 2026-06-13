@@ -1,8 +1,5 @@
 import { userKey } from "./storageUsuario";
-import {
-  guardarProgreso,
-  obtenerProgresoLocal,
-} from "./syncProgreso";
+
 export async function guardarFalladas(preguntas: any[], respuestas: any) {
   
   const falladasGuardadas = JSON.parse(
@@ -62,14 +59,5 @@ export async function guardarFalladas(preguntas: any[], respuestas: any) {
     userKey("preguntasFalladas"),
     JSON.stringify(actualizadas)
   );
-  const usuario = JSON.parse(
-    localStorage.getItem("usuarioActual") || "{}"
-  );
   
-  if (usuario.correo) {
-    await guardarProgreso(
-      usuario.correo,
-      obtenerProgresoLocal()
-    );
-  }
 }
