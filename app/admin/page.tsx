@@ -20,6 +20,7 @@ const [tituloSimulacro, setTituloSimulacro] = useState("");
 const [descripcionSimulacro, setDescripcionSimulacro] = useState("");
 const [soloPremiumSimulacro, setSoloPremiumSimulacro] = useState(false);
 const [fechaInicio, setFechaInicio] = useState("");
+const [numeroSimulacro, setNumeroSimulacro] = useState(1);
 const [fechaFin, setFechaFin] = useState("");
 const [cantidadPreguntas, setCantidadPreguntas] = useState(50);
 const [tiempoMinutos, setTiempoMinutos] = useState(60);
@@ -567,6 +568,13 @@ const crearSimulacroEvento = async () => {
     onChange={(e) => setTituloSimulacro(e.target.value)}
     className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
   />
+  <input
+  type="number"
+  placeholder="Número de simulacro"
+  value={numeroSimulacro}
+  onChange={(e) => setNumeroSimulacro(Number(e.target.value))}
+  className="w-full bg-slate-900 border border-slate-500 text-white rounded-xl p-3"
+/>
 
   <textarea
     placeholder="Descripción"

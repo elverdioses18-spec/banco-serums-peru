@@ -2169,7 +2169,9 @@ if (!usuarioRegistrado) {
         <p>✅ Historial completo</p>
         <p>✅ Estadísticas y progreso completo</p>
         <p>✅ Reforzamiento inteligente</p>
-        <p>✅ Página de preguntas falladas</p>
+        <p>✅ Página de preguntas falladas y 
+          resueltas
+        </p>
       </div>
 
       <span className="text-center blocktext-slate-500 text-xl">

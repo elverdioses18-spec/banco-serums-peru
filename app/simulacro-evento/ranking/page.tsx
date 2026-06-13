@@ -68,19 +68,42 @@ export default function RankingSimulacroPage() {
     }
   
     setResultados(data || []);
-    const usuarioGuardado = JSON.parse(
-      localStorage.getItem("usuarioActual") || "{}"
+
+const usuarioGuardado = JSON.parse(
+  localStorage.getItem("usuarioActual") || "{}"
+);
+
+if (usuarioGuardado?.correo) {
+  const correoUsuario = usuarioGuardado.correo.trim().toLowerCase();
+
+  const { data: todosMisResultados } = await supabase
+    .from("simulacro_resultados")
+    .select("*")
+    .ilike("correo", correoUsuario)
+    .order("fecha_envio", { ascending: false });
+
+  const idsSimulacros = [
+    ...new Set((todosMisResultados || []).map((item) => item.simulacro_id)),
+  ];
+
+  const { data: simulacrosInfo } = await supabase
+    .from("simulacros_evento")
+    .select("id, numero_simulacro, solo_premium, titulo")
+    .in("id", idsSimulacros);
+
+  const historialCompleto = (todosMisResultados || []).map((resultado) => {
+    const simulacro = (simulacrosInfo || []).find(
+      (s) => s.id === resultado.simulacro_id
     );
-    
-    if (usuarioGuardado?.correo) {
-      const historialUsuario = (data || []).filter(
-        (item) =>
-          item.correo?.trim().toLowerCase() ===
-          usuarioGuardado.correo.trim().toLowerCase()
-      );
-    
-      setHistorialResultados(historialUsuario);
-    }
+
+    return {
+      ...resultado,
+      simulacro,
+    };
+  });
+
+  setHistorialResultados(historialCompleto);
+}
     setCargando(false);
   };
   const formatearTiempo = (segundos: number) => {
@@ -348,9 +371,11 @@ export default function RankingSimulacroPage() {
           key={item.id}
           className="border border-slate-200 rounded-xl p-3"
         >
-          <p className="font-bold text-[#06194a]">
-            {nombreSimulacro}
-          </p>
+         <p className="font-bold text-[#06194a]">
+  {item.simulacro?.solo_premium
+    ? `👑 Simulacro Premium #${item.simulacro?.numero_simulacro}`
+    : `🏆 Simulacro Nacional Gratuito #${item.simulacro?.numero_simulacro}`}
+</p>
 
           <p className="text-sm text-slate-600">
             Nota: {item.puntaje}/{item.total_preguntas}

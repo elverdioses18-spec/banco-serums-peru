@@ -52,6 +52,15 @@ useEffect(() => {
                 <p className="mt-1 text-sm">
                   Selecciona un tema o simulacro, responde las preguntas y revisa tus resultados al finalizar.
                 </p>
+                </div>
+                
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl border">
+                <strong>¿Las preguntas se repiten?</strong>
+                <p className="mt-1 text-sm">
+                  Si, esto con la finalidad que el ulumno retenga la información, por 
+                  otro lado el margen de repetidas es muy pequeño. 
+                </p>
               </div>
   
               <div className="p-3 bg-slate-50 rounded-xl border">
@@ -62,9 +71,9 @@ useEffect(() => {
               </div>
   
               <div className="p-3 bg-slate-50 rounded-xl border">
-                <strong>¿Cuando termina mi suscripción?</strong>
+                <strong>¿Cuándo termina mi acceso?</strong>
                 <p className="mt-1 text-sm">
-                  El acceso Premium termina hasta el mismo día del exámen.
+                  El acceso Premium termina hasta el mismo día del exámen SERUMS.
                 </p>
               </div>
 
@@ -93,6 +102,23 @@ useEffect(() => {
                 <strong>¿Las preguntas tienen explicación?</strong>
                 <p className="mt-1 text-sm">
                   Sí, cada pregunta cuenta con su respectiva explicación y fundamento.
+                </p>
+                </div>
+
+
+                <div className="p-3 bg-slate-50 rounded-xl border">
+                <strong>¿Porqué aparecen menos preguntas en Falladas y resueltas?</strong>
+                <p className="mt-1 text-sm">
+                  Porqué el sistema no agrega a las páginas de Falladas y Resueltas las
+                  mismas preguntas, si se repite en solo deja una.
+                </p>
+
+
+                <div className="p-3 bg-slate-50 rounded-xl border">
+                <strong>¿Puedo compartir mi cuenta?</strong>
+                <p className="mt-1 text-sm">
+                  Sí, pero recuerda que tendras estadisticas compartidas, recuerda que buscas 
+                  optimizar tu aprendizaje y avance.
                 </p>
               </div>
   
