@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
@@ -17,7 +17,7 @@ type Pregunta = {
   explicacion?: string;
 };
 
-export default function RevisionSimulacroPage() {
+function RevisionSimulacroContenido() {
   const [preguntas, setPreguntas] = useState<Pregunta[]>([]);
   const [resultado, setResultado] = useState<any>(null);
   const [cargando, setCargando] = useState(true);
@@ -222,5 +222,18 @@ const { data: simulacroData } = await consultaSimulacro.maybeSingle();
         </div>
       </div>
     </main>
+  );
+}
+export default function RevisionSimulacroPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-slate-50 flex items-center justify-center text-[#06194a]">
+          Cargando revisión...
+        </main>
+      }
+    >
+      <RevisionSimulacroContenido />
+    </Suspense>
   );
 }
