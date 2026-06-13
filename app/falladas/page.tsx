@@ -49,6 +49,9 @@ export default function FalladasPage() {
       <p className="text-slate-300 mb-8">
         Aquí aparecerán las preguntas que fallaste y aún tienes pendientes por reforzar.
       </p>
+      <p className="text-slate-300 mb-8">
+        Nota: Si en caso se falla la misma pregunta 2 veces, solo es agregada una de ellas. 
+      </p>
 
       {falladas.length === 0 ? (
         <div className="bg-slate-800 rounded-2xl p-6">

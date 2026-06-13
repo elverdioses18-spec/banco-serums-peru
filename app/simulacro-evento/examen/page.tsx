@@ -35,7 +35,7 @@ const [puntaje, setPuntaje] = useState(0);
 const [resultadoGuardado, setResultadoGuardado] = useState(false);
 const [yaRindio, setYaRindio] = useState(false);
 const [inicioExamen, setInicioExamen] = useState<number>(Date.now());
-const [tiempoRestante, setTiempoRestante] = useState(20);
+const [tiempoRestante, setTiempoRestante] = useState(0);
 const [sinSesion, setSinSesion] = useState(false);
 const [noInscrito, setNoInscrito] = useState(false);
 const [simulacroActual, setSimulacroActual] = useState<any>(null);
@@ -61,6 +61,7 @@ if (!simulacroData) {
 }
 
 setSimulacroActual(simulacroData);
+setTiempoRestante((simulacroData.tiempo_minutos || 60) * 60);
 const premiumGuardado = localStorage.getItem("premium") === "true";
 setEsPremium(premiumGuardado);
 
@@ -634,12 +635,12 @@ if (!localStorage.getItem(claveModal)) {
 </section>
 
         {/* NAVEGACIÓN */}
-        <section className="bg-white rounded-2xl p-2 shadow-sm border border-slate-200 flex items-center gap-6">
+        <section className="bg-white rounded-2xl p-3 shadow-sm border border-slate-200">
         <h3 className="font-bold text-sm md:text-2xl">
   Navegación de preguntas
 </h3>
 
-          <div className="flex gap-3">
+<div className="flex flex-wrap gap-2 mt-3">
             {preguntas.map((_, index) => (
               <button
                 key={index}
