@@ -7,6 +7,7 @@ import {
   guardarProgreso,
   obtenerProgresoLocal,
 } from "@/lib/syncProgreso";
+import PushNotificationButton from "@/components/PushNotificationButton";
 
 export default function AjustesPage() {
 
@@ -49,6 +50,10 @@ const mostrarAlertaBonita = (mensaje: string) => {
       <h1 className="text-4xl font-bold mb-8">
         ⚙️ Ajustes
       </h1>
+
+      <div className="mb-8">
+  <PushNotificationButton />
+</div>
 
       {/* APARIENCIA */}
       <div className="bg-slate-800 rounded-2xl p-6 mb-6">

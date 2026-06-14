@@ -351,7 +351,15 @@ if (simulacroExistente) {
       mostrarAlertaBonita("Premium activado, pero no se pudo actualizar la solicitud.");
       return;
     }
-
+    await fetch("/api/push/premium", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        correo,
+      }),
+    });
     mostrarAlertaBonita("Premium aprobado correctamente.");
     cargarSolicitudes();
   };

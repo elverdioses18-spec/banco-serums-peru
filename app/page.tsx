@@ -1046,10 +1046,23 @@ const rachaEstudio =
 </button>
           <div className="h-[96px] px-8 flex items-center gap-8 bg-[#062b73]">
             
-            <div className="min-w-max">
-            <h1 className="text-2xl font-semibold whitespace-nowrap">Ruta SERUMS </h1>
-            <p className="text-base text-blue-100 whitespace-nowrap">Prepárate, práctica y aprueba</p>
-            </div>
+          <div className="flex items-center gap-3">
+  <img
+    src="/logo.png"
+    alt="Ruta SERUMS"
+    className="w-12 h-12 object-contain"
+  />
+
+  <div className="min-w-max">
+    <h1 className="text-2xl font-semibold whitespace-nowrap">
+      Ruta SERUMS
+    </h1>
+
+    <p className="text-base text-blue-100 whitespace-nowrap">
+      Prepárate, práctica y aprueba
+    </p>
+  </div>
+</div>
           </div>
           <Link
   href="/"
