@@ -58,8 +58,8 @@ useEffect(() => {
               <div className="p-3 bg-slate-50 rounded-xl border">
                 <strong>¿Las preguntas se repiten?</strong>
                 <p className="mt-1 text-sm">
-                  Si, esto con la finalidad que el ulumno retenga la información, por 
-                  otro lado el margen de repetidas es muy pequeño. 
+                  Si, esto con la finalidad de que el alumno retenga la información, por 
+                  otro lado el margen de repetidas es mínimo. 
                 </p>
               </div>
   
@@ -73,7 +73,7 @@ useEffect(() => {
               <div className="p-3 bg-slate-50 rounded-xl border">
                 <strong>¿Cuándo termina mi acceso?</strong>
                 <p className="mt-1 text-sm">
-                  El acceso Premium termina hasta el mismo día del exámen SERUMS.
+                  El acceso a tu cuenta termina el mismo día del exámen SERUMS.
                 </p>
               </div>
 
@@ -105,22 +105,24 @@ useEffect(() => {
                 </p>
                 </div>
 
+                <div className="p-3 bg-slate-50 rounded-xl border">
+                <strong>¿Puedo compartir mi cuenta?</strong>
+                <p className="mt-1 text-sm">
+                  Sí, pero recuerda que tendrás estadísticas compartidas, si buscas 
+                  optimizar tu aprendizaje y avance, no es recomendable.
+                </p>
+              </div>
 
                 <div className="p-3 bg-slate-50 rounded-xl border">
                 <strong>¿Porqué aparecen menos preguntas en Falladas y resueltas?</strong>
                 <p className="mt-1 text-sm">
                   Porqué el sistema no agrega a las páginas de Falladas y Resueltas las
-                  mismas preguntas, si se repite en solo deja una.
+                  mismas preguntas, si se repite dos preguntas solo deja una.
                 </p>
+                
 
 
-                <div className="p-3 bg-slate-50 rounded-xl border">
-                <strong>¿Puedo compartir mi cuenta?</strong>
-                <p className="mt-1 text-sm">
-                  Sí, pero recuerda que tendras estadisticas compartidas, recuerda que buscas 
-                  optimizar tu aprendizaje y avance.
-                </p>
-              </div>
+                
   
             </div>
           </div>
