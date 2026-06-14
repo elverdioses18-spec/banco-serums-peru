@@ -68,7 +68,7 @@ export default function ResueltasPage() {
             Aquí encontrarás las preguntas que ya resolviste correctamente.
           </p>
           <p className="text-slate-300 mb-8">
-        Nota: Si en caso responde la mis pregunta de manera correcta 2 veces, solo es agregada una de ellas. 
+        Nota: Si en caso responde la misma pregunta de manera correcta 2 veces, solo es agregada una de ellas. 
       </p>
 
          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">

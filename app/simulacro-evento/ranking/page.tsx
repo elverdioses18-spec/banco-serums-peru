@@ -300,7 +300,9 @@ if (usuarioGuardado?.correo) {
               <Clock className="w-8 h-8 text-purple-600" />
               <div>
                 <p className="text-sm text-slate-600">Tiempo límite</p>
-                <p className="text-2xl font-extrabold">60 min</p>
+                <p className="text-2xl font-extrabold">
+  {simulacroActual?.tiempo_minutos || 60} min
+</p>
               </div>
             </div>
 
@@ -382,7 +384,17 @@ if (usuarioGuardado?.correo) {
 >
   📄 Ver examen
 </Link>
-{historialResultados.length > 1 && (
+
+  </div>
+
+) : (
+  <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-5 text-center">
+    <p className="text-slate-500">
+      Aún no tienes resultado en este simulacro.
+    </p>
+  </div>
+)}
+{historialResultados.length > 0 && (
     <div className="mt-6 border-t border-slate-200 pt-4">
   <h4 className="font-extrabold text-[#06194a] mb-3">
     📚 Historial de simulacros
@@ -430,24 +442,16 @@ if (usuarioGuardado?.correo) {
   )}
 </div>
 )}
-  </div>
-
-) : (
-  <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-5 text-center">
-    <p className="text-slate-500">
-      Aún no tienes resultado en este simulacro.
+</>
+)}
+         {tabActiva === "ranking" && (
+  <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center gap-3 mb-5 text-blue-800">
+    <Info className="w-5 h-5" />
+    <p>
+      El ranking se ordena por: 1. Mayor puntaje&nbsp;&nbsp; 2. Menor tiempo
     </p>
   </div>
 )}
-</>
-)}
-          {/* INFO */}
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center gap-3 mb-5 text-blue-800">
-            <Info className="w-5 h-5" />
-            <p>
-              El ranking se ordena por: 1. Mayor puntaje&nbsp;&nbsp; 2. Menor tiempo
-            </p>
-          </div>
 
 {tabActiva === "ranking" && (
   <>
