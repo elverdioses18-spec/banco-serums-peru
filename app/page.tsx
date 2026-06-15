@@ -418,13 +418,9 @@ const rachaEstudio =
   <span className="flex items-center justify-between">
     <span>Notificaciones</span>
 
-    {!localStorage.getItem(
-  `push_activado_${JSON.parse(localStorage.getItem("usuarioActual") || "{}")?.correo}`
-) && (
-  <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-bold text-white">
-    1
-  </span>
-)}
+    <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-bold text-white">
+      1
+    </span>
   </span>
 </button>
 
