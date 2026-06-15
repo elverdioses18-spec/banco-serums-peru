@@ -29,6 +29,8 @@ import {
   Scale,
   Flame,
 } from "lucide-react";
+import PushNotificationModal from "@/components/PushNotificationModal";
+import NotificationBell from "@/components/NotificationBell";
 const temas = [
   { nombre: "Salud Pública", desc: "Salud pública y epidemiología.", preguntas: `${preguntasSaludPublica.saludPublica.length} preguntas`, color: "bg-blue-600", icono: Users, ruta: "/salud-publica/configurar" , progresoKey: "progresoSaludPublica"},
   { nombre: "Gestión", desc: "Administración en salud y normativas del sector.", preguntas: `${preguntasGestion.length} preguntas`, color: "bg-green-600", icono: Building2, ruta: "/gestion/configurar",  progresoKey: "progresoGestion" },
@@ -1270,11 +1272,7 @@ const rachaEstudio =
   </button>
 )}
          
-
-            <div className="relative w-12 h-12 rounded-full bg-blue-900/60 flex items-center justify-center text-xl">
-              🔔
-              
-            </div>
+         <NotificationBell />
 
             <div className="w-14 h-14 rounded-full bg-white text-blue-900 flex items-center justify-center text-3xl">
               👤
