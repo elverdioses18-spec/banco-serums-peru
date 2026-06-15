@@ -42,6 +42,12 @@ const [ordenNota, setOrdenNota] = useState("reciente");
       <p className="text-slate-300 mb-8">
         Aquí aparecerán los últimos 100 exámenes realizados.
       </p>
+      <p className="text-slate-300 mb-8">
+        Nota: La nota mostrada representa tu rendimiento en el cuestionario
+        expresado en una escada de 0 a 20, similar a la utilizada en el examen
+        SERUMS.
+      </p>
+
 
       {historial.length === 0 ? (
         <div className="bg-slate-800 rounded-2xl p-6">
