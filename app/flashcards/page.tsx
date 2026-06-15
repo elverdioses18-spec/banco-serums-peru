@@ -29,9 +29,46 @@ export default function FlashcardsPage() {
     setModalMensaje(mensaje);
     setMostrarModalMensaje(true);
   };
+  const cargarFlashcards = async () => {
+    const usuario = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
+  
+    const locales = JSON.parse(
+      localStorage.getItem(userKey("flashcards")) || "[]"
+    );
+  
+    let mezcladas = locales;
+  
+    if (usuario.correo) {
+      const progresoRemoto = await cargarProgreso(usuario.correo);
+      const flashcardsRemotas = progresoRemoto?.flashcards || [];
+  
+      mezcladas = [
+        ...locales,
+        ...flashcardsRemotas.filter(
+          (remota: any) =>
+            !locales.some(
+              (local: any) =>
+                local.frente === remota.frente &&
+                local.reverso === remota.reverso
+            )
+        ),
+      ];
+    }
+  
+    setFlashcards(mezcladas);
+    localStorage.setItem(userKey("flashcards"), JSON.stringify(mezcladas));
+  };
+  
   useEffect(() => {
-    const guardadas = JSON.parse(localStorage.getItem(userKey("flashcards")) || "[]");
-    setFlashcards(guardadas);
+    cargarFlashcards();
+  
+    const intervalo = setInterval(() => {
+      cargarFlashcards();
+    }, 10000);
+  
+    return () => clearInterval(intervalo);
   }, []);
 
   const guardarFlashcard = async () => {
