@@ -87,7 +87,11 @@ const registration = await navigator.serviceWorker.ready;
         return;
       }
 
+      localStorage.setItem(`push_activado_${correo}`, "true");
+      localStorage.setItem(`push_aviso_visto_${correo}`, "true");
       alert("✅ Notificaciones activadas correctamente.");
+      window.location.reload();
+      
     } catch (error) {
       console.error(error);
       alert("Ocurrió un error al activar notificaciones.");
