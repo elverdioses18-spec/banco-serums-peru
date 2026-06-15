@@ -1754,9 +1754,9 @@ if (!usuarioRegistrado) {
   }`}
 >
 <>
-  980 preguntas
-  <br />
-  totales
+{temaSeleccionado.preguntas}
+<br />
+totales
 </>
                   </span>
                 </div>
