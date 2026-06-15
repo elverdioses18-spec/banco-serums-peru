@@ -92,6 +92,7 @@ const [mostrarPremiumActivado, setMostrarPremiumActivado] = useState(false);
 const [mostrarOnboarding, setMostrarOnboarding] = useState(false);
 const [simulacroEvento, setSimulacroEvento] = useState<any>(null);
 const [mostrarNotificacionesMovil, setMostrarNotificacionesMovil] = useState(false);
+const [avatarNotificacionVista, setAvatarNotificacionVista] = useState(false);
 const obtenerEstadoSimulacroHome = () => {
   if (!simulacroEvento?.fecha_inicio || !simulacroEvento?.fecha_fin) {
     return "programado";
@@ -155,6 +156,17 @@ useEffect(() => {
     setUsuarioActual(JSON.parse(usuario));
   }
 
+  if (usuario) {
+    const usuarioObj = JSON.parse(usuario);
+  
+    setUsuarioActual(usuarioObj);
+  
+    const vista = localStorage.getItem(
+      `avatar_notificacion_vista_${usuarioObj.correo}`
+    );
+  
+    setAvatarNotificacionVista(vista === "true");
+  }
 
   const metaGuardada = Number(localStorage.getItem("metaDiaria") ?? "50");
 
@@ -363,13 +375,29 @@ const rachaEstudio =
 <h1 className="text-2xl font-bold">Ruta SERUMS</h1>
         <p className="text-sm text-blue-100">Prepárate, práctica y aprueba</p>
         
-        <div className="absolute right-4 top-4">
+        <div className="absolute right-4 top-4 relative">
   <button
-    onClick={() => setMenuUsuarioOpen(!menuUsuarioOpen)}
+    onClick={() => {
+      setMenuUsuarioOpen(!menuUsuarioOpen);
+    
+      if (usuarioActual?.correo) {
+        localStorage.setItem(
+          `avatar_notificacion_vista_${usuarioActual.correo}`,
+          "true"
+        );
+    
+        setAvatarNotificacionVista(true);
+      }
+    }}
     className="w-11 h-11 rounded-full bg-white text-blue-900 flex items-center justify-center text-2xl shadow-md"
   >
     👤
   </button>
+  {!avatarNotificacionVista && (
+  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
+    1
+  </span>
+)}
 
   {menuUsuarioOpen && (
     <div className="absolute right-0 top-14 w-56 bg-white text-slate-800 rounded-2xl shadow-xl p-3 z-[99999]">
@@ -405,7 +433,7 @@ const rachaEstudio =
             }}
             className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
           >
-            Cambiar contraseña1
+            Cambiar contraseña
           </button>
 
           <button
@@ -2430,7 +2458,7 @@ setMostrarPagoEnviado(true);
         <br />
         ✅ Nuevos simulacros nacionales
         <br />
-        ✅ Recordatorios antes del cierre
+        ✅ Actualizaciones 
       </p>
 
       <PushNotificationButton />

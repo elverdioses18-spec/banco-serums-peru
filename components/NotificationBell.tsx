@@ -76,7 +76,7 @@ export default function NotificationBell() {
   <br />
   ✅ Nuevos simulacros nacionales
   <br />
-  ✅ Recordatorios antes del cierre
+  ✅ Actualizaciones
 </p>
 
               <div className="flex flex-col gap-2">
