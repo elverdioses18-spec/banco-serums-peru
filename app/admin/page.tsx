@@ -221,7 +221,9 @@ if (simulacroExistente) {
     alert("Error al crear simulacro.");
     return;
   }
-
+  await fetch("/api/push/simulacro", {
+    method: "POST",
+  });
   alert("Simulacro creado correctamente.");
 
   await cargarSimulacroActual();
