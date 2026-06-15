@@ -93,6 +93,7 @@ const [mostrarOnboarding, setMostrarOnboarding] = useState(false);
 const [simulacroEvento, setSimulacroEvento] = useState<any>(null);
 const [mostrarNotificacionesMovil, setMostrarNotificacionesMovil] = useState(false);
 const [avatarNotificacionVista, setAvatarNotificacionVista] = useState(false);
+const [notificacionMenuVista, setNotificacionMenuVista] = useState(false);
 const obtenerEstadoSimulacroHome = () => {
   if (!simulacroEvento?.fecha_inicio || !simulacroEvento?.fecha_fin) {
     return "programado";
@@ -166,6 +167,11 @@ useEffect(() => {
     );
   
     setAvatarNotificacionVista(vista === "true");
+    const vistaMenu = localStorage.getItem(
+      `menu_notificacion_vista_${usuarioObj.correo}`
+    );
+    
+    setNotificacionMenuVista(vistaMenu === "true");
   }
 
   const metaGuardada = Number(localStorage.getItem("metaDiaria") ?? "50");
@@ -440,6 +446,15 @@ const rachaEstudio =
 
           <button
   onClick={() => {
+    if (usuarioActual?.correo) {
+      localStorage.setItem(
+        `menu_notificacion_vista_${usuarioActual.correo}`,
+        "true"
+      );
+  
+      setNotificacionMenuVista(true);
+    }
+  
     setMostrarNotificacionesMovil(true);
     setMenuUsuarioOpen(false);
   }}
@@ -448,9 +463,11 @@ const rachaEstudio =
   <span className="flex items-center justify-between">
     <span>Notificaciones</span>
 
-    <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-bold text-white">
-      1
-    </span>
+    {!notificacionMenuVista && (
+  <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-bold text-white">
+    1
+  </span>
+)}
   </span>
 </button>
 
