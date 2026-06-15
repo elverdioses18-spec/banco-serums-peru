@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import PushNotificationModal from "@/components/PushNotificationModal";
 import NotificationBell from "@/components/NotificationBell";
+import PushNotificationButton from "@/components/PushNotificationButton";
 const temas = [
   { nombre: "Salud Pública", desc: "Salud pública y epidemiología.", preguntas: `${preguntasSaludPublica.saludPublica.length} preguntas`, color: "bg-blue-600", icono: Users, ruta: "/salud-publica/configurar" , progresoKey: "progresoSaludPublica"},
   { nombre: "Gestión", desc: "Administración en salud y normativas del sector.", preguntas: `${preguntasGestion.length} preguntas`, color: "bg-green-600", icono: Building2, ruta: "/gestion/configurar",  progresoKey: "progresoGestion" },
@@ -90,6 +91,7 @@ const [mostrarPagoEnviado, setMostrarPagoEnviado] = useState(false);
 const [mostrarPremiumActivado, setMostrarPremiumActivado] = useState(false);
 const [mostrarOnboarding, setMostrarOnboarding] = useState(false);
 const [simulacroEvento, setSimulacroEvento] = useState<any>(null);
+const [mostrarNotificacionesMovil, setMostrarNotificacionesMovil] = useState(false);
 const obtenerEstadoSimulacroHome = () => {
   if (!simulacroEvento?.fecha_inicio || !simulacroEvento?.fecha_fin) {
     return "programado";
@@ -403,8 +405,24 @@ const rachaEstudio =
             }}
             className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
           >
-            Cambiar contraseña
+            Cambiar contraseña1
           </button>
+
+          <button
+  onClick={() => {
+    setMostrarNotificacionesMovil(true);
+    setMenuUsuarioOpen(false);
+  }}
+  className="block w-full text-left px-3 py-2 hover:bg-slate-100 rounded-xl"
+>
+  <span className="flex items-center justify-between">
+    <span>Notificaciones</span>
+
+    <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-bold text-white">
+      1
+    </span>
+  </span>
+</button>
 
           <button
             onClick={() => {
@@ -2396,6 +2414,32 @@ setMostrarPagoEnviado(true);
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
       >
         Entendido
+      </button>
+    </div>
+  </div>
+)}
+{mostrarNotificacionesMovil && (
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 px-4">
+    <div className="w-full max-w-sm rounded-2xl bg-white p-5 text-gray-900 shadow-2xl">
+      <h3 className="mb-3 text-lg font-bold">🔔 Notificaciones</h3>
+
+      <p className="mb-4 text-sm leading-relaxed text-gray-800">
+        Activa las notificaciones para recibir avisos de:
+        <br />
+        ✅ Premium activado
+        <br />
+        ✅ Nuevos simulacros nacionales
+        <br />
+        ✅ Recordatorios antes del cierre
+      </p>
+
+      <PushNotificationButton />
+
+      <button
+        onClick={() => setMostrarNotificacionesMovil(false)}
+        className="mt-4 block w-full text-sm text-gray-500"
+      >
+        Cerrar
       </button>
     </div>
   </div>
