@@ -375,7 +375,8 @@ const rachaEstudio =
 <h1 className="text-2xl font-bold">Ruta SERUMS</h1>
         <p className="text-sm text-blue-100">Prepárate, práctica y aprueba</p>
         
-        <div className="absolute right-4 top-4 relative">
+        <div className="absolute right-4 top-4">
+  <div className="relative">
   <button
     onClick={() => {
       setMenuUsuarioOpen(!menuUsuarioOpen);
@@ -398,7 +399,8 @@ const rachaEstudio =
     1
   </span>
 )}
-
+  </div>
+  
   {menuUsuarioOpen && (
     <div className="absolute right-0 top-14 w-56 bg-white text-slate-800 rounded-2xl shadow-xl p-3 z-[99999]">
       {usuarioActual ? (
