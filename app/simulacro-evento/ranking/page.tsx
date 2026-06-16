@@ -463,6 +463,7 @@ if (usuarioGuardado?.correo) {
         <th className="text-left py-4 px-4 font-bold">Posición</th>
         <th className="text-left py-4 px-4 font-bold">Participante</th>
         <th className="text-left py-4 px-4 font-bold">Puntaje</th>
+        <th className="text-left py-4 px-4 font-bold">Nota</th>
         <th className="text-left py-4 px-4 font-bold">Tiempo</th>
       </tr>
     </thead>
@@ -522,6 +523,11 @@ if (usuarioGuardado?.correo) {
               <span className="text-purple-700 text-xl">{item.puntaje}</span>{" "}
               / {item.total_preguntas}
             </td>
+            <td className="py-4 px-4 font-bold whitespace-nowrap">
+  <span className="text-green-600">
+    {((item.puntaje / item.total_preguntas) * 20).toFixed(1)}
+  </span>
+</td>
 
             <td className="py-4 px-4 font-semibold text-slate-600 whitespace-nowrap">
               {formatearTiempo(item.tiempo_segundos || 0)}
