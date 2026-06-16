@@ -498,9 +498,13 @@ if (usuarioGuardado?.correo) {
 
             <td className="py-4 px-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  👤
-                </div>
+              <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden flex items-center justify-center">
+  <img
+    src={`/avatars/${item.avatar || "avatar1"}.png`}
+    alt="Avatar"
+    className="w-full h-full object-cover"
+  />
+</div>
                 <span className="font-semibold whitespace-nowrap">
   {item.nombre
     ? (() => {

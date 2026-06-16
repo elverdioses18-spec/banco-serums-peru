@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [nombreRegistro, setNombreRegistro] = useState("");
   const [correoRegistro, setCorreoRegistro] = useState("");
   const [passwordRegistro, setPasswordRegistro] = useState("");
+  const [avatarSeleccionado, setAvatarSeleccionado] = useState("avatar1");
   const ingresar = async () => {
     const correoLimpio = correo.trim().toLowerCase();
     const progreso = await cargarProgreso(correoLimpio);
@@ -49,6 +50,7 @@ export default function LoginPage() {
         nombre: data.nombre,
         correo: data.correo,
         premium: data.premium,
+        avatar: data.avatar || "avatar1",
       })
     );
   
@@ -385,6 +387,33 @@ export default function LoginPage() {
           className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
         />
 
+<div className="mt-4">
+  <p className="text-white font-semibold mb-3">
+    Elige tu avatar
+  </p>
+
+  <div className="grid grid-cols-4 gap-3">
+    {[1,2,3,4,5,6,7,8].map((num) => (
+      <button
+        key={num}
+        type="button"
+        onClick={() => setAvatarSeleccionado(`avatar${num}`)}
+        className={`rounded-2xl p-1 border-2 ${
+          avatarSeleccionado === `avatar${num}`
+            ? "border-blue-500"
+            : "border-transparent"
+        }`}
+      >
+        <img
+          src={`/avatars/avatar${num}.png`}
+          alt={`Avatar ${num}`}
+          className="w-16 h-16 rounded-full object-cover"
+        />
+      </button>
+    ))}
+  </div>
+</div>
+
         <button
        onClick={async () => {
         await new Promise(resolve =>
@@ -429,6 +458,7 @@ export default function LoginPage() {
               correo: correoLimpio,
               password: passwordRegistro,
               premium: false,
+              avatar: avatarSeleccionado,
             },
           ]);
       

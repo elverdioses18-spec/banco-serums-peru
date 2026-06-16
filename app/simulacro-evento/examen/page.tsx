@@ -384,6 +384,7 @@ if (!localStorage.getItem(claveModal)) {
         simulacro_id: simulacroActual.id,
         correo: usuario.correo,
         nombre: usuario.nombre || "Usuario",
+        avatar: usuario.avatar || "avatar1",
         puntaje: correctas,
         total_preguntas: preguntas.length,
         porcentaje,

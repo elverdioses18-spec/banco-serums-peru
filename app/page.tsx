@@ -398,7 +398,11 @@ const rachaEstudio =
     }}
     className="w-11 h-11 rounded-full bg-white text-blue-900 flex items-center justify-center text-2xl shadow-md"
   >
-    👤
+    <img
+  src={`/avatars/${usuarioActual?.avatar || "avatar1"}.png`}
+  alt="Avatar"
+  className="w-full h-full rounded-full object-cover"
+/>
   </button>
   {!avatarNotificacionVista && (
   <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
@@ -1339,9 +1343,13 @@ const rachaEstudio =
          
          <NotificationBell />
 
-            <div className="w-14 h-14 rounded-full bg-white text-blue-900 flex items-center justify-center text-3xl">
-              👤
-            </div>
+         <div className="w-14 h-14 rounded-full bg-white overflow-hidden">
+  <img
+    src={`/avatars/${usuarioActual?.avatar || "avatar1"}.png`}
+    alt="Avatar"
+    className="w-full h-full object-cover"
+  />
+</div>
 
             {usuarioActual ? (
   <div className="relative">
