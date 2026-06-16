@@ -144,6 +144,23 @@ useEffect(() => {
       localStorage.getItem("usuarioActual") || "{}"
     );
   
+    if (usuario.correo) {
+      const { data: usuarioExiste } = await supabase
+        .from("usuarios")
+        .select("correo")
+        .eq("correo", usuario.correo)
+        .maybeSingle();
+    
+      if (!usuarioExiste) {
+        localStorage.removeItem("usuarioActual");
+        localStorage.removeItem("premium");
+    
+        alert("Tu cuenta ya no existe.");
+    
+        window.location.href = "/";
+        return;
+      }
+    }
     if (!usuario.correo) return;
   
     const progresoRemoto = await cargarProgreso(usuario.correo);
