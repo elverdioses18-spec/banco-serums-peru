@@ -502,8 +502,15 @@ if (usuarioGuardado?.correo) {
                   👤
                 </div>
                 <span className="font-semibold whitespace-nowrap">
-                  {item.nombre || "Usuario"}
-                </span>
+  {item.nombre
+    ? (() => {
+        const partes = item.nombre.trim().split(" ");
+        const nombre = partes[0];
+        const apellido = partes[1]?.charAt(0) || "";
+        return `${nombre} ${apellido}.`;
+      })()
+    : "Usuario"}
+</span>
               </div>
             </td>
 
