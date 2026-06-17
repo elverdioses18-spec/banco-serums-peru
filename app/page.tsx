@@ -1115,9 +1115,52 @@ const rachaEstudio =
       </p>
     </div>
   </div>
+  </div>
+
+  {/* EXÁMENES PASADOS - MÓVIL */}
+  <Link
+    href="/examenes-pasados"
+    className="block bg-white rounded-2xl shadow-md p-4 mb-6 border border-purple-300"
+  >
+    <div className="flex items-center gap-3">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-2xl">
+        📋
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <h2 className="text-base font-extrabold text-[#06194a] leading-tight">
+            Exámenes Pasados SERUMS
+          </h2>
+
+          <span className="rounded-full bg-purple-600 px-2 py-0.5 text-[10px] font-bold text-white">
+            NUEVO
+          </span>
+        </div>
+
+        <p className="mt-1 text-xs text-slate-600 leading-snug">
+          Practica preguntas reales de convocatorias anteriores.
+        </p>
+      </div>
+
+      <span className="text-2xl font-bold text-purple-700">›</span>
+    </div>
+
+    <div className="mt-3 flex items-center justify-center gap-6 rounded-xl bg-purple-50 px-3 py-2 text-xs font-bold text-purple-700">
+    <div className="flex items-center gap-1">
+  <span>📅</span>
+  <span>Por convocatoria</span>
 </div>
+
+<div className="flex items-center gap-1">
+  <span>🔀</span>
+  <span>Mixto</span>
 </div>
-  <div className="hidden md:block">
+    </div>
+  </Link>
+</div>
+
+<div className="hidden md:block">
       <div className="flex min-h-screen">
 
         {/* SIDEBAR */}
@@ -1722,7 +1765,7 @@ if (!usuarioRegistrado) {
                 </div>
               ))}
             </div>
-
+            <div className="w-full">
             {/* PANEL INFERIOR */}
             <div
   className={`relative bg-white border rounded-2xl p-4 shadow-sm grid grid-cols-1 xl:grid-cols-[1.2fr_1fr_1fr_0.8fr] gap-4 items-center ${
@@ -1897,6 +1940,54 @@ totales
 </div> 
 </div>    
 </div>     
+{/* EXÁMENES PASADOS - PC */}
+<a
+  href="/examenes-pasados"
+  className="block mt-6 w-full rounded-2xl border border-purple-300 bg-gradient-to-r from-white via-purple-50 to-white p-5 shadow-md hover:shadow-lg transition"
+>
+  <div className="flex items-center justify-between gap-6">
+    <div className="flex items-center gap-5">
+      <div className="text-5xl text-purple-600">📋</div>
+
+      <div>
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-extrabold text-slate-900">
+            Exámenes Pasados SERUMS
+          </h2>
+
+          <span className="text-xs font-bold bg-purple-600 text-white px-3 py-1 rounded-full">
+            NUEVO
+          </span>
+        </div>
+
+        <p className="text-sm text-slate-700 mt-2 max-w-md">
+          Practica preguntas reales de convocatorias anteriores y conoce los temas que más se repiten en el examen.
+        </p>
+      </div>
+    </div>
+
+    <div className="hidden lg:grid grid-cols-2 gap-5 border-l border-purple-200 pl-8">
+      <div>
+        <p className="font-bold text-purple-700">📅 Por convocatoria</p>
+        <p className="text-sm text-slate-700 mt-1">
+          Elige un examen específico y practica.
+        </p>
+      </div>
+
+      <div>
+        <p className="font-bold text-purple-700">🔀 Examen mixto</p>
+        <p className="text-sm text-slate-700 mt-1">
+          Preguntas mezcladas de todas las convocatorias.
+        </p>
+      </div>
+    </div>
+
+    <div className="bg-purple-600 text-white px-5 py-3 rounded-xl font-bold shadow-md">
+      Ir a exámenes pasados ›
+    </div>
+  </div>
+</a>
+</div>
 {mostrarModalLogin && (
   <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-8 text-white shadow-2xl">
