@@ -18,12 +18,42 @@ import {
 import { examenesPasados } from "@/data/examenesPasados";
 
 const convocatorias = [
-  { id: "2024-ii-a", nombre: "EXAMEN 2024 - II - A", total: examenesPasados["2024-ii-a"].length },
-  { id: "2024-ii-b", nombre: "EXAMEN 2024 - II - B", total: examenesPasados["2024-ii-b"].length },
-  { id: "2025-i-a", nombre: "EXAMEN 2025 - I - A", total: examenesPasados["2025-i-a"].length },
-  { id: "2025-i-b", nombre: "EXAMEN 2025 - I - B", total: examenesPasados["2025-i-b"].length },
-  { id: "2025-ii", nombre: "EXAMEN 2025 - II", total: examenesPasados["2025-ii"].length },
-  { id: "2026-i", nombre: "EXAMEN 2026 - I", total: examenesPasados["2026-i"].length },
+  {
+    id: "2024-ii-a",
+    nombre: "EXAMEN 2024 - II - A",
+    total: examenesPasados["2024-ii-a"].length,
+    gratis: true,
+  },
+  {
+    id: "2024-ii-b",
+    nombre: "EXAMEN 2024 - II - B",
+    total: examenesPasados["2024-ii-b"].length,
+    gratis: true,
+  },
+  {
+    id: "2025-i-a",
+    nombre: "EXAMEN 2025 - I - A",
+    total: examenesPasados["2025-i-a"].length,
+    gratis: false,
+  },
+  {
+    id: "2025-i-b",
+    nombre: "EXAMEN 2025 - I - B",
+    total: examenesPasados["2025-i-b"].length,
+    gratis: false,
+  },
+  {
+    id: "2025-ii",
+    nombre: "EXAMEN 2025 - II",
+    total: examenesPasados["2025-ii"].length,
+    gratis: false,
+  },
+  {
+    id: "2026-i",
+    nombre: "EXAMEN 2026 - I",
+    total: examenesPasados["2026-i"].length,
+    gratis: false,
+  },
 ];
 
 const cantidades = [20, 50, 100];
@@ -131,11 +161,20 @@ export default function ExamenesPasadosPage() {
                       </div>
 
                       <div>
-                        <p className="font-extrabold">{item.nombre}</p>
-                        <p className="text-sm text-slate-600 mt-1">
-                          {item.total} preguntas disponibles.
-                        </p>
-                      </div>
+  <div className="flex items-center gap-2">
+    <p className="font-extrabold">{item.nombre}</p>
+
+    {item.gratis && (
+      <span className="rounded-full bg-amber-400 px-2 py-1 text-[10px] font-extrabold text-white">
+        GRATIS
+      </span>
+    )}
+  </div>
+
+  <p className="text-sm text-slate-600 mt-1">
+    {item.total} preguntas disponibles.
+  </p>
+</div>
                     </div>
 
                     {activo ? (

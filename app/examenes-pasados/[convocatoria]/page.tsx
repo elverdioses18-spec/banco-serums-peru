@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { examenesPasados } from "@/data/examenesPasados";
 
 type Pregunta = {
@@ -34,6 +34,32 @@ const nombresExamenes: Record<string, string> = {
 export default function ExamenConvocatoriaPage() {
   const params = useParams();
   const searchParams = useSearchParams();
+  const router = useRouter();
+const [verificandoAcceso, setVerificandoAcceso] = useState(true);
+const [mostrarModalPremium, setMostrarModalPremium] = useState(false);
+const examenesGratis = [
+  "2024-ii-a",
+  "2024-ii-b",
+];
+
+useEffect(() => {
+  const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+
+  if (!usuario?.correo) {
+    router.replace("/login");
+    return;
+  }
+
+  const esGratis = examenesGratis.includes(convocatoria);
+
+if (!esGratis && usuario?.premium !== true) {
+  setVerificandoAcceso(false);
+  setMostrarModalPremium(true);
+  return;
+}
+
+  setVerificandoAcceso(false);
+}, [router]);
 
   const convocatoria = params.convocatoria as string;
   const cantidad = Number(searchParams.get("cantidad") || 20);
@@ -92,7 +118,40 @@ const preguntasPorPagina = 10;
     preguntasSeleccionadas.length > 0
       ? ((correctas / preguntasSeleccionadas.length) * 20).toFixed(2)
       : "0.00";
-
+      if (verificandoAcceso) {
+        return (
+          <main className="min-h-screen flex items-center justify-center">
+            <div className="rounded-3xl bg-white p-6 shadow-md">
+              Verificando acceso...
+            </div>
+          </main>
+        );
+      }
+      
+      if (mostrarModalPremium) {
+        return (
+          <main className="min-h-screen bg-[#f4f7fb] flex items-center justify-center p-6">
+            <div className="max-w-md w-full rounded-3xl bg-white p-6 shadow-xl text-center">
+              <div className="text-5xl mb-4">🔒</div>
+      
+              <h1 className="text-2xl font-extrabold text-[#06194a]">
+                Acceso solo para usuarios premium
+              </h1>
+      
+              <p className="mt-3 text-slate-600">
+                Los exámenes pasados están disponibles únicamente para usuarios premium.
+              </p>
+      
+              <Link
+                href="/"
+                className="mt-5 inline-block rounded-xl bg-purple-600 px-6 py-3 font-bold text-white"
+              >
+                Ver Premium
+              </Link>
+            </div>
+          </main>
+        );
+      }
   if (!preguntasBase.length) {
     return (
       <main className="min-h-screen bg-[#f4f7fb] p-6">
