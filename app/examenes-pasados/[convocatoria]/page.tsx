@@ -313,20 +313,18 @@ const preguntasPorPagina = 10;
   
             return (
               <article
-                key={index}
-                className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm"
-              >
+           key={index}
+            className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm"
+            >
                 <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-600 text-sm font-black text-white shadow-md">
-                  {numeroReal + 1}
-                  </div>
+                 
   
                   <div>
                     <p className="text-sm font-extrabold text-purple-700">
-                      Pregunta {numeroReal + 1}de {preguntasSeleccionadas.length}
+                      Pregunta {numeroReal + 1} de {preguntasSeleccionadas.length}
                     </p>
   
-                    <p className="mt-2 font-extrabold leading-relaxed text-[#06194a]">
+                    <p className="mt-2 text-sm font-extrabold leading-relaxed text-[#06194a]">
                       {pregunta.pregunta}
                     </p>
                   </div>
@@ -350,7 +348,7 @@ const preguntasPorPagina = 10;
   
                     if (!finalizado && seleccionada) {
                       clase =
-                        "border-purple-400 !bg-[#faf5ff] text-purple-800 ring-1 ring-purple-200";
+                            "border-purple-400 bg-purple-100 text-purple-800 ring-1 ring-purple-200";
                     }
   
                     return (

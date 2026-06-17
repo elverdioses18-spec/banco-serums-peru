@@ -60,6 +60,7 @@ const cantidades = [20, 50, 100];
 
 export default function ExamenesPasadosPage() {
   const [seleccion, setSeleccion] = useState<string | null>("2024-ii-a");
+  const [imagenAbierta, setImagenAbierta] = useState(false);
 
   return (
     <main className="min-h-screen bg-slate-50 p-4 text-[#06194a]">
@@ -85,22 +86,18 @@ export default function ExamenesPasadosPage() {
                 temas que más se repiten en el examen.
               </p>
 
-              <div className="grid grid-cols-2 gap-8 mt-2 max-w-lg">
-                <div className="bg-white text-[#06194a] rounded-2xl p-1 md:p-3 shadow-md flex items-center gap-2 md:gap-3">
-                  <CalendarDays className="w-4 h-8 text-purple-600" />
-                  <div>
-                    <p className="font-extrabold">6 Convocatorias</p>
-                    <p className="text-sm text-slate-600">disponibles</p>
-                  </div>
-                </div>
+              <div className="grid grid-cols-2 gap-4 mt-2 max-w-lg">
+              <div className="bg-white text-[#06194a] rounded-2xl p-4 shadow-md flex items-center justify-center">
+              <p className="font-extrabold text-lg">
+             6 Exámenes
+            </p>
+             </div>
 
-                <div className="bg-white text-[#06194a] rounded-2xl p-1 shadow-md flex items-center gap-3">
-                  <ClipboardCheck className="w-8 h-8 text-purple-600" />
-                  <div>
-                    <p className="font-extrabold">600+ Preguntas</p>
-                    <p className="text-sm text-slate-600">disponibles</p>
-                  </div>
-                </div>
+             <div className="bg-white text-[#06194a] rounded-2xl p-4 shadow-md flex items-center justify-center">
+             <p className="font-extrabold text-[18px] text-center">
+  600+ Preguntas
+</p>
+             </div>
               </div>
             </div>
 
@@ -330,10 +327,32 @@ export default function ExamenesPasadosPage() {
           <img
   src="/imagenes/datos-serums.webp"
   alt="Datos importantes SERUMS"
-  className="w-full rounded-2xl"
+  onClick={() => setImagenAbierta(true)}
+  className="w-full rounded-2xl cursor-pointer transition hover:scale-[1.01]"
 />
         </section>
       </div>
+      {imagenAbierta && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+    onClick={() => setImagenAbierta(false)}
+  >
+    <div className="relative max-w-5xl w-full">
+      <button
+        onClick={() => setImagenAbierta(false)}
+        className="absolute -top-12 right-0 bg-white rounded-full px-4 py-2 font-bold shadow-md"
+      >
+        ✕
+      </button>
+
+      <img
+        src="/imagenes/datos-serums.webp"
+        alt="Datos importantes SERUMS"
+        className="w-full rounded-3xl shadow-2xl"
+      />
+    </div>
+  </div>
+)}
     </main>
   );
 }
