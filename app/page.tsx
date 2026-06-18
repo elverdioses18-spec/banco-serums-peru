@@ -2529,7 +2529,7 @@ totales
 
       <img
         src="/qr-yape.png"
-        alt="QR Yape"
+        alt="Yape - Elver Dio*"
         className="w-40 mx-auto mb-4"
       />
 
