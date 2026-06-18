@@ -94,6 +94,9 @@ const [simulacroEvento, setSimulacroEvento] = useState<any>(null);
 const [mostrarNotificacionesMovil, setMostrarNotificacionesMovil] = useState(false);
 const [avatarNotificacionVista, setAvatarNotificacionVista] = useState(false);
 const [notificacionMenuVista, setNotificacionMenuVista] = useState(false);
+const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+const [mostrarInstalarApp, setMostrarInstalarApp] = useState(false);
+const [mostrarInstruccionesInstalar, setMostrarInstruccionesInstalar] = useState(false);
 const obtenerEstadoSimulacroHome = () => {
   if (!simulacroEvento?.fecha_inicio || !simulacroEvento?.fecha_fin) {
     return "programado";
@@ -136,6 +139,33 @@ if (!onboardingVisto) {
   };
   
   cargarSimulacroEvento();
+}, []);
+
+useEffect(() => {
+  const bannerOculto = localStorage.getItem("bannerInstalarOculto") === "true";
+  const appInstalada = localStorage.getItem("appInstalada") === "true";
+
+  if (bannerOculto || appInstalada) return;
+
+  setMostrarInstalarApp(true);
+
+  const handler = (e: any) => {
+    e.preventDefault();
+    setDeferredPrompt(e);
+  };
+
+  const installedHandler = () => {
+    localStorage.setItem("appInstalada", "true");
+    setMostrarInstalarApp(false);
+  };
+
+  window.addEventListener("beforeinstallprompt", handler);
+  window.addEventListener("appinstalled", installedHandler);
+
+  return () => {
+    window.removeEventListener("beforeinstallprompt", handler);
+    window.removeEventListener("appinstalled", installedHandler);
+  };
 }, []);
 
 useEffect(() => {
@@ -379,6 +409,22 @@ const rachaEstudio =
       localStorage.getItem(userKey(temaMovilActivo.progresoKey)) || "{}"
     )
   : {};
+  const instalarApp = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+  
+      const { outcome } = await deferredPrompt.userChoice;
+  
+      if (outcome === "accepted") {
+        localStorage.setItem("appInstalada", "true");
+        setMostrarInstalarApp(false);
+      }
+  
+      setDeferredPrompt(null);
+    } else {
+      setMostrarInstruccionesInstalar(true);
+    }
+  };
    return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-[#06194a] overflow-x-hidden">
 
@@ -879,6 +925,39 @@ const rachaEstudio =
         Ver detalles
       </Link>
     </div>
+  </div>
+)}
+{mostrarInstalarApp && (
+  <div className="relative bg-blue-50 border border-blue-200 rounded-2xl p-3 mb-4 flex items-center gap-3 shadow-sm">
+    <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl">
+      📲
+    </div>
+
+    <div className="flex-1">
+      <p className="font-extrabold text-[#06194a]">
+        Instala Ruta SERUMS
+      </p>
+      <p className="text-xs text-slate-600">
+        Acceso rápido y notificaciones de simulacros.
+      </p>
+    </div>
+
+    <button
+      onClick={instalarApp}
+      className="bg-blue-600 text-white font-bold px-4 py-2 rounded-xl text-sm"
+    >
+      Instalar
+    </button>
+
+    <button
+      onClick={() => {
+        localStorage.setItem("bannerInstalarOculto", "true");
+        setMostrarInstalarApp(false);
+      }}
+      className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border border-slate-200 text-slate-500 text-sm font-bold shadow"
+    >
+      ×
+    </button>
   </div>
 )}
  {!esPremium && (
@@ -1393,12 +1472,22 @@ const rachaEstudio =
     👑 Premium Activo
   </div>
 ) : (
+  <>
+  {mostrarInstalarApp && (
+    <button
+      onClick={instalarApp}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-bold"
+    >
+      📲 Instalar app
+    </button>
+  )}
   <button
     onClick={() => setMostrarPremium(true)}
     className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-4 py-2 rounded-xl font-bold"
   >
     Ser Premium
   </button>
+  </>
 )}
          
          <NotificationBell />
@@ -1661,6 +1750,7 @@ const rachaEstudio =
     </div>
   </div>
 )}
+
             {/* TARJETAS */}
             <h2 className="text-2xl font-bold mb-5">Elige un tema para comenzar</h2>
 
@@ -2626,6 +2716,59 @@ setMostrarPagoEnviado(true);
   }}
 />
 )}
+
+{mostrarInstruccionesInstalar && (
+  <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+      <div className="text-center">
+        <div className="text-5xl mb-3">📲</div>
+
+        <h2 className="text-xl font-extrabold text-[#06194a]">
+          Instalar Ruta SERUMS
+        </h2>
+
+        <p className="mt-2 text-sm text-slate-600">
+          Tu navegador no permite la instalación automática.
+        </p>
+      </div>
+
+      <div className="mt-5 space-y-4">
+        <div className="rounded-2xl bg-slate-50 p-4">
+          <h3 className="font-bold text-[#06194a] mb-2">
+            Android
+          </h3>
+
+          <ol className="list-decimal pl-5 text-sm space-y-1">
+            <li>Presiona el menú ⋮</li>
+            <li>Selecciona "Instalar aplicación"</li>
+            <li>Confirma la instalación</li>
+          </ol>
+        </div>
+
+        <div className="rounded-2xl bg-slate-50 p-4">
+          <h3 className="font-bold text-[#06194a] mb-2">
+            iPhone
+          </h3>
+
+          <ol className="list-decimal pl-5 text-sm space-y-1">
+            <li>Presiona Compartir</li>
+            <li>Selecciona "Agregar a pantalla de inicio"</li>
+            <li>Presiona Agregar</li>
+          </ol>
+        </div>
+      </div>
+
+      <button
+        onClick={() => setMostrarInstruccionesInstalar(false)}
+        className="mt-6 w-full rounded-2xl bg-[#06194a] py-3 text-white font-bold"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+)}
+
 </main>
+
 );
 }
