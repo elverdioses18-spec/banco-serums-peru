@@ -2528,8 +2528,8 @@ totales
       </p>
 
       <img
-        src="/qr-yape.png"
-        alt="Yape - Elver Dio*"
+        src="/qryape.png"
+        alt="Yape-Elver Dio*"
         className="w-40 mx-auto mb-4"
       />
 
