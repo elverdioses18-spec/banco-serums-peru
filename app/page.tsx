@@ -2529,10 +2529,12 @@ totales
 
       <img
         src="/qryape.png"
-        alt="Yape-Elver Dio*"
-        className="w-40 mx-auto mb-4"
-      />
-
+       alt="Nombre - Elver Dio*"
+         className="w-40 h-40 mx-auto rounded-2xl border border-slate-200 shadow-sm object-contain"
+        />
+        <p className="text-center font-bold text-slate-700 mb-2">
+        Nombre - Elver Dio*
+      </p>
       <input
         type="text"
         placeholder="Nombre de usuario"
