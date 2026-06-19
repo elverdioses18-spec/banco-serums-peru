@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { examenesPasados } from "@/data/examenesPasados";
+import { supabase } from "@/lib/supabase";
 
 type Pregunta = {
   pregunta: string;
@@ -35,6 +36,8 @@ export default function ExamenConvocatoriaPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const convocatoria = params.convocatoria as string;
+const cantidad = Number(searchParams.get("cantidad") || 20);
 const [verificandoAcceso, setVerificandoAcceso] = useState(true);
 const [mostrarModalPremium, setMostrarModalPremium] = useState(false);
 const examenesGratis = [
@@ -43,28 +46,47 @@ const examenesGratis = [
 ];
 
 useEffect(() => {
-  const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
+  async function verificarAcceso() {
+    const usuarioLocal = JSON.parse(
+      localStorage.getItem("usuarioActual") || "{}"
+    );
 
-  if (!usuario?.correo) {
-    router.replace("/login");
-    return;
+    if (!usuarioLocal?.correo) {
+      router.replace("/login");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("usuarios")
+      .select("correo, nombre, premium, gratis_usado")
+      .eq("correo", usuarioLocal.correo)
+      .single();
+
+    const usuarioActualizado = data || usuarioLocal;
+
+    localStorage.setItem(
+      "usuarioActual",
+      JSON.stringify({
+        ...usuarioLocal,
+        ...usuarioActualizado,
+      })
+    );
+
+    const esGratis = examenesGratis.includes(convocatoria);
+
+    if (!esGratis && usuarioActualizado?.premium !== true) {
+      setVerificandoAcceso(false);
+      setMostrarModalPremium(true);
+      return;
+    }
+
+    setVerificandoAcceso(false);
   }
 
-  const esGratis = examenesGratis.includes(convocatoria);
+  verificarAcceso();
+}, [router, convocatoria]);
 
-if (!esGratis && usuario?.premium !== true) {
-  setVerificandoAcceso(false);
-  setMostrarModalPremium(true);
-  return;
-}
-
-  setVerificandoAcceso(false);
-}, [router]);
-
-  const convocatoria = params.convocatoria as string;
-  const cantidad = Number(searchParams.get("cantidad") || 20);
-
-  const preguntasBase: Pregunta[] =
+   const preguntasBase: Pregunta[] =
     convocatoria === "mixto"
       ? (Object.values(examenesPasados).flat() as Pregunta[])
       : ((examenesPasados[
