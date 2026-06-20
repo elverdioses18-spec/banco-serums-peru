@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [correoRegistro, setCorreoRegistro] = useState("");
   const [passwordRegistro, setPasswordRegistro] = useState("");
   const [avatarSeleccionado, setAvatarSeleccionado] = useState("avatar1");
+  const [creandoCuenta, setCreandoCuenta] = useState(false);
   const ingresar = async () => {
     const correoLimpio = correo.trim().toLowerCase();
     const progreso = await cargarProgreso(correoLimpio);
@@ -416,6 +417,10 @@ export default function LoginPage() {
 
         <button
        onClick={async () => {
+
+        if (creandoCuenta) return;
+        setCreandoCuenta(true);
+
         await new Promise(resolve =>
           setTimeout(resolve, 150)
         );
@@ -425,16 +430,19 @@ export default function LoginPage() {
         const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoLimpio);
       
         if (!nombreLimpio || !correoLimpio || !passwordRegistro.trim()) {
+          setCreandoCuenta(false);
           mostrarAlertaBonita("Completa nombre, correo y contraseña.");
           return;
         }
       
         if (!correoValido) {
+          setCreandoCuenta(false);
           mostrarAlertaBonita("Ingresa un correo válido.");
           return;
         }
       
         if (passwordRegistro.length < 6) {
+          setCreandoCuenta(false);
           mostrarAlertaBonita("La contraseña debe tener mínimo 6 caracteres.");
           return;
         }
@@ -446,6 +454,7 @@ export default function LoginPage() {
           .maybeSingle();
       
         if (usuarioExistente) {
+          setCreandoCuenta(false);
           mostrarAlertaBonita("Este correo ya está registrado.");
           return;
         }
@@ -463,10 +472,12 @@ export default function LoginPage() {
           ]);
       
         if (error) {
+          setCreandoCuenta(false);
           mostrarAlertaBonita("Error al crear cuenta: " + error.message);
           return;
         }
-      
+        
+        setCreandoCuenta(false);
         mostrarAlertaBonita("Cuenta creada correctamente. Ahora inicia sesión.");
       
         setNombreRegistro("");
