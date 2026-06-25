@@ -146,10 +146,16 @@ if (!onboardingVisto) {
 useEffect(() => {
   const userAgent = navigator.userAgent || "";
 
+  console.log("UserAgent:", userAgent);
+
   const navegadorInterno =
     userAgent.includes("FBAN") ||
     userAgent.includes("FBAV") ||
-    userAgent.includes("Instagram");
+    userAgent.includes("FB_IAB") ||
+    userAgent.includes("FB4A") ||
+    userAgent.includes("FBIOS") ||
+    userAgent.includes("Instagram") ||
+    userAgent.includes("Messenger");
 
   setEsNavegadorInterno(navegadorInterno);
 }, []);
