@@ -97,8 +97,6 @@ const [notificacionMenuVista, setNotificacionMenuVista] = useState(false);
 const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 const [mostrarInstalarApp, setMostrarInstalarApp] = useState(false);
 const [mostrarInstruccionesInstalar, setMostrarInstruccionesInstalar] = useState(false);
-const [esNavegadorInterno, setEsNavegadorInterno] = useState(false);
-const [mostrarAvisoNavegador, setMostrarAvisoNavegador] = useState(true);
 const obtenerEstadoSimulacroHome = () => {
   if (!simulacroEvento?.fecha_inicio || !simulacroEvento?.fecha_fin) {
     return "programado";
@@ -143,22 +141,6 @@ if (!onboardingVisto) {
   cargarSimulacroEvento();
 }, []);
 
-useEffect(() => {
-  const userAgent = navigator.userAgent || "";
-
-  console.log("UserAgent:", userAgent);
-
-  const navegadorInterno =
-    userAgent.includes("FBAN") ||
-    userAgent.includes("FBAV") ||
-    userAgent.includes("FB_IAB") ||
-    userAgent.includes("FB4A") ||
-    userAgent.includes("FBIOS") ||
-    userAgent.includes("Instagram") ||
-    userAgent.includes("Messenger");
-
-  setEsNavegadorInterno(navegadorInterno);
-}, []);
 
 useEffect(() => {
   const bannerOculto = localStorage.getItem("bannerInstalarOculto") === "true";
@@ -446,33 +428,6 @@ const rachaEstudio =
   };
    return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-[#06194a] overflow-x-hidden">
-
-{esNavegadorInterno && mostrarAvisoNavegador && (
-  <div className="fixed top-4 left-4 right-4 z-50 rounded-2xl border border-cyan-300/40 bg-slate-950/95 p-4 text-white shadow-2xl backdrop-blur-md md:left-auto md:right-6 md:max-w-md">
-    <button
-      onClick={() => setMostrarAvisoNavegador(false)}
-      className="absolute right-3 top-3 rounded-full bg-white/10 px-2 py-1 text-sm text-white hover:bg-white/20"
-    >
-      ✕
-    </button>
-
-    <div className="pr-8">
-      <p className="mb-1 text-lg font-bold text-cyan-300">
-        ⚠️ Navegador interno detectado
-      </p>
-
-      <p className="text-sm leading-relaxed text-slate-100">
-        Estás usando el navegador interno de Facebook o Instagram.
-        Para una mejor experiencia, abre Ruta SERUMS en Chrome o Safari.
-      </p>
-
-      <p className="mt-3 rounded-xl bg-violet-500/20 p-3 text-sm text-violet-100">
-        Toca los <b>3 puntos ⋮</b> y selecciona{" "}
-        <b>“Abrir en navegador”</b>.
-      </p>
-    </div>
-  </div>
-)}
 
 <div className="block md:hidden fixed top-0 left-0 right-0 bottom-0 z-[9999] overflow-y-auto bg-gradient-to-br from-slate-50 to-blue-50">
   <div className="min-h-screen text-[#06194a] p-4">
