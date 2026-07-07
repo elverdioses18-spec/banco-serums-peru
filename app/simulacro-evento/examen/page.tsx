@@ -388,7 +388,10 @@ if (!localStorage.getItem(claveModal)) {
         puntaje: correctas,
         total_preguntas: preguntas.length,
         porcentaje,
-        tiempo_segundos: Math.floor((Date.now() - inicioExamen) / 1000),
+        tiempo_segundos: Math.min(
+          Math.floor((Date.now() - inicioExamen) / 1000),
+          120 * 60
+        ),
         respuestas: respuestasRef.current,
       },
       {
