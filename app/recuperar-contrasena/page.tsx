@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-export default function RecuperarContrasena() {
+function RecuperarContrasenaContenido() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -150,3 +150,16 @@ export default function RecuperarContrasena() {
     </main>
   );
 }
+export default function RecuperarContrasena() {
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-[#020817] text-white flex items-center justify-center">
+            Cargando...
+          </div>
+        }
+      >
+        <RecuperarContrasenaContenido />
+      </Suspense>
+    );
+  }
