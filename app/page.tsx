@@ -816,6 +816,9 @@ const rachaEstudio =
     <Link href="/flashcards" className="block py-5 font-bold">
   🗂️ Flashcards
 </Link>
+<Link href="/regalo" className="block py-5 font-bold">
+  🎁 Regalo
+</Link>
     <div className="border-t border-white/20 my-5"></div>
 
     <div className="space-y-4 text-lg font-bold">
@@ -1346,6 +1349,25 @@ const rachaEstudio =
   {sidebarOpen && (
     <span className="text-base font-semibold">
       Flashcards
+    </span>
+  )}
+</Link>
+<Link
+  href="/regalo"
+  className={`flex items-center ${
+    sidebarOpen
+      ? "gap-3 p-2 justify-start"
+      : "justify-center px-6 py-3"
+  } rounded-xl transition hover:bg-blue-900`}
+>
+
+  <span className="w-10 h-10 rounded-xl bg-pink-600 flex items-center justify-center text-2xl">
+    🎁
+  </span>
+
+  {sidebarOpen && (
+    <span className="text-base font-semibold">
+      Regalo
     </span>
   )}
 </Link>

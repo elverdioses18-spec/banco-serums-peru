@@ -58,42 +58,63 @@ export default function PremiumPage() {
   const crearCuentaYSolicitud = async () => {
     if (enviando) return;
     setEnviando(true);
-
+  
     const nombreLimpio = nombre.trim();
     const correoLimpio = correo.trim().toLowerCase();
     const passwordLimpio = password.trim();
     const codigoLimpio = codigoPago.trim();
-
+  
     const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoLimpio);
-
+  
     if (!correoValido) {
       setEnviando(false);
       mostrarAlertaBonita("Ingresa un correo válido.");
       return;
     }
-
-    if (!nombreLimpio || !codigoLimpio) {
+  
+    if (!codigoLimpio) {
       setEnviando(false);
-      mostrarAlertaBonita("Completa nombre y N° de operación.");
+      mostrarAlertaBonita("Completa el N° de operación.");
       return;
     }
-
+  
+    if (!usuarioExistente && !nombreLimpio) {
+      setEnviando(false);
+      mostrarAlertaBonita("Completa tu nombre.");
+      return;
+    }
+  
     if (!usuarioExistente && passwordLimpio.length < 6) {
       setEnviando(false);
       mostrarAlertaBonita("La contraseña debe tener mínimo 6 caracteres.");
       return;
     }
-
+  
     if (!voucherPago) {
       setEnviando(false);
       mostrarAlertaBonita("Debes adjuntar el voucher.");
+      return;
+    }
+  
+    const { data: solicitudPendiente } = await supabase
+      .from("solicitudes_premium")
+      .select("id")
+      .eq("correo", correoLimpio)
+      .eq("estado", "pendiente")
+      .maybeSingle();
+  
+    if (solicitudPendiente) {
+      setEnviando(false);
+      mostrarAlertaBonita(
+        "Ya tienes una solicitud Premium pendiente. Revisaremos tu comprobante y activaremos tu acceso cuando sea validado."
+      );
       return;
     }
 
     if (!usuarioExistente) {
       const { error: errorUsuario } = await supabase.from("usuarios").insert([
         {
-          nombre: nombreLimpio,
+          nombre: usuarioExistente?.nombre || nombreLimpio,
           correo: correoLimpio,
           password: passwordLimpio,
           premium: false,
