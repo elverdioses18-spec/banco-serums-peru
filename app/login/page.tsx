@@ -259,6 +259,12 @@ export default function LoginPage() {
   >
     Registrarme
   </button>
+  <button
+  onClick={() => router.push("/recuperar-contrasena")}
+  className="w-full text-sm text-blue-400 hover:text-blue-300 font-semibold mt-2"
+>
+  ¿Olvidaste tu contraseña?
+</button>
 </div>
   
         </div>
