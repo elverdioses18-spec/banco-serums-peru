@@ -178,128 +178,173 @@ export default function PremiumPage() {
 
   return (
     <main className="min-h-screen bg-[#020817] text-white px-4 py-8">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-        <section>
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-            Activa Ruta <span className="text-blue-500">SERUMS Premium</span>
-          </h1>
-
-          <p className="text-slate-300 mt-4 text-lg">
-            Paga, coloca tu correo y sube tu comprobante. Si ya tienes cuenta, la detectaremos automáticamente.
-          </p>
-
-          <div className="mt-6 bg-blue-600/20 border border-blue-500/40 rounded-3xl p-5">
-            <p className="text-lg text-slate-200">Pago único</p>
-            <p className="text-5xl font-extrabold text-blue-400">S/ 20</p>
-          </div>
-
-          <div className="mt-6 grid gap-3 text-slate-200">
-            <p>✅ +2300 preguntas tipo SERUMS</p>
-            <p>✅ Simulacros por áreas y mixtos</p>
-            <p>✅ Exámenes SERUMS anteriores</p>
-            <p>✅ Ranking y estadísticas de avance</p>
-            <p>✅ Acceso desde celular, tablet o laptop</p>
-          </div>
-
-          <div className="mt-6 bg-white rounded-3xl p-4 w-fit">
-            <img
-              src="/qryape.png"
-              alt="QR Yape"
-              className="w-56 h-56 object-contain"
-            />
-          </div>
-
-          <p className="text-slate-400 mt-3 text-sm">
-            Escanea el QR, realiza el pago y coloca tu N° de operación.
-          </p>
-        </section>
-
-        <section className="bg-[#081120] border border-blue-500/30 rounded-3xl p-6 shadow-2xl">
-          <h2 className="text-3xl font-extrabold text-center mb-6">
-            Enviar comprobante Premium
-          </h2>
-
-          <div className="space-y-4">
-            <input
-              type="email"
-              placeholder="Correo electrónico"
-              value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
-            />
-
-            {buscandoUsuario && (
-              <p className="text-sm text-slate-400">Buscando usuario...</p>
-            )}
-
-            {usuarioExistente && (
-              <div className="bg-green-500/15 border border-green-500/40 rounded-xl px-4 py-3 text-green-300 text-sm font-semibold">
-                ✅ Usuario registrado. Solo adjunta tu comprobante y N° de operación.
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center leading-tight">
+          Activa Ruta <span className="text-blue-500">SERUMS Premium</span>
+        </h1>
+  
+        <p className="text-slate-300 mt-4 text-lg text-center">
+          Sigue estos pasos para crear tu acceso y enviar tu comprobante.
+        </p>
+  
+        <div className="mt-8 space-y-6">
+  
+          {/* PASO 1 */}
+          <section className="bg-[#081120] border border-blue-500/30 rounded-3xl p-6">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-extrabold text-xl">
+                1
               </div>
-            )}
-
-            <input
-              type="text"
-              placeholder="Nombre completo"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              disabled={!!usuarioExistente}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none disabled:opacity-70"
-            />
-
-            {!usuarioExistente && (
-              <input
-                type="password"
-                placeholder="Contraseña para crear tu cuenta"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
-              />
-            )}
-
-            <input
-              type="text"
-              placeholder="N° de operación Yape / Plin"
-              value={codigoPago}
-              onChange={(e) => setCodigoPago(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
-            />
-
-            <div>
-              <label className="block text-sm text-slate-300 mb-2">
-                Adjuntar voucher o captura del pago
-              </label>
-
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setVoucherPago(e.target.files?.[0] || null)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3"
-              />
+  
+              <div className="flex-1">
+                <h2 className="text-2xl font-extrabold">
+                  Realiza el pago
+                </h2>
+  
+                <p className="text-slate-300 mt-2">
+                  Escanea el QR y realiza el pago único de <b>S/20</b> por Yape o Plin.
+                </p>
+  
+                <div className="mt-5 bg-white rounded-3xl p-4 w-fit">
+                  <img
+                    src="/qryape.png"
+                    alt="QR Yape"
+                    className="w-56 h-56 object-contain"
+                  />
+                </div>
+              </div>
             </div>
-
-            <button
-              onClick={crearCuentaYSolicitud}
-              disabled={enviando}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 py-4 rounded-2xl font-extrabold text-lg transition-all active:scale-95"
-            >
-              {enviando ? "Enviando..." : "Enviar comprobante y solicitar Premium"}
-            </button>
-
-            <p className="text-center text-slate-400 text-sm">
-              Luego de verificar el pago, activaremos tu acceso Premium.
+          </section>
+  
+          {/* PASO 2 */}
+          <section className="bg-[#081120] border border-blue-500/30 rounded-3xl p-6">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-extrabold text-xl">
+                2
+              </div>
+  
+              <div className="flex-1">
+                <h2 className="text-2xl font-extrabold">
+                  Completa tus datos
+                </h2>
+  
+                <p className="text-slate-300 mt-2 mb-4">
+                  Coloca el correo con el que ingresarás a RutaSERUMS.
+                  Si ya tienes cuenta, usa el mismo correo registrado.
+                </p>
+  
+                <div className="space-y-4">
+                  <input
+                    type="email"
+                    placeholder="Correo con el que ingresarás a RutaSERUMS"
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+                  />
+  
+                  {buscandoUsuario && (
+                    <p className="text-sm text-slate-400">Buscando usuario...</p>
+                  )}
+  
+                  {usuarioExistente && (
+                    <div className="bg-green-500/15 border border-green-500/40 rounded-xl px-4 py-3 text-green-300 text-sm font-semibold">
+                      Usuario registrado. Solo completa el comprobante de pago.
+                    </div>
+                  )}
+  
+                  <input
+                    type="text"
+                    placeholder="Nombre completo"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    disabled={!!usuarioExistente}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none disabled:opacity-70"
+                  />
+  
+                  {!usuarioExistente && (
+                    <input
+                      type="password"
+                      placeholder="Contraseña para crear tu cuenta"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+  
+          {/* PASO 3 */}
+          <section className="bg-[#081120] border border-blue-500/30 rounded-3xl p-6">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-extrabold text-xl">
+                3
+              </div>
+  
+              <div className="flex-1">
+                <h2 className="text-2xl font-extrabold">
+                  Envía tu comprobante
+                </h2>
+  
+                <p className="text-slate-300 mt-2 mb-4">
+                  Coloca el N° de operación de Yape/Plin y adjunta la captura del pago.
+                </p>
+  
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="N° de operación Yape / Plin"
+                    value={codigoPago}
+                    onChange={(e) => setCodigoPago(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+                  />
+  
+                  <div>
+                    <label className="block text-sm text-slate-300 mb-2">
+                      Adjuntar voucher o captura del pago
+                    </label>
+  
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setVoucherPago(e.target.files?.[0] || null)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3"
+                    />
+                  </div>
+  
+                  <button
+                    onClick={crearCuentaYSolicitud}
+                    disabled={enviando}
+                    className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 py-4 rounded-2xl font-extrabold text-lg transition-all active:scale-95"
+                  >
+                    {enviando ? "Enviando..." : "Enviar comprobante y solicitar Premium"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+  
+          {/* PASO 4 */}
+          <section className="bg-blue-600/10 border border-blue-500/30 rounded-3xl p-6 text-center">
+            <h2 className="text-2xl font-extrabold">
+              4. Activación Premium
+            </h2>
+  
+            <p className="text-slate-300 mt-2">
+              Revisaremos tu pago y activaremos tu acceso Premium.
             </p>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
-
+  
       {mostrarModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-7 text-center">
             <p className="text-slate-700 leading-relaxed mb-6">
               {modalMensaje}
             </p>
-
+  
             <button
               onClick={() => setMostrarModal(false)}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl"
