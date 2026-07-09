@@ -205,13 +205,17 @@ export default function PremiumPage() {
                   Escanea el QR y realiza el pago único de <b>S/20</b> por Yape o Plin.
                 </p>
   
-                <div className="mt-5 bg-white rounded-3xl p-4 w-fit">
-                  <img
-                    src="/qryape.png"
-                    alt="QR Yape"
-                    className="w-56 h-56 object-contain"
-                  />
-                </div>
+                <div className="mt-5 bg-white rounded-3xl p-4 w-fit text-center">
+                 <img
+                  src="/qryape.png"
+                alt="QR Yape"
+                  className="w-56 h-56 object-contain"
+                 />
+
+                   <p className="text-slate-800 font-bold mt-2">
+                Nombre: Elver Di*
+                  </p>
+                  </div>
               </div>
             </div>
           </section>
