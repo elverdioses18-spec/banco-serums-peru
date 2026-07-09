@@ -229,7 +229,7 @@ export default function PremiumPage() {
                 </h2>
   
                 <p className="text-slate-300 mt-2 mb-4">
-                  Coloca el correo con el que ingresarás a RutaSERUMS.
+                  Coloca el correo con el que ingresarás a RutaSERUMS.pe 
                   Si ya tienes cuenta, usa el mismo correo registrado.
                 </p>
   
