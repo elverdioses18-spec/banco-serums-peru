@@ -984,7 +984,7 @@ const rachaEstudio =
   </div>
 
   <button
-  onClick={() => setMostrarPremium(true)}
+  onClick={() => router.push("/premium")}
   className="bg-yellow-500 hover:bg-yellow-400 text-white font-extrabold px-4 py-3 rounded-xl text-sm shadow-md whitespace-nowrap"
 >
   ⭐ PREMIUM ›
@@ -1505,7 +1505,7 @@ const rachaEstudio =
     </button>
   )}
   <button
-    onClick={() => setMostrarPremium(true)}
+    onClick={() => router.push("/premium")}
     className="bg-yellow-400 hover:bg-yellow-300 text-blue-900 px-4 py-2 rounded-xl font-bold"
   >
     Ser Premium
