@@ -268,7 +268,21 @@ export default function MaratonesPage() {
               
 
               <div className="heroStats">
-                <Stat icon={Clock3} title="Horario" value="7:00 p.m. - 3:00 a.m." sub="Cada día de preparación" />
+              <Stat
+  icon={Clock3}
+  title="Horario"
+  value={
+    <>
+      <span className="horarioPc">7:00 p.m. - 3:00 a.m.</span>
+
+      <span className="horarioMovil">
+        7:00 p.m. -<br />
+        3:00 a.m.
+      </span>
+    </>
+  }
+  sub="Cada día de preparación"
+/>
                 <Stat icon={CalendarDays} title="Examen" value="09" extra="AGOSTO" sub="" />
                 <Stat icon={Users} title="Cupos limitados" value="300 por grupo" sub="¡Asegura tu cupo ahora!" />
                 <Stat icon={Target} title="Inversión única" value="S/ 69" sub="Acceso a las 4 sesiones" />
@@ -444,9 +458,8 @@ export default function MaratonesPage() {
 {!inscripcion && !cargandoAlumno && (
   <>
     <h2 className="groupsTitle">
-      ELIGE TU GRUPO Y SIGUE LA RUTA DE PREPARACIÓN{" "}
-      <span>↝</span>
-    </h2>
+  CONOCE EL CRONOGRAMA Y TEMARIO
+</h2>
 
     <section className="groupsGrid">
       {grupos.map((grupo) => (
@@ -455,7 +468,7 @@ export default function MaratonesPage() {
           <div>
   <BookOpen size={25} />
   <strong>{grupo.nombre}</strong>
-  <span>Conoce el contenido de los 4 días</span>
+  <span>Cupos limitados</span>
 </div>
 
           </header>
@@ -503,7 +516,7 @@ export default function MaratonesPage() {
               )
             }
           >
-            Inscribirme ahora →{" "}
+            Inscribirme ahora {" "}
             <span>→</span>
           </button>
         </article>
@@ -1043,6 +1056,13 @@ export default function MaratonesPage() {
   color:#6b7b91;
   cursor:not-allowed;
 }
+  .horarioPc{
+  display:inline;
+}
+
+.horarioMovil{
+  display:none;
+}
         @media(max-width:1100px){
 
 .rfSidebar{
@@ -1153,8 +1173,153 @@ export default function MaratonesPage() {
   font-size:13px;
   padding:9px 12px;
 }
-        
-      `}</style>
+
+/* CRONOGRAMA MÓVIL */
+
+.groupCard{
+  border-radius:18px;
+}
+
+.groupHeader{
+  height:auto;
+  min-height:64px;
+  padding:12px 14px;
+  align-items:center;
+}
+
+.groupHeader > div{
+  align-items:center;
+  gap:10px;
+}
+
+.groupHeader strong{
+  font-size:17px;
+  line-height:1.1;
+}
+
+.groupHeader span{
+  display:block;
+  font-size:10px;
+  line-height:1.2;
+}
+
+.sessions{
+  padding:10px;
+}
+
+.session{
+  height:auto;
+  min-height:0;
+  display:grid;
+  grid-template-columns:64px minmax(0,1fr);
+  grid-template-areas:
+    "date title"
+    "date description"
+    "date time";
+  gap:4px 10px;
+  padding:12px;
+  margin-bottom:10px;
+  align-items:start;
+}
+
+.dateBox{
+  grid-area:date;
+  width:64px;
+  height:auto;
+  min-height:92px;
+  padding:8px 4px;
+  align-self:stretch;
+}
+
+.dateBox small{
+  font-size:9px;
+}
+
+.dateBox strong{
+  font-size:28px;
+}
+
+.sessionIcon{
+  display:none;
+}
+
+.sessionCopy{
+  display:contents;
+}
+
+.sessionCopy h3{
+  grid-area:title;
+  margin:0;
+  font-size:15px;
+  line-height:1.2;
+  font-weight:900;
+}
+
+.sessionCopy p{
+  grid-area:description;
+  margin:2px 0 0;
+  font-size:11px;
+  line-height:1.35;
+  color:#334155;
+}
+
+.timeBox{
+  grid-area:time;
+  width:max-content;
+  min-width:0;
+  height:auto;
+  margin-top:7px;
+  padding:7px 10px;
+  border-radius:9px;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:5px;
+  font-size:10px;
+  line-height:1;
+}
+
+.timeBox span{
+  display:none;
+}
+
+.timeBox b{
+  font-size:10px;
+  line-height:1;
+}
+
+.enroll{
+  height:48px;
+  margin:2px 10px 10px;
+  width:calc(100% - 20px);
+  font-size:15px;
+}
+  
+ .heroStats .stat:first-child em{
+  font-size:9px;
+  line-height:1.1;
+  white-space:nowrap;
+  letter-spacing:-0.25px;
+  overflow:visible;
+}
+  .heroStats .stat:first-child{
+  padding-left:8px;
+  padding-right:6px;
+}
+
+.heroStats .stat:first-child > div:last-child{
+  min-width:0;
+  }       
+  .horarioPc{
+  display:none;
+}
+
+.horarioMovil{
+  display:inline;
+  font-size:11px;
+  line-height:1.15;
+}
+  `}</style>
     </main>
   );
 }
