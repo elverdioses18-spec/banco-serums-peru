@@ -1333,7 +1333,7 @@ function Stat({
 }: {
   icon: React.ElementType;
   title: string;
-  value: string;
+  value: React.ReactNode;
   sub: string;
   extra?: string;
 }) {
