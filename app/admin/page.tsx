@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 
 export default function AdminPage() {
   const [solicitudes, setSolicitudes] = useState<any[]>([]);
+  const [maratones, setMaratones] = useState<any[]>([]);
   const [cargando, setCargando] = useState(true);
   const [vistaAdmin, setVistaAdmin] = useState("solicitudes");
 const [usuarios, setUsuarios] = useState<any[]>([]);
@@ -42,6 +43,8 @@ const [editCantidadPreguntas, setEditCantidadPreguntas] = useState(50);
 const [editTiempoMinutos, setEditTiempoMinutos] = useState(60);
 const [textoPreguntasSimulacro, setTextoPreguntasSimulacro] = useState("");
 const [importandoPreguntas, setImportandoPreguntas] = useState(false);
+const [sesionesMaraton, setSesionesMaraton] = useState<any[]>([]);
+const [cargandoSesionesMaraton, setCargandoSesionesMaraton] = useState(false);
 
 const cargarSimulacroActual = async () => {
   setCargandoSimulacroActual(true);
@@ -270,28 +273,147 @@ if (simulacroExistente) {
   
     setUsuarios(data || []);
   };
+  const cargarMaratones = async () => {
+    try {
+      const respuesta = await fetch("/api/admin/maratones", {
+        cache: "no-store",
+      });
+  
+      const resultado = await respuesta.json();
+  
+      if (!respuesta.ok) {
+        mostrarAlertaBonita(
+          "Error cargando maratones: " +
+            (resultado.error || "Error desconocido")
+        );
+        return;
+      }
+  
+      setMaratones(resultado.inscripciones || []);
+    } catch (error) {
+      console.error(error);
+      mostrarAlertaBonita("No se pudieron cargar las matrículas.");
+    }
+  };
+  const cambiarEstadoMaraton = async (id:number, estado:string) => {
+
+    const respuesta = await fetch("/api/admin/maratones", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+        estado,
+      }),
+    });
+  
+    const resultado = await respuesta.json();
+  
+    if (!respuesta.ok) {
+      mostrarAlertaBonita(resultado.error);
+      return;
+    }
+  
+    mostrarAlertaBonita(resultado.mensaje);
+    cargarMaratones();
+  
+  };
+  const cargarSesionesMaraton = async () => {
+    setCargandoSesionesMaraton(true);
+  
+    try {
+      const respuesta = await fetch(
+        "/api/admin/maratones/sesiones",
+        {
+          cache: "no-store",
+        }
+      );
+  
+      const resultado = await respuesta.json();
+  
+      if (!respuesta.ok) {
+        mostrarAlertaBonita(
+          resultado.error || "No se pudieron cargar las sesiones."
+        );
+        return;
+      }
+  
+      setSesionesMaraton(resultado.sesiones || []);
+    } catch (error) {
+      console.error("Error cargando sesiones:", error);
+      mostrarAlertaBonita("Error cargando las sesiones.");
+    } finally {
+      setCargandoSesionesMaraton(false);
+    }
+  };
+  
+  
+  const publicarSesion = async (sesion: any) => {
+    try {
+      const respuesta = await fetch(
+        "/api/admin/maratones/sesiones",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: sesion.id,
+            material_url: sesion.material_url || "",
+            link_clase: sesion.link_clase || "",
+          }),
+        }
+      );
+  
+      const resultado = await respuesta.json();
+  
+      if (!respuesta.ok) {
+        mostrarAlertaBonita(
+          resultado.error || "No se pudo publicar la sesión."
+        );
+        return;
+      }
+  
+      mostrarAlertaBonita("Enlaces publicados correctamente.");
+      await cargarSesionesMaraton();
+    } catch (error) {
+      console.error("Error publicando sesión:", error);
+      mostrarAlertaBonita("No se pudo publicar la sesión.");
+    }
+  };
+  
+  
   useEffect(() => {
     cargarSolicitudes();
     cargarUsuarios();
     cargarProgresosUsuarios();
+    cargarMaratones();
+    cargarSesionesMaraton();
   }, []);
-
+  
+  
   useEffect(() => {
     cargarSimulacroActual();
   }, []);
-
+  
+  
   const cargarProgresosUsuarios = async () => {
     const { data, error } = await supabase
       .from("progreso_usuarios")
       .select("*");
   
     if (error) {
-      mostrarAlertaBonita("Error cargando progresos: " + error.message);
+      mostrarAlertaBonita(
+        "Error cargando progresos: " + error.message
+      );
       return;
     }
   
     setProgresosUsuarios(data || []);
   };
+  
+  
   useEffect(() => {
     const canal = supabase
       .channel("solicitudes-premium-realtime")
@@ -312,6 +434,19 @@ if (simulacroExistente) {
       supabase.removeChannel(canal);
     };
   }, []);
+  
+  
+  useEffect(() => {
+    const intervaloMaratones = setInterval(() => {
+      cargarMaratones();
+    }, 3000);
+  
+    return () => {
+      clearInterval(intervaloMaratones);
+    };
+  }, []);
+  
+  
   useEffect(() => {
     const canal = supabase
       .channel("usuarios-realtime")
@@ -332,27 +467,36 @@ if (simulacroExistente) {
       supabase.removeChannel(canal);
     };
   }, []);
-
-  const aprobarPremium = async (correo: string, idSolicitud: number) => {
+  
+  
+  const aprobarPremium = async (
+    correo: string,
+    idSolicitud: number
+  ) => {
     const { error: errorUsuario } = await supabase
       .from("usuarios")
       .update({ premium: true })
       .eq("correo", correo);
-
+  
     if (errorUsuario) {
-      mostrarAlertaBonita("Error activando premium: " + errorUsuario.message);
+      mostrarAlertaBonita(
+        "Error activando premium: " + errorUsuario.message
+      );
       return;
     }
-
+  
     const { error: errorSolicitud } = await supabase
       .from("solicitudes_premium")
       .update({ estado: "aprobado" })
       .eq("id", idSolicitud);
-
+  
     if (errorSolicitud) {
-      mostrarAlertaBonita("Premium activado, pero no se pudo actualizar la solicitud.");
+      mostrarAlertaBonita(
+        "Premium activado, pero no se pudo actualizar la solicitud."
+      );
       return;
     }
+  
     await fetch("/api/push/premium", {
       method: "POST",
       headers: {
@@ -362,21 +506,31 @@ if (simulacroExistente) {
         correo,
       }),
     });
+  
     mostrarAlertaBonita("Premium aprobado correctamente.");
     cargarSolicitudes();
   };
-  const quitarPremium = async (correo: string, idSolicitud: number) => {
-    const confirmar = confirm(`¿Quitar Premium a ${correo}?`);
+  
+  
+  const quitarPremium = async (
+    correo: string,
+    idSolicitud: number
+  ) => {
+    const confirmar = confirm(
+      `¿Quitar Premium a ${correo}?`
+    );
   
     if (!confirmar) return;
-     
+  
     const { error: errorUsuario } = await supabase
       .from("usuarios")
       .update({ premium: false })
       .eq("correo", correo);
   
     if (errorUsuario) {
-      mostrarAlertaBonita("Error quitando premium: " + errorUsuario.message);
+      mostrarAlertaBonita(
+        "Error quitando premium: " + errorUsuario.message
+      );
       return;
     }
   
@@ -385,11 +539,17 @@ if (simulacroExistente) {
       .update({ estado: "pendiente" })
       .eq("id", idSolicitud);
   
-      mostrarAlertaBonita("Premium retirado correctamente.");
+    mostrarAlertaBonita("Premium retirado correctamente.");
     cargarSolicitudes();
   };
-  const eliminarSolicitud = async (idSolicitud: number) => {
-    const confirmar = confirm("¿Eliminar esta solicitud de la bandeja?");
+  
+  
+  const eliminarSolicitud = async (
+    idSolicitud: number
+  ) => {
+    const confirmar = confirm(
+      "¿Eliminar esta solicitud de la bandeja?"
+    );
   
     if (!confirmar) return;
   
@@ -399,22 +559,33 @@ if (simulacroExistente) {
       .eq("id", idSolicitud);
   
     if (error) {
-      mostrarAlertaBonita("Error eliminando solicitud: " + error.message);
+      mostrarAlertaBonita(
+        "Error eliminando solicitud: " + error.message
+      );
       return;
     }
   
-    mostrarAlertaBonita("Solicitud eliminada de la bandeja.");
+    mostrarAlertaBonita(
+      "Solicitud eliminada de la bandeja."
+    );
     cargarSolicitudes();
   };
+  
+  
   const [modalMensaje, setModalMensaje] = useState("");
-      const [mostrarModalMensaje, setMostrarModalMensaje] = useState(false);
-      
-      const mostrarAlertaBonita = (mensaje: string) => {
-        setModalMensaje(mensaje);
-        setMostrarModalMensaje(true);
-      };
+  const [
+    mostrarModalMensaje,
+    setMostrarModalMensaje,
+  ] = useState(false);
+  
+  
+  const mostrarAlertaBonita = (mensaje: string) => {
+    setModalMensaje(mensaje);
+    setMostrarModalMensaje(true);
+  };
+  
+  
   if (!autorizado) {
-   
     return (
       <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
         <div className="bg-slate-800 p-8 rounded-3xl max-w-md w-full shadow-2xl">
@@ -518,6 +689,26 @@ if (simulacroExistente) {
   }`}
 >
   Crear simulacro
+</button>
+<button
+  onClick={() => setVistaAdmin("maratones")}
+  className={`flex-1 py-3 rounded-xl font-bold ${
+    vistaAdmin === "maratones"
+      ? "bg-orange-600 text-white"
+      : "bg-slate-800 text-slate-300"
+  }`}
+>
+ 🔥 Maratones
+</button>
+<button
+  onClick={() => setVistaAdmin("sesiones-maraton")}
+  className={`rounded-xl px-4 py-3 font-bold ${
+    vistaAdmin === "sesiones-maraton"
+      ? "bg-purple-600 text-white"
+      : "bg-slate-800 text-white hover:bg-slate-700"
+  }`}
+>
+  📚 Sesiones Ruta Final
 </button>
 </div>
 
@@ -840,7 +1031,336 @@ if (simulacroExistente) {
   </>
 )}
 
+{vistaAdmin === "maratones" && (
+  <div>
+    <h2>🔥 Solicitudes Ruta Final SERUMS</h2>
 
+    {maratones.length === 0 ? (
+      <p>No hay inscritos todavía.</p>
+    ) : (
+      <>
+        {maratones.map((m) => (
+          <div
+          key={m.id}
+          className="bg-slate-800 rounded-2xl p-5 border border-slate-700 mb-4"
+        >
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+
+<div>
+  <p>
+    <b>Nombre:</b> {m.nombre}
+  </p>
+
+  <p>
+    <b>WhatsApp:</b> {m.whatsapp}
+  </p>
+
+  <p>
+    <b>Grupo:</b> {m.grupo}
+  </p>
+</div>
+
+
+<div>
+  <p>
+    <b>Correo:</b> {m.correo}
+  </p>
+
+  <p>
+    <b>Estado:</b>{" "}
+    <span className="font-bold text-yellow-300">
+      {m.estado}
+    </span>
+  </p>
+</div>
+
+</div>
+
+
+            <div className="flex flex-col md:flex-row gap-3 mt-4">
+
+  <a
+    href={m.voucher_url}
+    target="_blank"
+    className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-xl font-bold text-center"
+  >
+    Ver voucher
+  </a>
+
+
+  {m.estado === "aprobado" ? (
+
+    <button
+      disabled
+      className="bg-slate-600 cursor-not-allowed text-white px-4 py-3 rounded-xl font-bold"
+    >
+      Matrícula aprobada
+    </button>
+
+  ) : (
+
+    <button
+      onClick={() =>
+        cambiarEstadoMaraton(
+          m.id,
+          "aprobado"
+        )
+      }
+      className="bg-green-600 hover:bg-green-500 text-white px-4 py-3 rounded-xl font-bold"
+    >
+      Aprobar matrícula
+    </button>
+
+  )}
+
+
+  <button
+    onClick={() =>
+      cambiarEstadoMaraton(
+        m.id,
+        "rechazado"
+      )
+    }
+    className="bg-red-600 hover:bg-red-500 text-white px-4 py-3 rounded-xl font-bold"
+  >
+    🗑️ Eliminar de bandeja
+  </button>
+
+</div>
+
+          </div>
+        ))}
+      </>
+    )}
+
+  </div>
+)}
+{vistaAdmin === "sesiones-maraton" && (
+  <div className="mt-8">
+    <h2 className="mb-6 text-3xl font-black">
+      📚 Sesiones Ruta Final SERUMS
+    </h2>
+
+    {cargandoSesionesMaraton ? (
+      <p>Cargando sesiones...</p>
+    ) : (
+      <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
+        {[1].map(numeroGrupo => (
+          <section
+            key={numeroGrupo}
+            className="rounded-3xl border border-slate-700 bg-slate-900 p-6"
+          >
+            <div
+  className={`mb-5 flex items-center justify-between rounded-2xl px-5 py-4 text-white ${
+    numeroGrupo === 1
+      ? "bg-blue-600"
+      : "bg-green-600"
+  }`}
+>
+  <div>
+    <h3 className="text-2xl font-black">
+    📚 CRONOGRAMA Y TEMARIO
+    </h3>
+
+    <p className="mt-1 text-sm font-semibold text-white/80">
+      4 sesiones programadas
+    </p>
+  </div>
+
+  <span className="rounded-full bg-white/15 px-4 py-2 text-sm font-black">
+    {
+      sesionesMaraton.filter(
+        (sesion) => sesion.grupo === numeroGrupo
+      ).filter(
+        (sesion) =>
+          sesion.material_url || sesion.link_clase
+      ).length
+    }
+    /4 publicadas
+  </span>
+</div>
+
+            <div className="space-y-5">
+              {sesionesMaraton
+                .filter((sesion) => sesion.grupo === numeroGrupo)
+                .map((sesion) => (
+                  <article
+  key={sesion.id}
+  className="rounded-2xl border border-slate-700 bg-slate-800 p-5"
+>
+  <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+    <div>
+      <div className="mb-2 flex items-center gap-3">
+        <span className="rounded-full bg-blue-500/15 px-3 py-1 text-xs font-black text-blue-300">
+          DÍA {sesion.orden}
+        </span>
+
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-black ${
+            sesion.material_url && sesion.link_clase
+              ? "bg-green-500/15 text-green-300"
+              : sesion.material_url || sesion.link_clase
+              ? "bg-yellow-500/15 text-yellow-300"
+              : "bg-red-500/15 text-red-300"
+          }`}
+        >
+          {sesion.material_url && sesion.link_clase
+            ? "🟢 Publicado"
+            : sesion.material_url || sesion.link_clase
+            ? "🟡 Publicación parcial"
+            : "🔴 Sin publicar"}
+        </span>
+      </div>
+
+      <h4 className="text-xl font-black text-white">
+        {sesion.area}
+      </h4>
+    </div>
+
+    <span className="rounded-xl bg-slate-700 px-3 py-2 text-sm font-bold text-slate-200">
+      {new Date(sesion.fecha_inicio).toLocaleDateString("es-PE", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      })}
+    </span>
+  </div>
+
+  <div className="space-y-5">
+    <div>
+      <label className="mb-2 block font-bold text-slate-200">
+        📄 Enlace del material en Drive
+      </label>
+
+      <div className="flex flex-col gap-2 md:flex-row">
+        <input
+          type="url"
+          value={sesion.material_url || ""}
+          onChange={(e) => {
+            const valor = e.target.value;
+          
+            setSesionesMaraton((anteriores) =>
+              anteriores.map((item) =>
+                item.id === sesion.id
+                  ? { ...item, material_url: valor }
+                  : item
+              )
+            );
+          }}
+          placeholder="https://drive.google.com/..."
+          className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+        />
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            disabled={!sesion.material_url}
+            onClick={() =>
+              window.open(sesion.material_url, "_blank")
+            }
+            className="rounded-xl bg-blue-600 px-4 py-3 font-bold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            👁 Abrir
+          </button>
+
+          <button
+            type="button"
+            disabled={!sesion.material_url}
+            onClick={() => {
+              setSesionesMaraton((anteriores) =>
+                anteriores.map((item) =>
+                  item.id === sesion.id
+                    ? { ...item, material_url: "" }
+                    : item
+                )
+              );
+            }}
+            className="rounded-xl bg-red-600 px-4 py-3 font-bold text-white hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            🗑 Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label className="mb-2 block font-bold text-slate-200">
+        🎥 Enlace de la clase en YouTube
+      </label>
+
+      <div className="flex flex-col gap-2 md:flex-row">
+        <input
+          type="url"
+          value={sesion.link_clase || ""}
+          onChange={(e) => {
+            const valor = e.target.value;
+          
+            setSesionesMaraton((anteriores) =>
+              anteriores.map((item) =>
+                item.id === sesion.id
+                  ? { ...item, link_clase: valor }
+                  : item
+              )
+            );
+          }}
+          placeholder="https://youtube.com/live/..."
+          className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+        />
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            disabled={!sesion.link_clase}
+            onClick={() =>
+              window.open(sesion.link_clase, "_blank")
+            }
+            className="rounded-xl bg-blue-600 px-4 py-3 font-bold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            👁 Abrir
+          </button>
+
+          <button
+            type="button"
+            disabled={!sesion.link_clase}
+            onClick={() => {
+              setSesionesMaraton((anteriores) =>
+                anteriores.map((item) =>
+                  item.id === sesion.id
+                    ? { ...item, link_clase: "" }
+                    : item
+                )
+              );
+            }}
+            className="rounded-xl bg-red-600 px-4 py-3 font-bold text-white hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            🗑 Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div className="mt-5 flex justify-end">
+  <button
+  type="button"
+  onClick={() => publicarSesion(sesion)}
+  className="rounded-xl bg-green-600 px-6 py-3 font-black text-white transition hover:bg-green-500"
+>
+  {sesion.material_url || sesion.link_clase
+    ? "🔄 Actualizar enlaces"
+    : "🟢 Publicar enlaces"}
+</button>
+  </div>
+</article>
+                ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    )}
+  </div>
+)}
 {vistaAdmin === "solicitudes" && (
   <div>
         {cargando ? (

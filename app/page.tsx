@@ -426,6 +426,58 @@ const rachaEstudio =
       setMostrarInstruccionesInstalar(true);
     }
   };
+  useEffect(() => {
+    const revisarPremium = async () => {
+      try {
+        const usuarioGuardado = JSON.parse(
+          localStorage.getItem("usuarioActual") || "{}"
+        );
+  
+        if (!usuarioGuardado.correo) return;
+  
+        const { data, error } = await supabase
+          .from("usuarios")
+          .select("premium")
+          .eq("correo", usuarioGuardado.correo)
+          .maybeSingle();
+  
+        if (error || !data) return;
+  
+        const premiumAnterior = Boolean(usuarioGuardado.premium);
+        const premiumActual = Boolean(data.premium);
+  
+        if (premiumActual !== premiumAnterior) {
+          const usuarioActualizado = {
+            ...usuarioGuardado,
+            premium: premiumActual,
+          };
+  
+          localStorage.setItem(
+            "usuarioActual",
+            JSON.stringify(usuarioActualizado)
+          );
+  
+          setUsuarioActual(usuarioActualizado);
+  
+          if (premiumActual) {
+            setMostrarPremiumActivado(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error revisando Premium:", error);
+      }
+    };
+  
+    revisarPremium();
+  
+    const intervaloPremium = setInterval(() => {
+      revisarPremium();
+    }, 3000);
+  
+    return () => {
+      clearInterval(intervaloPremium);
+    };
+  }, []);
    return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-[#06194a] overflow-x-hidden">
 
@@ -931,6 +983,7 @@ const rachaEstudio =
     </div>
   </div>
 )}
+
 {mostrarInstalarApp && (
   <div className="relative bg-blue-50 border border-blue-200 rounded-2xl p-3 mb-4 flex items-center gap-3 shadow-sm">
     <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl">
@@ -964,7 +1017,79 @@ const rachaEstudio =
     </button>
   </div>
 )}
+{/* 🔥 RUTA FINAL SERUMS */}
+<Link
+  href="/maratones"
+  className="
+    block mb-6 rounded-2xl
+    border border-orange-300
+    bg-gradient-to-r from-orange-50 via-white to-blue-50
+    p-5 shadow-md
+    hover:shadow-lg transition
+  "
+>
+  <div className="flex items-center justify-between gap-4">
+
+    <div className="flex items-center gap-4">
+
+      <div className="
+        w-16 h-16 rounded-2xl
+        bg-orange-100
+        flex items-center justify-center
+        text-4xl
+      ">
+        🔥
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2">
+
+          <h2 className="
+            text-xl font-extrabold
+            text-[#06194a]
+          ">
+            Maratón Intensiva
+          </h2>
+
+          <span className="
+            bg-orange-500
+            text-white
+            text-[10px]
+            px-2 py-1
+            rounded-full
+            font-bold
+          ">
+            NUEVO
+          </span>
+
+        </div>
+
+        <p className="text-xs md:text-sm text-slate-600 mt-1">
+          Sprint final de 4 noches antes del examen SERUMS 2026-II.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      className="
+      hidden md:block
+      bg-orange-500
+      text-white
+      px-5 py-3
+      rounded-xl
+      font-bold
+      "
+    >
+      Ver detalles →
+    </div>
+
+  </div>
+</Link>
  {!esPremium && (
+  
   <>
       {/* FRANJA PREMIUM MÓVIL */}
 <div className="md:hidden bg-gradient-to-r from-yellow-50 to-white border border-yellow-400 rounded-2xl p-1 mb-5 shadow-sm flex items-center justify-between gap-3">
@@ -1032,7 +1157,9 @@ const rachaEstudio =
           
         </div>
       </div>
+      
     </div>
+    
     <h2 className="text-xl font-extrabold mb-3">
   Elige un tema
 </h2>
@@ -1773,6 +1900,77 @@ const rachaEstudio =
     </div>
   </div>
 )}
+{/* 🔥 RUTA FINAL SERUMS */}
+<Link
+  href="/maratones"
+  className="
+    block mb-6 rounded-2xl
+    border border-orange-300
+    bg-gradient-to-r from-orange-50 via-white to-blue-50
+    p-5 shadow-md
+    hover:shadow-lg transition
+  "
+>
+  <div className="flex items-center justify-between gap-4">
+
+    <div className="flex items-center gap-4">
+
+      <div className="
+        w-16 h-16 rounded-2xl
+        bg-orange-100
+        flex items-center justify-center
+        text-4xl
+      ">
+        🔥
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2">
+
+          <h2 className="
+            text-xl font-extrabold
+            text-[#06194a]
+          ">
+            Maratón Intensiva
+          </h2>
+
+          <span className="
+            bg-orange-500
+            text-white
+            text-[10px]
+            px-2 py-1
+            rounded-full
+            font-bold
+          ">
+            NUEVO
+          </span>
+
+        </div>
+
+        <p className="text-xs md:text-sm text-slate-600 mt-1">
+          Sprint final de 4 noches antes del examen SERUMS 2026-II.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      className="
+      hidden md:block
+      bg-orange-500
+      text-white
+      px-5 py-3
+      rounded-xl
+      font-bold
+      "
+    >
+      Ver detalles →
+    </div>
+
+  </div>
+</Link>
 
             {/* TARJETAS */}
             <h2 className="text-2xl font-bold mb-5">Elige un tema para comenzar</h2>
@@ -2058,8 +2256,9 @@ totales
   href="/examenes-pasados"
   className="block mt-6 w-full rounded-2xl border border-purple-300 bg-gradient-to-r from-white via-purple-50 to-white p-5 shadow-md hover:shadow-lg transition"
 >
-  <div className="flex items-center justify-between gap-6">
-    <div className="flex items-center gap-5">
+  <div className="flex items-center gap-8">
+
+    <div className="flex items-center gap-5 min-w-[520px]">
       <div className="text-5xl text-purple-600">📋</div>
 
       <div>
@@ -2074,30 +2273,38 @@ totales
         </div>
 
         <p className="text-sm text-slate-700 mt-2 max-w-md">
-          Practica preguntas reales de convocatorias anteriores y conoce los temas que más se repiten en el examen.
+          Practica preguntas reales de convocatorias anteriores y conoce los
+          temas que más se repiten en el examen.
         </p>
       </div>
     </div>
 
-    <div className="hidden lg:grid grid-cols-2 gap-5 border-l border-purple-200 pl-8">
+    <div className="flex-1 grid grid-cols-2 gap-8">
       <div>
-        <p className="font-bold text-purple-700">📅 Por convocatoria</p>
+        <p className="font-bold text-purple-700">
+          📅 Por convocatoria
+        </p>
+
         <p className="text-sm text-slate-700 mt-1">
           Elige un examen específico y practica.
         </p>
       </div>
 
       <div>
-        <p className="font-bold text-purple-700">🔀 Examen mixto</p>
+        <p className="font-bold text-purple-700">
+          🔀 Examen mixto
+        </p>
+
         <p className="text-sm text-slate-700 mt-1">
           Preguntas mezcladas de todas las convocatorias.
         </p>
       </div>
     </div>
 
-    <div className="bg-purple-600 text-white px-5 py-3 rounded-xl font-bold shadow-md">
+    <div className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded-xl font-bold shadow-md whitespace-nowrap">
       Ir a exámenes pasados ›
     </div>
+
   </div>
 </a>
 </div>
