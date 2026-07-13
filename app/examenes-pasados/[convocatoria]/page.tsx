@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { examenesPasados } from "@/data/examenesPasados";
 import { supabase } from "@/lib/supabase";
+import { guardarFalladas } from "@/lib/falladas";
 
 type Pregunta = {
   pregunta: string;
@@ -260,7 +261,17 @@ const preguntasPorPagina = 10;
               </div>
   
               <button
-                onClick={() => setFinalizado(true)}
+                onClick={async () => {
+                  const preguntasAdaptadas = preguntasSeleccionadas.map((pregunta) => ({
+                    ...pregunta,
+                    correcta: pregunta.respuesta,
+                    origen: `Examen pasado ${convocatoria}`,
+                  }));
+                
+                  await guardarFalladas(preguntasAdaptadas, respuestas);
+                
+                  setFinalizado(true);
+                }}
                 disabled={respondidas < preguntasSeleccionadas.length}
                 className={`rounded-2xl px-6 py-3 font-extrabold text-white shadow-md ${
                   respondidas < preguntasSeleccionadas.length

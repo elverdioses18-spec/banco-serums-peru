@@ -76,6 +76,7 @@ export default function MaratonesPage() {
   const [cargandoAlumno, setCargandoAlumno] = useState(true);
   const [correoAlumno, setCorreoAlumno] = useState("");
   const [inscritosGrupo1, setInscritosGrupo1] = useState(0);
+  const [usuarioActual, setUsuarioActual] = useState<any>(null);
   
   const grupos = [
     {
@@ -201,6 +202,17 @@ export default function MaratonesPage() {
       clearInterval(intervaloCupos);
     };
   }, []);
+  useEffect(() => {
+    const guardado = localStorage.getItem("usuarioActual");
+  
+    if (!guardado) return;
+  
+    try {
+      setUsuarioActual(JSON.parse(guardado));
+    } catch (error) {
+      console.error("Error leyendo usuarioActual:", error);
+    }
+  }, []);
   return (
     <main className="rfPage">
       <aside className="rfSidebar">
@@ -250,8 +262,23 @@ export default function MaratonesPage() {
           <div className="topActions">
           
             <span className="bell">🔔<b>1</b></span>
-            <span className="avatar">👨🏻‍⚕️</span>
-            <div className="account"><strong>Elver</strong><span>Mi cuenta⌄</span></div>
+            <div className="avatar overflow-hidden">
+  <img
+    src={`/avatars/${usuarioActual?.avatar || "avatar1"}.png`}
+    alt="Avatar"
+    className="w-full h-full object-cover"
+  />
+</div>
+
+<div className="account">
+  <strong>
+    {usuarioActual?.nombre
+      ? usuarioActual.nombre.split(" ")[0]
+      : "Usuario"}
+  </strong>
+
+  <span>Mi cuenta</span>
+</div>
           </div>
         </header>
 
