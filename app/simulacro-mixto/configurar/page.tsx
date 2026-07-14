@@ -5,12 +5,18 @@ import BloqueoRegistro from "../../../components/BloqueoRegistro";
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
   const [esPremium, setEsPremium] = useState(false);
-  const usuarioRegistrado =
-  typeof window !== "undefined" &&
-  localStorage.getItem("usuarioActual");
+  const [usuarioRegistrado, setUsuarioRegistrado] =
+  useState<boolean | null>(null);
+ 
   useEffect(() => {
+    const usuario = localStorage.getItem("usuarioActual");
+  
+    setUsuarioRegistrado(!!usuario);
     setEsPremium(localStorage.getItem("premium") === "true");
   }, []);
+  if (usuarioRegistrado === null) {
+    return null;
+  }
 if (!usuarioRegistrado) {
   return <BloqueoRegistro />;
 }

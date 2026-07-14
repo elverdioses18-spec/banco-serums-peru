@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -10,6 +10,9 @@ export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
   const router = useRouter();
   const [mostrarBloqueo, setMostrarBloqueo] = useState(false);
+  const [esPremium, setEsPremium] = useState(false);
+const [usuarioRegistrado, setUsuarioRegistrado] =
+  useState<boolean | null>(null);
 
 const validarGratis = async () => {
   const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
@@ -35,12 +38,12 @@ const validarGratis = async () => {
   router.push("/salud-publica?cantidad=20");
 };
   
-  const esPremium =
-  typeof window !== "undefined" &&
-  localStorage.getItem("premium") === "true";
-  const usuarioRegistrado =
-  typeof window !== "undefined" &&
-  localStorage.getItem("usuarioActual");
+useEffect(() => {
+  const usuario = localStorage.getItem("usuarioActual");
+
+  setUsuarioRegistrado(!!usuario);
+  setEsPremium(localStorage.getItem("premium") === "true");
+}, []);
   if (!usuarioRegistrado) {
     return (
       <main className="min-h-screen bg-black/70 text-white flex items-center justify-center p-6">

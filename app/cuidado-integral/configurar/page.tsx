@@ -10,13 +10,8 @@ export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
   const [mostrarBloqueo, setMostrarBloqueo] = useState(false);
   const [esPremium, setEsPremium] = useState(false);
-  const usuarioRegistrado =
-  typeof window !== "undefined" &&
-  localStorage.getItem("usuarioActual");
-  
-if (!usuarioRegistrado) {
-  return <BloqueoRegistro />;
-}
+  const [usuarioRegistrado, setUsuarioRegistrado] = useState<boolean | null>(null);
+ 
   const router = useRouter();
   const entrarGratis20 = async () => {
     
@@ -44,18 +39,24 @@ if (!usuarioRegistrado) {
     router.push("/cuidado-integral?cantidad=20");
   };
   useEffect(() => {
-  const usuarioRegistrado =
-    localStorage.getItem("usuarioActual");
-
-  if (!usuarioRegistrado) {
-    router.push("/login");
-    return;
+    const usuario = localStorage.getItem("usuarioActual");
+  
+    setUsuarioRegistrado(!!usuario);
+  
+    if (!usuario) {
+      router.push("/login");
+      return;
+    }
+  
+    setEsPremium(localStorage.getItem("premium") === "true");
+  }, [router]);
+  if (usuarioRegistrado === null) {
+    return null;
   }
-
-  setEsPremium(
-    localStorage.getItem("premium") === "true"
-  );
-}, []);
+  
+  if (!usuarioRegistrado) {
+    return <BloqueoRegistro />;
+  }
   return (
     <main className="min-h-screen bg-[#edf3f8] flex items-center justify-center p-6">
       <input id="premium-modal" type="checkbox" className="peer hidden" />

@@ -8,6 +8,9 @@ import { supabase } from "@/lib/supabase";
 export default function ConfigurarSimulacro() {
   const [mostrarPremium, setMostrarPremium] = useState(false);
   const [mostrarBloqueo, setMostrarBloqueo] = useState(false);
+  const [esPremium, setEsPremium] = useState(false);
+const [usuarioRegistrado, setUsuarioRegistrado] =
+  useState<boolean | null>(null);
 const router = useRouter();
 const validarGratis = async () => {
   const usuario = JSON.parse(localStorage.getItem("usuarioActual") || "{}");
@@ -32,13 +35,16 @@ const validarGratis = async () => {
 
     router.push("/investigacion?cantidad=20");
 };
-  const [esPremium, setEsPremium] = useState(false);
-  const usuarioRegistrado =
-  typeof window !== "undefined" &&
-  localStorage.getItem("usuarioActual");
-  useEffect(() => {
-    setEsPremium(localStorage.getItem("premium") === "true");
-  }, []);
+useEffect(() => {
+  const usuario = localStorage.getItem("usuarioActual");
+
+  setUsuarioRegistrado(!!usuario);
+  setEsPremium(localStorage.getItem("premium") === "true");
+}, []);
+
+if (usuarioRegistrado === null) {
+  return null;
+}
 
 if (!usuarioRegistrado) {
   return <BloqueoRegistro />;
@@ -65,7 +71,7 @@ if (!usuarioRegistrado) {
 
           {esPremium ? (
   <Link
-    href="/cuidado-integral?cantidad=35"
+    href="/investigacion?cantidad=35"
     className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold"
   >
     35
@@ -80,7 +86,7 @@ if (!usuarioRegistrado) {
 )}
 {esPremium ? (
   <Link
-    href="/cuidado-integral?cantidad=50"
+    href="/investigacion?cantidad=50"
     className="bg-blue-600 hover:bg-blue-500 text-white rounded-2xl h-28 md:h-auto md:py-8 flex items-center justify-center text-3xl font-bold"
   >
     50
