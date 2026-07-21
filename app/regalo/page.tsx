@@ -42,7 +42,7 @@ export default function RegaloPage() {
   }, []);
 
   const abrirMaterial = () => {
-    window.open("https://drive.google.com/drive/folders/1yzl4d9ddDqwZvsgTLyQe-LRIGrrPdpMN?usp=drive_link", "_blank");
+    window.location.assign("/materiales");
   };
 
   return (
@@ -68,7 +68,7 @@ export default function RegaloPage() {
 </button>
 
             <p className="text-slate-500 text-sm mt-4">
-              El material se abrirá en Google Drive.
+              No compartas este material, es valioso para ti. 
             </p>
           </>
         ) : (

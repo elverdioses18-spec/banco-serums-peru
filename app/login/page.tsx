@@ -36,7 +36,7 @@ export default function LoginPage() {
       .single();
         
     if (error || !data) {
-      mostrarAlertaBonita("Usuariono encontrado");
+      mostrarAlertaBonita("Usuario no encontrado");
       return;
     }
   
