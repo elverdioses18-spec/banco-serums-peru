@@ -87,13 +87,60 @@ useEffect(() => {
   verificarAcceso();
 }, [router, convocatoria]);
 
-   const preguntasBase: Pregunta[] =
-    convocatoria === "mixto"
-      ? (Object.values(examenesPasados).flat() as Pregunta[])
-      : ((examenesPasados[
-          convocatoria as keyof typeof examenesPasados
-        ] || []) as Pregunta[]);
+function normalizarPregunta(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[¿?¡!.,;:()[\]"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
+const todasLasPreguntas = Object.values(examenesPasados).flat() as Pregunta[];
+
+const preguntasMixtasSinDuplicados = Array.from(
+  todasLasPreguntas.reduce((mapa, pregunta) => {
+    const clave = normalizarPregunta(pregunta.pregunta);
+
+    if (!mapa.has(clave)) {
+      mapa.set(clave, pregunta);
+    }
+
+    return mapa;
+  }, new Map<string, Pregunta>())
+).map(([, pregunta]) => pregunta);
+
+function normalizarPregunta(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[¿?¡!.,;:()[\]"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const todasLasPreguntas = Object.values(examenesPasados).flat() as Pregunta[];
+
+const preguntasMixtasSinDuplicados = Array.from(
+  todasLasPreguntas.reduce((mapa, pregunta) => {
+    const clave = normalizarPregunta(pregunta.pregunta);
+
+    if (!mapa.has(clave)) {
+      mapa.set(clave, pregunta);
+    }
+
+    return mapa;
+  }, new Map<string, Pregunta>())
+).map(([, pregunta]) => pregunta);
+
+const preguntasBase: Pregunta[] =
+  convocatoria === "mixto"
+    ? preguntasMixtasSinDuplicados
+    : ((examenesPasados[
+        convocatoria as keyof typeof examenesPasados
+      ] || []) as Pregunta[]);
         
   const [respuestas, setRespuestas] = useState<Record<number, string>>({});
   const [finalizado, setFinalizado] = useState(false);
