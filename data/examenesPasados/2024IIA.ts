@@ -667,7 +667,7 @@ export const examen2024IIA = [
     "C. 22",
     "D. 20"
     ],
-    respuesta: "D. 20",
+    respuesta: "C. 22",
     },
     {
     pregunta: "Para determinar la magnitud de la faringoamigdalitis aguda en la población pediátrica de su localidad utilizando los criterios de Centor. ¿Qué tipo de estudio usaría?",

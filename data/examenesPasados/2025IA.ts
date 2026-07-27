@@ -329,7 +329,7 @@ export const examen2025IA = [
     "C. El aumento en la incidencia de enfermedades",
     "D. Las crisis psicosociales"
     ],
-    respuesta: "A. La aparición de enfermedades epidémicas",
+    respuesta: "C. El aumento en la incidencia de enfermedades",
     },
     {
     pregunta: "Para medir el riesgo de una enfermedad en la comunidad, se utilizan medidas de morbilidad como la incidencia que mide la …... y la prevalencia que mide la …… de la enfermedad.",
@@ -379,7 +379,7 @@ export const examen2025IA = [
     "C. I-2",
     "D. I-4"
     ],
-    respuesta: "A. I-3",
+    respuesta: "C. I-2",
     },
     {
     pregunta: "El C.S. Paz, ha sectorizado su jurisdicción para realizar intervenciones de promoción y prevención basados en el Modelo de Cuidado Integral de la Familia y Comunidad por Curso de Vida. En el marco de las Funciones Esenciales de la Salud Pública renovada, esta acción corresponde a la etapa de:",
@@ -389,7 +389,7 @@ export const examen2025IA = [
     "C. Asignación de recursos",
     "D. Desarrollo de políticas"
     ],
-    respuesta: "D. Desarrollo de políticas",
+    respuesta: "B. Acceso",
     },
     {
     pregunta: "En el proceso de redacción del informe final de su estudio transversal analítico sobre la relación entre la ingesta de bebidas gaseosas y sobrepeso; usted desea que todas las secciones tengan coherencia entre sí. ¿Qué herramienta debe usar para verificarla?",
@@ -969,7 +969,7 @@ export const examen2025IA = [
     "C. Descarte de enfermedades crónicas",
     "D. Implementar visitas domiciliarias periódicas"
     ],
-    respuesta: "D. Implementar visitas domiciliarias periódicas",
+    respuesta: "B. Consejería para realizar ejercicio físico",
     },
     {
     pregunta: "Mujer de 22 años víctima de violencia física, es derivada por la fiscalía para su atención integral en el establecimiento de salud. El área de psicología luego de la evaluación, inicia su plan de atención integral que constará de 10 sesiones. ¿Qué tipo de determinante social de la salud se está abordando?",
@@ -979,7 +979,7 @@ export const examen2025IA = [
     "C. Comercial",
     "D. Económico"
     ],
-    respuesta: "B. Intermedio",
+    respuesta: "A. Estructural",
     },
     {
     pregunta: "Varón de 20 años, señala haber tenido RS con pareja desconocida hace un mes y no acude al EESS para ser evaluado. Trae resultado de VDRL: 16 diluciones. FTA-ABS (+). Examen físico: PA: 110/70 mmHg, FC: 85 X', FR: 14X', afebril; en REG, con úlcera genital, no presenta ronchas en manos y plantas de pies. ¿Cuál es el diagnóstico más probable?",
