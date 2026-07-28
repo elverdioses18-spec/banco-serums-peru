@@ -2452,17 +2452,33 @@ totales
         </button>
 
         <button
-          onClick={() => {
+          onClick={async () => {
             const usuario = JSON.parse(
               localStorage.getItem("usuarioActual") || "{}"
             );
-
+            
             if (!passwordActual.trim()) {
               setMensajePassword("Debes ingresar tu contraseña actual.");
               return;
             }
-
-            if (passwordActual !== usuario.password) {
+            
+            if (!usuario.correo) {
+              setMensajePassword("No se pudo identificar al usuario.");
+              return;
+            }
+            
+            const { data: usuarioBD, error: errorUsuario } = await supabase
+              .from("usuarios")
+              .select("password")
+              .eq("correo", usuario.correo.trim().toLowerCase())
+              .single();
+            
+            if (errorUsuario || !usuarioBD) {
+              setMensajePassword("No se pudo verificar la contraseña actual.");
+              return;
+            }
+            
+            if (passwordActual !== usuarioBD.password) {
               setMensajePassword("La contraseña actual no es correcta.");
               return;
             }
@@ -2477,7 +2493,7 @@ totales
               return;
             }
 
-            if (passwordNueva === usuario.password) {
+            if (passwordNueva === usuarioBD.password) {
               setMensajePassword("La nueva contraseña debe ser diferente a la actual.");
               return;
             }
@@ -2487,17 +2503,17 @@ totales
               return;
             }
 
-            const usuarioActualizado = {
-              ...usuario,
-              password: passwordNueva,
-            };
+            const { error: errorActualizar } = await supabase
+  .from("usuarios")
+  .update({
+    password: passwordNueva,
+  })
+  .eq("correo", usuario.correo.trim().toLowerCase());
 
-            localStorage.setItem(
-              "usuarioActual",
-              JSON.stringify(usuarioActualizado)
-            );
-
-            setUsuarioActual(usuarioActualizado);
+if (errorActualizar) {
+  setMensajePassword("No se pudo actualizar la contraseña.");
+  return;
+}
             setPasswordActual("");
             setPasswordNueva("");
             setPasswordNueva2("");
