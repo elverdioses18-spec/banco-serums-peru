@@ -224,22 +224,27 @@ export default function LoginPage() {
   
         <div className="space-y-3">
   
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-            className="w-full h-15
-             rounded-2xl bg-[#111c31] border border-slate-700 px-6 text-2x1 outline-none"
-          />
-  
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-15 rounded-2xl bg-[#111c31] border border-slate-700 px-6 text-2x1 outline-none"
-          />
+        <input
+  type="email"
+  id="login-email"
+  name="email"
+  autoComplete="username"
+  placeholder="Correo electrónico"
+  value={correo}
+  onChange={(e) => setCorreo(e.target.value)}
+  className="w-full h-15 rounded-2xl bg-[#111c31] border border-slate-700 px-6 text-2xl outline-none"
+/>
+
+<input
+  type="password"
+  id="login-password"
+  name="password"
+  autoComplete="current-password"
+  placeholder="Contraseña"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  className="w-full h-15 rounded-2xl bg-[#111c31] border border-slate-700 px-6 text-2xl outline-none"
+/>
   
   <div className="flex gap-3">
   <button

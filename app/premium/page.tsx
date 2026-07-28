@@ -167,8 +167,8 @@ export default function PremiumPage() {
 
     mostrarAlertaBonita(
       usuarioExistente
-        ? "✅ Comprobante enviado. Revisaremos tu pago y activaremos tu Premium."
-        : "✅ Cuenta creada y comprobante enviado. Revisaremos tu pago y activaremos tu Premium."
+        ? "✅ Comprobante enviado. Revisaremos tu pago y activaremos tu Premium dentro de las 24 horas."
+        : "✅ Cuenta creada y comprobante enviado. Revisaremos tu pago y activaremos tu Premium dentro de las 24 horas."
     );
 
     setTimeout(() => {
@@ -238,43 +238,52 @@ export default function PremiumPage() {
                 </p>
   
                 <div className="space-y-4">
-                  <input
-                    type="email"
-                    placeholder="Correo con el que ingresarás a RutaSERUMS"
-                    value={correo}
-                    onChange={(e) => setCorreo(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
-                  />
-  
-                  {buscandoUsuario && (
-                    <p className="text-sm text-slate-400">Buscando usuario...</p>
-                  )}
-  
-                  {usuarioExistente && (
-                    <div className="bg-green-500/15 border border-green-500/40 rounded-xl px-4 py-3 text-green-300 text-sm font-semibold">
-                      Usuario registrado. Solo completa el comprobante de pago.
-                    </div>
-                  )}
-  
-                  <input
-                    type="text"
-                    placeholder="Nombre completo"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    disabled={!!usuarioExistente}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none disabled:opacity-70"
-                  />
-  
-                  {!usuarioExistente && (
-                    <input
-                      type="password"
-                      placeholder="Contraseña para crear tu cuenta"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
-                    />
-                  )}
-                </div>
+  <input
+    type="email"
+    id="registro-email"
+    name="email"
+    autoComplete="username"
+    placeholder="Correo con el que ingresarás a RutaSERUMS"
+    value={correo}
+    onChange={(e) => setCorreo(e.target.value)}
+    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+  />
+
+  {buscandoUsuario && (
+    <p className="text-sm text-slate-400">Buscando usuario...</p>
+  )}
+
+  {usuarioExistente && (
+    <div className="bg-green-500/15 border border-green-500/40 rounded-xl px-4 py-3 text-green-300 text-sm font-semibold">
+      Usuario registrado. Solo completa el comprobante de pago.
+    </div>
+  )}
+
+  <input
+    type="text"
+    id="registro-nombre"
+    name="name"
+    autoComplete="name"
+    placeholder="Nombre completo"
+    value={nombre}
+    onChange={(e) => setNombre(e.target.value)}
+    disabled={!!usuarioExistente}
+    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none disabled:opacity-70"
+  />
+
+  {!usuarioExistente && (
+    <input
+      type="password"
+      id="registro-password"
+      name="new-password"
+      autoComplete="new-password"
+      placeholder="Contraseña para crear tu cuenta"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none"
+    />
+  )}
+</div>
               </div>
             </div>
           </section>
@@ -318,12 +327,15 @@ export default function PremiumPage() {
                   </div>
   
                   <button
-                    onClick={crearCuentaYSolicitud}
-                    disabled={enviando}
-                    className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 py-4 rounded-2xl font-extrabold text-lg transition-all active:scale-95"
-                  >
-                    {enviando ? "Enviando..." : "Enviar comprobante y solicitar Premium"}
-                  </button>
+  type="button"
+  onClick={crearCuentaYSolicitud}
+  disabled={enviando}
+  className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 py-4 rounded-2xl font-extrabold text-lg transition-all active:scale-95"
+>
+  {enviando
+    ? "Enviando..."
+    : "Enviar comprobante y solicitar Premium"}
+</button>
                 </div>
               </div>
             </div>
