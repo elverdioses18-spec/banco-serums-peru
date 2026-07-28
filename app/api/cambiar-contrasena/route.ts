@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function POST(req: Request) {
   try {
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { data: reset, error: resetError } = await supabase
+    const { data: reset, error: resetError } = await supabaseAdmin
       .from("password_resets")
       .select("*")
       .eq("token", token)
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from("usuarios")
       .update({ password })
       .eq("correo", reset.correo);
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       );
     }
 
-    await supabase
+    await supabaseAdmin
       .from("password_resets")
       .update({ usado: true })
       .eq("token", token);

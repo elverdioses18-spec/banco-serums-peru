@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { Resend } from "resend";
 import crypto from "crypto";
 
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const correoLimpio = correo.trim().toLowerCase();
 
     // 1. Verificar si existe usuario
-    const { data: usuario } = await supabase
+    const { data: usuario } = await supabaseAdmin
       .from("usuarios")
       .select("correo")
       .eq("correo", correoLimpio)
@@ -29,12 +29,13 @@ export async function POST(req: Request) {
     const token = crypto.randomBytes(32).toString("hex");
 
     // 3. Guardar token
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from("password_resets")
       .insert([
         {
           correo: correoLimpio,
           token,
+          usado: false,
         },
       ]);
 
