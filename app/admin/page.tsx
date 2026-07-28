@@ -10,7 +10,7 @@ export default function AdminPage() {
   const [cargando, setCargando] = useState(true);
   const [vistaAdmin, setVistaAdmin] = useState("solicitudes");
 const [usuarios, setUsuarios] = useState<any[]>([]);
-const [progresosUsuarios, setProgresosUsuarios] = useState<any[]>([]);
+
   const [autorizado, setAutorizado] = useState(false);
 const [passwordAdmin, setPasswordAdmin] = useState("");
 const [errorAdmin, setErrorAdmin] = useState("");
@@ -387,7 +387,7 @@ if (simulacroExistente) {
   useEffect(() => {
     cargarSolicitudes();
     cargarUsuarios();
-    cargarProgresosUsuarios();
+    
     cargarMaratones();
     cargarSesionesMaraton();
   }, []);
@@ -396,24 +396,7 @@ if (simulacroExistente) {
   useEffect(() => {
     cargarSimulacroActual();
   }, []);
-  
-  
-  const cargarProgresosUsuarios = async () => {
-    const { data, error } = await supabase
-      .from("progreso_usuarios")
-      .select("*");
-  
-    if (error) {
-      mostrarAlertaBonita(
-        "Error cargando progresos: " + error.message
-      );
-      return;
-    }
-  
-    setProgresosUsuarios(data || []);
-  };
-  
-  
+    
   useEffect(() => {
     const canal = supabase
       .channel("solicitudes-premium-realtime")
@@ -642,14 +625,7 @@ if (simulacroExistente) {
   
     return coincideEstado && coincideCorreo;
   });
-  const obtenerResueltasUsuario = (correo: string) => {
-    const progreso = progresosUsuarios.find(
-      (item) => item.correo === correo
-    );
-  
-    return progreso?.datos?.preguntasResueltas?.length || 0;
-  };
-  return (
+    return (
     <main className="min-h-screen bg-slate-950 text-white p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-extrabold mb-6">
@@ -668,19 +644,7 @@ if (simulacroExistente) {
   >
     Solicitudes
   </button>
-
   <button
-  onClick={() => setVistaAdmin("usuarios")}
-  className={`flex-1 py-3 rounded-xl font-bold ${
-    vistaAdmin === "usuarios"
-      ? "bg-blue-600 text-white"
-      : "bg-slate-800 text-slate-300"
-  }`}
->
-  Usuarios
-</button>
-
-<button
   onClick={() => setVistaAdmin("crearSimulacro")}
   className={`flex-1 py-3 rounded-xl font-bold ${
     vistaAdmin === "crearSimulacro"
