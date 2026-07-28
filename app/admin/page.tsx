@@ -719,12 +719,7 @@ if (simulacroExistente) {
     )}
   </p>
 </div>
-<div className="bg-slate-900 rounded-xl p-4 border border-slate-700 text-center min-w-[110px]">
-<p className="text-xs text-slate-400">📚 Resueltas</p>
-  <p className="text-2xl font-extrabold text-blue-400">
-  {obtenerResueltasUsuario(usuario.correo)}
-  </p>
-</div>
+
         </div>
       ))
     )}
