@@ -214,12 +214,11 @@ export default function LoginPage() {
         </div>
   
         <h2 className="text-2xl font-bold text-center mb-4" >
-          Crear cuenta
+          Iniciar sesión
         </h2>
   
         <p className="text-center text-slate-300 text-2x1 mb-5">
-          Ingresa tu correo para comenzar
-          con preguntas gratis.
+          Ingresa tu correo y contraseña para ingresar a Ruta SERUMS
         </p>
   
         <div className="space-y-3">
